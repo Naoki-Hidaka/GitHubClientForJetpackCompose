@@ -44,8 +44,13 @@ dependencies {
     implementation("androidx.compose.foundation:foundation-layout:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.ui:ui-util:$composeVersion")
-    implementation("com.google.accompanist:accompanist-pager:0.14.0")
     implementation("io.coil-kt:coil-compose:1.3.1")
+
+    // Compose Accompanist
+    val accompanistVersion = "0.14.0"
+    implementation("com.google.accompanist:accompanist-pager:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-swiperefresh:$accompanistVersion")
+
 
     // Lottie
     implementation("com.airbnb.android:lottie-compose:4.0.0")

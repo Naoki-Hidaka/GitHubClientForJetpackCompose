@@ -21,7 +21,10 @@ class MyPageViewModel @Inject constructor(
 
     val loadState = MutableLiveData<LoadState<UserStatus>>(LoadState.Loading)
 
+    val isRefreshing = MutableLiveData<Boolean>()
+
     init {
+        loadState.value = LoadState.Loading
         refresh()
     }
 
@@ -45,6 +48,7 @@ class MyPageViewModel @Inject constructor(
                         }
                     }
                 }
+            isRefreshing.value = false
         }
     }
 
@@ -54,7 +58,8 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun onRefresh() {
-        onRetryClick()
+        isRefreshing.value = true
+        refresh()
     }
 
     sealed class UserStatus {

@@ -29,9 +29,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 TopScreen(
                     myPageViewModel,
-                    viewModel::onLoginButtonClick,
-                    viewModel::onCardClick,
-                    viewModel::onRepositoryItemClick
+                    viewModel
                 )
             }
         }
@@ -45,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                 navigateChrome(MainViewModel.VERIFY_URL)
             }
             MainViewModel.Event.CompleteGetAccessToken -> {
-                myPageViewModel.onRefresh()
+                myPageViewModel.onRetryClick()
             }
             is MainViewModel.Event.FailedGetAccessToken -> {
                 showErrorToast(event.throwable)
