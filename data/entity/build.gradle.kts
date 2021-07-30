@@ -22,6 +22,19 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
+    // Kotlin Serialization Converter
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+
+    // Gson
+    implementation("com.google.code.gson:gson:2.8.7")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // Room
+    val roomVersion = "2.3.0"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
     // Timber
     implementation("com.jakewharton.timber:timber:4.7.1")
 

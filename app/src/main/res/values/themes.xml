@@ -15,4 +15,9 @@
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="AppToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/white</item>
+        <item name="android:elevation">4dp</item>
+    </style>
 </resources>

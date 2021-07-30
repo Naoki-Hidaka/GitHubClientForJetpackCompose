@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="io_exception">通信に失敗しました</string>
+    <string name="authorize_exception">認証に失敗しました</string>
+    <string name="general_exception">エラーが発生しました</string>
+</resources>

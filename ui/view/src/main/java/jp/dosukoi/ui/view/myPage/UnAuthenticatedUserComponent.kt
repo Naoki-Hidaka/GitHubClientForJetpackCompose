@@ -14,14 +14,16 @@ import androidx.compose.ui.unit.dp
 import jp.dosukoi.ui.view.common.white
 
 @Composable
-fun UnAuthenticatedUserComponent() {
+fun UnAuthenticatedUserComponent(
+    onLoginButtonClick: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Button(
-            onClick = { /*TODO*/ },
+            onClick = onLoginButtonClick,
             Modifier.background(white),
             elevation = ButtonDefaults.elevation(defaultElevation = 8.dp)
         ) {

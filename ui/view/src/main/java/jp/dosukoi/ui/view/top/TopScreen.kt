@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -23,7 +22,10 @@ import jp.dosukoi.ui.view.list.TopPageScreen
 import jp.dosukoi.ui.view.myPage.MyPageScreen
 
 @Composable
-fun TopScreen() {
+fun TopScreen(
+    onLoginButtonClick: () -> Unit,
+    onCardClick: (String) -> Unit
+) {
     val bottomNavigationItemList = listOf(
         TopScreens.Search,
         TopScreens.MyPage
@@ -52,7 +54,7 @@ fun TopScreen() {
                 TopPageScreen()
             }
             composable(TopScreens.MyPage.route) {
-                MyPageScreen()
+                MyPageScreen(onLoginButtonClick = onLoginButtonClick, onCardClick = onCardClick)
             }
         }
     })
@@ -61,10 +63,4 @@ fun TopScreen() {
 sealed class TopScreens(val route: String, val title: String, val icon: ImageVector) {
     object Search : TopScreens("search", "Search", Icons.Filled.Search)
     object MyPage : TopScreens("myPage", "MyPage", Icons.Filled.Person)
-}
-
-@Preview
-@Composable
-fun PreviewTopScreen() {
-    TopScreen()
 }

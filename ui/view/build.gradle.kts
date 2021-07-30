@@ -12,6 +12,7 @@ android {
 
     buildFeatures {
         compose = true
+        dataBinding = true
     }
     composeOptions {
         kotlinCompilerVersion = "1.5.10"
@@ -51,6 +52,7 @@ dependencies {
 
     // DataStore
     implementation("androidx.datastore:datastore:1.0.0-rc02")
+    implementation("androidx.datastore:datastore-preferences:1.0.0-rc02")
 
     // Hilt
     val hiltVersion = "2.38"
@@ -78,6 +80,9 @@ dependencies {
 
     // Timber
     implementation("com.jakewharton.timber:timber:4.7.1")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")

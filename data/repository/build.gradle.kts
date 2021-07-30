@@ -40,6 +40,17 @@ dependencies {
     // Timber
     implementation("com.jakewharton.timber:timber:4.7.1")
 
+    // Lifecycle
+    val lifecycleVersion = "2.3.1"
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
+
+    // Room
+    val roomVersion = "2.3.0"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")
 }
