@@ -25,4 +25,5 @@ val primaryColor = Color.White
 val black = Color.Black
 val white = Color.White
 val gray = Color.Gray
+val whiteGray = Color(0xFFB8B8BC)
 val error = Color(0xFFFF6A56)

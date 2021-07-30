@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -12,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "jp.dosukoi.githubclientforjetpackcompose"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 30
         versionCode = 1
         versionName = "1.0.0"

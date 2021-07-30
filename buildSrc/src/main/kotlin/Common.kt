@@ -6,7 +6,7 @@ fun LibraryExtension.applyCommon() {
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
         targetSdk = 30
         versionCode = 1
         versionName = "1.0.0"

@@ -1,6 +1,9 @@
 package jp.dosukoi.ui.view.top
 
-import androidx.compose.material.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -44,7 +47,7 @@ fun TopScreen() {
             }
         }
     }, content = {
-        NavHost(navController = navController, startDestination = TopScreens.Search.route) {
+        NavHost(navController = navController, startDestination = TopScreens.MyPage.route) {
             composable(TopScreens.Search.route) {
                 TopPageScreen()
             }
@@ -53,13 +56,6 @@ fun TopScreen() {
             }
         }
     })
-}
-
-@Composable
-fun AppBar(
-
-) {
-    TopAppBar(title = { Text(text = "title") })
 }
 
 sealed class TopScreens(val route: String, val title: String, val icon: ImageVector) {
@@ -71,10 +67,4 @@ sealed class TopScreens(val route: String, val title: String, val icon: ImageVec
 @Composable
 fun PreviewTopScreen() {
     TopScreen()
-}
-
-@Preview
-@Composable
-fun PreviewAppBar() {
-    AppBar()
 }

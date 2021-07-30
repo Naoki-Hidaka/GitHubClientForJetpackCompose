@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -44,6 +45,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-util:$composeVersion")
     implementation("com.google.accompanist:accompanist-pager:0.14.0")
     implementation("io.coil-kt:coil-compose:1.3.1")
+
+    // Lottie
+    implementation("com.airbnb.android:lottie-compose:4.0.0")
 
     // DataStore
     implementation("androidx.datastore:datastore:1.0.0-rc02")

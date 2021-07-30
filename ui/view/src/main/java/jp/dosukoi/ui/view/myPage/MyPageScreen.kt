@@ -1,32 +1,35 @@
 package jp.dosukoi.ui.view.myPage
 
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import jp.dosukoi.ui.view.common.LoadingAndErrorScreen
+import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 
 @Composable
-fun MyPageScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(vertical = 30.dp, horizontal = 16.dp)
-            .horizontalScroll(rememberScrollState())
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-        ) {
-            Row {
-               
-            }
-        }
+fun MyPageScreen(
+    viewModel: MyPageViewModel = hiltViewModel()
+) {
+    val loadState by viewModel.loadState.observeAsState()
+    loadState?.let {
+        LoadingAndErrorScreen(
+            state = it,
+            loadedContent = {
+                when (it) {
+                    is MyPageViewModel.UserStatus.Authenticated -> MyPageComponent(it.user)
+                    MyPageViewModel.UserStatus.UnAuthenticated -> UnAuthenticatedUserComponent()
+                }
+            },
+            onRetryClick = viewModel::onRetryClick
+        )
     }
+
+}
+
+@Preview
+@Composable
+fun PreviewMyPageScreen() {
+    MyPageScreen()
 }
