@@ -13,12 +13,18 @@ import jp.dosukoi.ui.view.common.showErrorToast
 import jp.dosukoi.ui.view.top.TopScreen
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 import jp.dosukoi.ui.viewmodel.top.MainViewModel
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
-    private val myPageViewModel: MyPageViewModel by viewModels()
+
+    @Inject
+    lateinit var myPageViewModelFactory: MyPageViewModel.Factory
+    private val myPageViewModel: MyPageViewModel by viewModels {
+        MyPageViewModel.Companion.Provider(myPageViewModelFactory, viewModel)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +35,6 @@ class MainActivity : AppCompatActivity() {
             ) {
                 TopScreen(
                     myPageViewModel,
-                    viewModel
                 )
             }
         }

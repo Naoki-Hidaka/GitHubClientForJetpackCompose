@@ -2,8 +2,11 @@ package jp.dosukoi.ui.viewmodel.myPage
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import jp.dosukoi.data.entity.common.UnAuthorizeException
 import jp.dosukoi.data.entity.list.Repository
 import jp.dosukoi.data.entity.myPage.User
@@ -11,13 +14,17 @@ import jp.dosukoi.data.repository.list.ReposRepository
 import jp.dosukoi.data.repository.myPage.UserRepository
 import jp.dosukoi.ui.viewmodel.common.LoadState
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MyPageViewModel @Inject constructor(
+class MyPageViewModel @AssistedInject constructor(
     private val userRepository: UserRepository,
-    private val reposRepository: ReposRepository
-) : ViewModel() {
+    private val reposRepository: ReposRepository,
+    @Assisted private val myPageListener: MyPageListener
+) : ViewModel(), MyPageListener by myPageListener {
+
+    @AssistedFactory
+    interface Factory {
+        fun create(myPageListener: MyPageListener): MyPageViewModel
+    }
 
     val loadState = MutableLiveData<LoadState<UserStatus>>(LoadState.Loading)
 
@@ -71,4 +78,22 @@ class MyPageViewModel @Inject constructor(
         val user: User,
         val repositoryList: List<Repository>
     )
+
+    companion object {
+        @Suppress("UNCHECKED_CAST")
+        class Provider(
+            private val factory: Factory,
+            private val myPageListener: MyPageListener
+        ) : ViewModelProvider.NewInstanceFactory() {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+                factory.create(myPageListener) as T
+        }
+    }
+}
+
+interface MyPageListener {
+    fun onLoginButtonClick()
+    fun onCardClick(url: String)
+    fun onRepositoryItemClick(url: String)
+    fun onGetCode(code: String?)
 }

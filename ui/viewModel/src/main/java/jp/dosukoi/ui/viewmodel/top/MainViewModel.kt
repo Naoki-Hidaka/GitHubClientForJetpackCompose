@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.dosukoi.data.repository.auth.AuthRepository
 import jp.dosukoi.ui.viewmodel.common.NoCacheMutableLiveData
+import jp.dosukoi.ui.viewmodel.myPage.MyPageListener
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -12,23 +13,23 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val authRepository: AuthRepository
-) : ViewModel() {
+) : ViewModel(), MyPageListener {
 
     val onEvent = NoCacheMutableLiveData<Event>()
 
-    fun onLoginButtonClick() {
+    override fun onLoginButtonClick() {
         onEvent.setValue(Event.ClickedLoginButton)
     }
 
-    fun onCardClick(url: String) {
+    override fun onCardClick(url: String) {
         onEvent.setValue(Event.ClickedCard(url))
     }
 
-    fun onRepositoryItemClick(url: String) {
+    override fun onRepositoryItemClick(url: String) {
         onEvent.setValue(Event.ClickedRepositoryItem(url))
     }
 
-    fun onGetCode(code: String?) {
+    override fun onGetCode(code: String?) {
         Timber.d("debug: onGetCode $code")
         code ?: return
         viewModelScope.launch {
