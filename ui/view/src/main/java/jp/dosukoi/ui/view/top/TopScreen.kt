@@ -21,12 +21,10 @@ import jp.dosukoi.ui.view.common.white
 import jp.dosukoi.ui.view.list.TopPageScreen
 import jp.dosukoi.ui.view.myPage.MyPageScreen
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
-import jp.dosukoi.ui.viewmodel.top.MainViewModel
 
 @Composable
 fun TopScreen(
     myPageViewModel: MyPageViewModel,
-    mainViewModel: MainViewModel,
 ) {
     val bottomNavigationItemList = listOf(
         TopScreens.Search,
@@ -58,7 +56,6 @@ fun TopScreen(
             composable(TopScreens.MyPage.route) {
                 MyPageScreen(
                     myPageViewModel,
-                    mainViewModel
                 )
             }
         }
