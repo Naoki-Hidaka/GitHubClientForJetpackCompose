@@ -4,6 +4,7 @@ import dagger.Reusable
 import jp.dosukoi.data.api.common.IApiType
 import jp.dosukoi.data.entity.common.UnAuthorizeException
 import jp.dosukoi.data.entity.myPage.User
+import jp.dosukoi.data.repository.common.asyncFetch
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -14,12 +15,7 @@ class UserRepository @Inject constructor(
 ) {
     suspend fun getUser(): User {
         return try {
-            val response = api.getUser()
-            if (response.isSuccessful) {
-                response.body()!!
-            } else {
-                throw HttpException(response)
-            }
+            asyncFetch { api.getUser() }
         } catch (throwable: Throwable) {
             Timber.e("error: $throwable")
             if (throwable is HttpException) {

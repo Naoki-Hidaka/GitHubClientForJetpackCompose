@@ -1,7 +1,6 @@
 package jp.dosukoi.githubclientforjetpackcompose
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -9,11 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
 import dagger.hilt.android.AndroidEntryPoint
 import jp.dosukoi.ui.view.common.appColors
+import jp.dosukoi.ui.view.common.navigateChrome
 import jp.dosukoi.ui.view.common.showErrorToast
 import jp.dosukoi.ui.view.top.TopScreen
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 import jp.dosukoi.ui.viewmodel.top.MainViewModel
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -28,7 +27,12 @@ class MainActivity : AppCompatActivity() {
             MaterialTheme(
                 colors = appColors()
             ) {
-                TopScreen(myPageViewModel, viewModel::onLoginButtonClick, viewModel::onCardClick)
+                TopScreen(
+                    myPageViewModel,
+                    viewModel::onLoginButtonClick,
+                    viewModel::onCardClick,
+                    viewModel::onRepositoryItemClick
+                )
             }
         }
 
@@ -38,19 +42,19 @@ class MainActivity : AppCompatActivity() {
     private fun handleEvent(event: MainViewModel.Event) {
         when (event) {
             MainViewModel.Event.ClickedLoginButton -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(MainViewModel.VERIFY_URL))
-                startActivity(intent)
+                navigateChrome(MainViewModel.VERIFY_URL)
             }
             MainViewModel.Event.CompleteGetAccessToken -> {
-                Timber.d("debug: onRefresh")
                 myPageViewModel.onRefresh()
             }
             is MainViewModel.Event.FailedGetAccessToken -> {
                 showErrorToast(event.throwable)
             }
             is MainViewModel.Event.ClickedCard -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.url))
-                startActivity(intent)
+                navigateChrome(event.url)
+            }
+            is MainViewModel.Event.ClickedRepositoryItem -> {
+                navigateChrome(event.url)
             }
         }
     }

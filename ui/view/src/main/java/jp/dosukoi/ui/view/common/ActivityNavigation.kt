@@ -1,6 +1,8 @@
 package jp.dosukoi.ui.view.common
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.annotation.StringRes
 import jp.dosukoi.ui.view.R
@@ -27,4 +29,9 @@ fun Activity.showErrorToast(throwable: Throwable) {
         else -> getString(R.string.general_exception)
     }
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Activity.navigateChrome(url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    startActivity(intent)
 }

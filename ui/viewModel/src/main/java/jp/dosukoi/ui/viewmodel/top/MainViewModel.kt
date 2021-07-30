@@ -24,6 +24,10 @@ class MainViewModel @Inject constructor(
         onEvent.setValue(Event.ClickedCard(url))
     }
 
+    fun onRepositoryItemClick(url: String) {
+        onEvent.setValue(Event.ClickedRepositoryItem(url))
+    }
+
     fun onGetCode(code: String?) {
         Timber.d("debug: onGetCode $code")
         code ?: return
@@ -43,6 +47,7 @@ class MainViewModel @Inject constructor(
         object CompleteGetAccessToken : Event()
         class FailedGetAccessToken(val throwable: Throwable) : Event()
         class ClickedCard(val url: String) : Event()
+        class ClickedRepositoryItem(val url: String) : Event()
     }
 
     companion object {
