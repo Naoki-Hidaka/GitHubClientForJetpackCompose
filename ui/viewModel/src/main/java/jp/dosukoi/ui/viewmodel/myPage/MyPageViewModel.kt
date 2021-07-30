@@ -28,11 +28,7 @@ class MyPageViewModel @Inject constructor(
                 userRepository.getUser()
             }
                 .onSuccess {
-                    it?.let {
-                        loadState.value = LoadState.Loaded(UserStatus.Authenticated(it))
-                    } ?: run {
-                        loadState.value = LoadState.Error
-                    }
+                    loadState.value = LoadState.Loaded(UserStatus.Authenticated(it))
                 }.onFailure {
                     when (it) {
                         is UnAuthorizeException -> {

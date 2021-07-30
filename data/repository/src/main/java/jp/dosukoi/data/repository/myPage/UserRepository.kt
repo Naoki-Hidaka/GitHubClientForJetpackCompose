@@ -12,11 +12,11 @@ import javax.inject.Inject
 class UserRepository @Inject constructor(
     private val api: IApiType
 ) {
-    suspend fun getUser(): User? {
+    suspend fun getUser(): User {
         return try {
             val response = api.getUser()
             if (response.isSuccessful) {
-                response.body()
+                response.body()!!
             } else {
                 throw HttpException(response)
             }
