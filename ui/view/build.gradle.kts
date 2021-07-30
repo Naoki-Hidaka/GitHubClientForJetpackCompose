@@ -55,7 +55,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0-rc02")
 
     // Hilt
-    val hiltVersion = "2.38"
+    val hiltVersion = "2.38.1"
     val hiltJetpackVersion = "1.0.0"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0-alpha03")
