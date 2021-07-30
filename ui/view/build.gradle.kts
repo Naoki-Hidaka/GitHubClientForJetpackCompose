@@ -44,7 +44,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation-layout:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.ui:ui-util:$composeVersion")
-    implementation("com.google.accompanist:accompanist-pager:0.14.0")
+    implementation("com.google.accompanist:accompanist-pager:0.15.0")
     implementation("io.coil-kt:coil-compose:1.3.1")
 
     // Lottie
