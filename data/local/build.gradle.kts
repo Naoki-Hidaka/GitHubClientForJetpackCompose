@@ -30,6 +30,15 @@ dependencies {
     // Timber
     implementation("com.jakewharton.timber:timber:4.7.1")
 
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0-rc02")
+    implementation("androidx.datastore:datastore:1.0.0-rc02")
+
+    // Lifecycle
+    val lifecycleVersion = "2.3.1"
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")
 }

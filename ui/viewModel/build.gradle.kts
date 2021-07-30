@@ -8,6 +8,10 @@ plugins {
 
 android {
     applyCommon()
+
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {

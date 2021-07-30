@@ -40,6 +40,7 @@ android {
 
     buildFeatures {
         compose = true
+        dataBinding = true
     }
     composeOptions {
         kotlinCompilerVersion = "1.5.10"
@@ -106,6 +107,32 @@ dependencies {
 
     // Timber
     implementation("com.jakewharton.timber:timber:4.7.1")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    // OkHttp
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0-rc02")
+    implementation("androidx.datastore:datastore:1.0.0-rc02")
+
+    // Kotlin Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+
+    // Gson
+    implementation("com.google.code.gson:gson:2.8.7")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // Room
+    val roomVersion = "2.3.0"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

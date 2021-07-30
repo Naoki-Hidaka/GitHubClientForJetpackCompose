@@ -8,7 +8,6 @@ import jp.dosukoi.data.entity.common.UnAuthorizeException
 import jp.dosukoi.data.entity.myPage.User
 import jp.dosukoi.data.repository.myPage.UserRepository
 import jp.dosukoi.ui.viewmodel.common.LoadState
-import jp.dosukoi.ui.viewmodel.common.NoCacheMutableLiveData
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,8 +15,6 @@ import javax.inject.Inject
 class MyPageViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
-
-    val onEvent = NoCacheMutableLiveData<Event>()
 
     val loadState = MutableLiveData<LoadState<UserStatus>>(LoadState.Loading)
 
@@ -31,7 +28,11 @@ class MyPageViewModel @Inject constructor(
                 userRepository.getUser()
             }
                 .onSuccess {
-                    loadState.value = LoadState.Loaded(UserStatus.Authenticated(it))
+                    it?.let {
+                        loadState.value = LoadState.Loaded(UserStatus.Authenticated(it))
+                    } ?: run {
+                        loadState.value = LoadState.Error
+                    }
                 }.onFailure {
                     when (it) {
                         is UnAuthorizeException -> {

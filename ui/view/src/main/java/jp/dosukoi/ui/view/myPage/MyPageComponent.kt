@@ -1,6 +1,7 @@
 package jp.dosukoi.ui.view.myPage
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,12 +23,13 @@ import jp.dosukoi.ui.view.common.whiteGray
 
 @Composable
 fun MyPageComponent(
-    user: User
+    user: User,
+    onCardClick: (String) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 20.dp)
     ) {
-        item { UserInfoCard(user) }
+        item { UserInfoCard(user, onCardClick) }
         (0..10).forEachIndexed { index, _ ->
             item { RepositoryItem(isLastItem = index == 10) }
         }
@@ -35,11 +37,12 @@ fun MyPageComponent(
 }
 
 @Composable
-fun UserInfoCard(user: User) {
+fun UserInfoCard(user: User, onCardClick: (String) -> Unit) {
     Card(
         modifier = Modifier
             .padding(vertical = 10.dp, horizontal = 16.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onCardClick(user.htmlUrl) },
         shape = RoundedCornerShape(10.dp),
         elevation = 4.dp
     ) {
@@ -76,13 +79,13 @@ fun UserInfo(user: User) {
             .padding(start = 24.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
             .fillMaxWidth()
     ) {
-        Text(user.name, style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold))
+        Text(user.login, style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold))
         Text(
-            user.company,
+            user.company ?: "",
             modifier = Modifier.padding(top = 18.dp),
             style = TextStyle(fontSize = 14.sp)
         )
-        Text(user.email, Modifier.padding(top = 6.dp), style = TextStyle(fontSize = 14.sp))
+        Text(user.bio ?: "", Modifier.padding(top = 6.dp), style = TextStyle(fontSize = 14.sp))
     }
 }
 

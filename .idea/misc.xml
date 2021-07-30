@@ -8,8 +8,15 @@
         <entry key="../../../../layout/compose-model-1627507241806.xml" value="0.3990740740740741" />
         <entry key="../../../../layout/compose-model-1627524863272.xml" value="0.2977571539056458" />
         <entry key="../../../../layout/compose-model-1627543571031.xml" value="0.32726502963590176" />
+        <entry key="../../../../layout/compose-model-1627623273684.xml" value="0.19256756756756757" />
+        <entry key="../../../../layout/compose-model-1627627741046.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1627651399611.xml" value="0.1" />
+        <entry key="ui/view/src/main/res/layout/activity_auth.xml" value="0.21197916666666666" />
       </map>
     </option>
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/data/api/src/main/java/jp/dosukoi/data/api/common/ApiModule.kt" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
