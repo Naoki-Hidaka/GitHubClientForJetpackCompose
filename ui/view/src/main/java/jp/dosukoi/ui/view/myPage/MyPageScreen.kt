@@ -5,15 +5,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import jp.dosukoi.ui.view.common.LoadingAndErrorScreen
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
+import jp.dosukoi.ui.viewmodel.top.MainViewModel
 
 @Composable
 fun MyPageScreen(
-    viewModel: MyPageViewModel,
-    onLoginButtonClick: () -> Unit,
-    onCardClick: (String) -> Unit,
-    onRepositoryItemClick: (String) -> Unit
+    myPageViewModel: MyPageViewModel,
+    mainViewModel: MainViewModel,
 ) {
-    val loadState by viewModel.loadState.observeAsState()
+    val loadState by myPageViewModel.loadState.observeAsState()
+    val isRefreshing by myPageViewModel.isRefreshing.observeAsState()
     loadState?.let {
         LoadingAndErrorScreen(
             state = it,
@@ -21,15 +21,17 @@ fun MyPageScreen(
                 when (it) {
                     is MyPageViewModel.UserStatus.Authenticated -> MyPageComponent(
                         it.item,
-                        onCardClick,
-                        onRepositoryItemClick
+                        mainViewModel::onCardClick,
+                        mainViewModel::onRepositoryItemClick,
+                        isRefreshing,
+                        myPageViewModel::onRefresh
                     )
                     MyPageViewModel.UserStatus.UnAuthenticated -> UnAuthenticatedUserComponent(
-                        onLoginButtonClick
+                        mainViewModel::onLoginButtonClick
                     )
                 }
             },
-            onRetryClick = viewModel::onRetryClick
+            onRetryClick = myPageViewModel::onRetryClick
         )
     }
 

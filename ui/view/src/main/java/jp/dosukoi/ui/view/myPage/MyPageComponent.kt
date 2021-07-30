@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import jp.dosukoi.data.entity.list.Repository
 import jp.dosukoi.data.entity.myPage.User
 import jp.dosukoi.ui.view.common.gray
@@ -27,19 +29,23 @@ import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 fun MyPageComponent(
     item: MyPageViewModel.RenderItem,
     onCardClick: (String) -> Unit,
-    onRepositoryItemClick: (String) -> Unit
+    onRepositoryItemClick: (String) -> Unit,
+    isRefreshing: Boolean?,
+    onRefresh: () -> Unit
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(vertical = 20.dp)
-    ) {
-        item { UserInfoCard(item.user, onCardClick) }
-        item.repositoryList.forEachIndexed { index, repository ->
-            item {
-                RepositoryItem(
-                    repository = repository,
-                    isLastItem = index == item.repositoryList.size - 1,
-                    onRepositoryItemClick = onRepositoryItemClick
-                )
+    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing ?: false), onRefresh = onRefresh) {
+        LazyColumn(
+            contentPadding = PaddingValues(vertical = 20.dp)
+        ) {
+            item { UserInfoCard(item.user, onCardClick) }
+            item.repositoryList.forEachIndexed { index, repository ->
+                item {
+                    RepositoryItem(
+                        repository = repository,
+                        isLastItem = index == item.repositoryList.size - 1,
+                        onRepositoryItemClick = onRepositoryItemClick
+                    )
+                }
             }
         }
     }
