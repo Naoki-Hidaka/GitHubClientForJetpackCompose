@@ -26,7 +26,8 @@ import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 fun TopScreen(
     myPageViewModel: MyPageViewModel,
     onLoginButtonClick: () -> Unit,
-    onCardClick: (String) -> Unit
+    onCardClick: (String) -> Unit,
+    onRepositoryItemClick: (String) -> Unit
 ) {
     val bottomNavigationItemList = listOf(
         TopScreens.Search,
@@ -56,7 +57,12 @@ fun TopScreen(
                 TopPageScreen()
             }
             composable(TopScreens.MyPage.route) {
-                MyPageScreen(myPageViewModel, onLoginButtonClick, onCardClick)
+                MyPageScreen(
+                    myPageViewModel,
+                    onLoginButtonClick,
+                    onCardClick,
+                    onRepositoryItemClick
+                )
             }
         }
     })

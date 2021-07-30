@@ -4,6 +4,7 @@ import dagger.Reusable
 import jp.dosukoi.data.api.common.IAuthApiType
 import jp.dosukoi.data.entity.auth.AuthDao
 import jp.dosukoi.data.entity.auth.AuthEntity
+import jp.dosukoi.data.repository.common.asyncFetch
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,6 +19,9 @@ class AuthRepository @Inject constructor(
 ) {
 
     suspend fun getAccessToken(code: String) {
+        asyncFetch({ api.getAccessToken(clientId, clientSecret, code) }) {
+            authDao.insert(AuthEntity(0, it.accessToken))
+        }
         try {
             val response = api.getAccessToken(clientId, clientSecret, code)
             if (response.isSuccessful) {

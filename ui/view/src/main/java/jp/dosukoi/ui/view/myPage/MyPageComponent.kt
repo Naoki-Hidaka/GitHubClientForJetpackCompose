@@ -17,21 +17,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
+import jp.dosukoi.data.entity.list.Repository
 import jp.dosukoi.data.entity.myPage.User
 import jp.dosukoi.ui.view.common.gray
 import jp.dosukoi.ui.view.common.whiteGray
+import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 
 @Composable
 fun MyPageComponent(
-    user: User,
-    onCardClick: (String) -> Unit
+    item: MyPageViewModel.RenderItem,
+    onCardClick: (String) -> Unit,
+    onRepositoryItemClick: (String) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 20.dp)
     ) {
-        item { UserInfoCard(user, onCardClick) }
-        (0..10).forEachIndexed { index, _ ->
-            item { RepositoryItem(isLastItem = index == 10) }
+        item { UserInfoCard(item.user, onCardClick) }
+        item.repositoryList.forEachIndexed { index, repository ->
+            item {
+                RepositoryItem(
+                    repository = repository,
+                    isLastItem = index == item.repositoryList.size - 1,
+                    onRepositoryItemClick = onRepositoryItemClick
+                )
+            }
         }
     }
 }
@@ -91,16 +100,22 @@ fun UserInfo(user: User) {
 
 @Composable
 fun RepositoryItem(
-    isLastItem: Boolean
+    repository: Repository,
+    isLastItem: Boolean,
+    onRepositoryItemClick: (String) -> Unit
 ) {
-    Column {
+    Column(
+        modifier = Modifier.clickable {
+            onRepositoryItemClick(repository.htmlUrl)
+        }
+    ) {
         Text(
-            "Repository Name",
+            repository.fullName,
             style = TextStyle(fontSize = 18.sp),
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 10.dp)
         )
         Text(
-            "Description",
+            repository.description ?: "",
             style = TextStyle(fontSize = 14.sp, color = gray),
             modifier = Modifier.padding(top = 6.dp, bottom = 10.dp, start = 16.dp, end = 16.dp)
         )

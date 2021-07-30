@@ -10,7 +10,8 @@ import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 fun MyPageScreen(
     viewModel: MyPageViewModel,
     onLoginButtonClick: () -> Unit,
-    onCardClick: (String) -> Unit
+    onCardClick: (String) -> Unit,
+    onRepositoryItemClick: (String) -> Unit
 ) {
     val loadState by viewModel.loadState.observeAsState()
     loadState?.let {
@@ -19,8 +20,9 @@ fun MyPageScreen(
             loadedContent = {
                 when (it) {
                     is MyPageViewModel.UserStatus.Authenticated -> MyPageComponent(
-                        it.user,
-                        onCardClick
+                        it.item,
+                        onCardClick,
+                        onRepositoryItemClick
                     )
                     MyPageViewModel.UserStatus.UnAuthenticated -> UnAuthenticatedUserComponent(
                         onLoginButtonClick
