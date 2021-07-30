@@ -13,6 +13,7 @@ import jp.dosukoi.ui.view.common.showErrorToast
 import jp.dosukoi.ui.view.top.TopScreen
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 import jp.dosukoi.ui.viewmodel.top.MainViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             MaterialTheme(
                 colors = appColors()
             ) {
-                TopScreen(viewModel::onLoginButtonClick, viewModel::onCardClick)
+                TopScreen(myPageViewModel, viewModel::onLoginButtonClick, viewModel::onCardClick)
             }
         }
 
@@ -41,7 +42,8 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             MainViewModel.Event.CompleteGetAccessToken -> {
-                myPageViewModel.onRetryClick()
+                Timber.d("debug: onRefresh")
+                myPageViewModel.onRefresh()
             }
             is MainViewModel.Event.FailedGetAccessToken -> {
                 showErrorToast(event.throwable)

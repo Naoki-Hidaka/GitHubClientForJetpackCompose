@@ -51,6 +51,10 @@ class MyPageViewModel @Inject constructor(
         refresh()
     }
 
+    fun onRefresh() {
+        onRetryClick()
+    }
+
     sealed class UserStatus {
         class Authenticated(val user: User) : UserStatus()
         object UnAuthenticated : UserStatus()

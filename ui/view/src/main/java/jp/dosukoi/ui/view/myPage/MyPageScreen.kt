@@ -3,13 +3,12 @@ package jp.dosukoi.ui.view.myPage
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.hilt.navigation.compose.hiltViewModel
 import jp.dosukoi.ui.view.common.LoadingAndErrorScreen
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 
 @Composable
 fun MyPageScreen(
-    viewModel: MyPageViewModel = hiltViewModel(),
+    viewModel: MyPageViewModel,
     onLoginButtonClick: () -> Unit,
     onCardClick: (String) -> Unit
 ) {

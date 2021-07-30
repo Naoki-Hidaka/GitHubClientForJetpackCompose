@@ -20,9 +20,11 @@ import jp.dosukoi.ui.view.common.gray
 import jp.dosukoi.ui.view.common.white
 import jp.dosukoi.ui.view.list.TopPageScreen
 import jp.dosukoi.ui.view.myPage.MyPageScreen
+import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 
 @Composable
 fun TopScreen(
+    myPageViewModel: MyPageViewModel,
     onLoginButtonClick: () -> Unit,
     onCardClick: (String) -> Unit
 ) {
@@ -54,7 +56,7 @@ fun TopScreen(
                 TopPageScreen()
             }
             composable(TopScreens.MyPage.route) {
-                MyPageScreen(onLoginButtonClick = onLoginButtonClick, onCardClick = onCardClick)
+                MyPageScreen(myPageViewModel, onLoginButtonClick, onCardClick)
             }
         }
     })
