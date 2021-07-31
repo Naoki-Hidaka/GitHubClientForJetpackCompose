@@ -12,6 +12,7 @@ import jp.dosukoi.ui.view.common.navigateChrome
 import jp.dosukoi.ui.view.common.showErrorToast
 import jp.dosukoi.ui.view.top.TopScreen
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
+import jp.dosukoi.ui.viewmodel.search.SearchViewModel
 import jp.dosukoi.ui.viewmodel.top.MainViewModel
 import javax.inject.Inject
 
@@ -26,6 +27,12 @@ class MainActivity : AppCompatActivity() {
         MyPageViewModel.Companion.Provider(myPageViewModelFactory, viewModel)
     }
 
+    @Inject
+    lateinit var searchViewModelFactory: SearchViewModel.Factory
+    private val searchViewModel: SearchViewModel by viewModels {
+        SearchViewModel.Companion.Provider(searchViewModelFactory, viewModel)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,6 +41,7 @@ class MainActivity : AppCompatActivity() {
                 colors = appColors()
             ) {
                 TopScreen(
+                    searchViewModel,
                     myPageViewModel,
                 )
             }

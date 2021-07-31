@@ -15,6 +15,13 @@ import jp.dosukoi.data.repository.myPage.UserRepository
 import jp.dosukoi.ui.viewmodel.common.LoadState
 import kotlinx.coroutines.launch
 
+interface MyPageListener {
+    fun onLoginButtonClick()
+    fun onCardClick(url: String)
+    fun onRepositoryItemClick(url: String)
+    fun onGetCode(code: String?)
+}
+
 class MyPageViewModel @AssistedInject constructor(
     private val userRepository: UserRepository,
     private val reposRepository: ReposRepository,
@@ -89,11 +96,4 @@ class MyPageViewModel @AssistedInject constructor(
                 factory.create(myPageListener) as T
         }
     }
-}
-
-interface MyPageListener {
-    fun onLoginButtonClick()
-    fun onCardClick(url: String)
-    fun onRepositoryItemClick(url: String)
-    fun onGetCode(code: String?)
 }
