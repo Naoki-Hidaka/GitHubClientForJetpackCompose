@@ -59,7 +59,6 @@ dependencies {
     implementation(project(":ui:viewModel"))
     implementation(project(":data:api"))
     implementation(project(":data:entity"))
-    implementation(project(":data:local"))
     implementation(project(":data:repository"))
 
     implementation("androidx.core:core-ktx:1.6.0")

@@ -15,5 +15,4 @@ include(
     ":data:entity",
     ":data:repository",
     ":data:api",
-    ":data:local"
 )
