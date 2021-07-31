@@ -1,9 +1,7 @@
 package jp.dosukoi.ui.view.common
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -45,7 +43,11 @@ private fun LoadingCircularProgressBar() {
 private fun LoadErrorContent(
     onRetryClick: () -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Button(onClick = onRetryClick) {
             Text(text = "Retry", style = TextStyle(color = Color.Red))
         }

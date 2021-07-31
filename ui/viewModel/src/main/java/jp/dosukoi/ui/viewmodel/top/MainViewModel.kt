@@ -42,6 +42,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    override fun onSearchedItemClick(url: String) {
+        TODO("Not yet implemented")
+    }
+
     sealed class Event {
         object ClickedLoginButton : Event()
         object CompleteGetAccessToken : Event()
