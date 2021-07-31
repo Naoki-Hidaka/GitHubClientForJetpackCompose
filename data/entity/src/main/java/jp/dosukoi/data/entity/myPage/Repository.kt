@@ -1,4 +1,4 @@
-package jp.dosukoi.data.entity.list
+package jp.dosukoi.data.entity.myPage
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

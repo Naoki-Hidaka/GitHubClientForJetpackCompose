@@ -19,7 +19,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import jp.dosukoi.data.entity.list.Repository
+import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.myPage.User
 import jp.dosukoi.ui.view.common.gray
 import jp.dosukoi.ui.view.common.whiteGray

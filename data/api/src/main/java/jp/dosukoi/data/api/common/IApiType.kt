@@ -1,6 +1,6 @@
 package jp.dosukoi.data.api.common
 
-import jp.dosukoi.data.entity.list.Repository
+import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.myPage.User
 import retrofit2.Response
 import retrofit2.http.GET

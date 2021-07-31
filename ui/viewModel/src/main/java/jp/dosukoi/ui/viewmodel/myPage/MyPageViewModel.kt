@@ -8,9 +8,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import jp.dosukoi.data.entity.common.UnAuthorizeException
-import jp.dosukoi.data.entity.list.Repository
+import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.myPage.User
-import jp.dosukoi.data.repository.list.ReposRepository
+import jp.dosukoi.data.repository.myPage.ReposRepository
 import jp.dosukoi.data.repository.myPage.UserRepository
 import jp.dosukoi.ui.viewmodel.common.LoadState
 import kotlinx.coroutines.launch
