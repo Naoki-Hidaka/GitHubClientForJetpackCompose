@@ -52,21 +52,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleEvent(event: MainViewModel.Event) {
         when (event) {
-            MainViewModel.Event.ClickedLoginButton -> {
-                navigateChrome(MainViewModel.VERIFY_URL)
-            }
             MainViewModel.Event.CompleteGetAccessToken -> {
                 myPageViewModel.onRetryClick()
             }
             is MainViewModel.Event.FailedGetAccessToken -> {
                 showErrorToast(event.throwable)
             }
-            is MainViewModel.Event.ClickedCard -> {
-                navigateChrome(event.url)
-            }
-            is MainViewModel.Event.ClickedRepositoryItem -> {
-                navigateChrome(event.url)
-            }
+            is MainViewModel.Event.NavigateToChrome -> navigateChrome(event.url)
         }
     }
 

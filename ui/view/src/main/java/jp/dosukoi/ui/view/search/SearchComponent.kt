@@ -2,7 +2,7 @@ package jp.dosukoi.ui.view.search
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -24,6 +24,9 @@ import jp.dosukoi.ui.viewmodel.search.SearchViewModel
 fun SearchComponent(
     loadState: LoadState<SearchViewModel.State>?,
     searchText: String?,
+    hasMore: Boolean?,
+    isTextError: Boolean?,
+    listState: LazyListState,
     onValueChanged: (String) -> Unit,
     onSearchButtonClick: () -> Unit,
     onRetryClick: () -> Unit,
@@ -35,11 +38,14 @@ fun SearchComponent(
     ) {
         SearchTextField(
             searchText = searchText ?: "",
+            isTextError = isTextError,
             onValueChanged = onValueChanged,
             onSearchButtonClick = onSearchButtonClick
         )
         SearchList(
             loadState = loadState,
+            hasMore = hasMore,
+            listState = listState,
             onRetryClick = onRetryClick,
             onItemClick = onItemClick
         )
@@ -49,6 +55,7 @@ fun SearchComponent(
 @Composable
 fun SearchTextField(
     searchText: String,
+    isTextError: Boolean?,
     onValueChanged: (String) -> Unit,
     onSearchButtonClick: () -> Unit
 ) {
@@ -78,15 +85,18 @@ fun SearchTextField(
         },
         placeholder = {
             Text(text = "Search")
-        }
+        },
+        isError = isTextError ?: false
     )
 }
 
 @Composable
 fun SearchList(
     loadState: LoadState<SearchViewModel.State>?,
+    hasMore: Boolean?,
+    listState: LazyListState,
     onRetryClick: () -> Unit,
-    onItemClick: (String) -> Unit
+    onItemClick: (String) -> Unit,
 ) {
     loadState?.let {
         LoadingAndErrorScreen(
@@ -96,7 +106,7 @@ fun SearchList(
                     SearchViewModel.State.Initialized -> SearchInitialComponent()
                     SearchViewModel.State.Empty -> SearchedEmptyComponent()
                     is SearchViewModel.State.Data ->
-                        SearchedListComponent(it.repositoryList, onItemClick)
+                        SearchedListComponent(it.repositoryList, hasMore, listState, onItemClick)
                 }
             },
             onRetryClick = onRetryClick
@@ -107,22 +117,24 @@ fun SearchList(
 @Composable
 fun SearchedListComponent(
     repositoryList: List<Repository>,
+    hasMore: Boolean?,
+    listState: LazyListState,
     onItemClick: (String) -> Unit
 ) {
-    val scrollState = rememberLazyListState()
     LazyColumn(
         contentPadding = PaddingValues(top = 10.dp, bottom = 16.dp),
-        state = scrollState
+        state = listState
     ) {
         repositoryList.forEachIndexed { index, repository ->
             item {
                 RepositoryItem(
                     repository,
-                    index == repositoryList.size - 1,
+                    index == repositoryList.size - 1 && hasMore == false,
                     onItemClick
                 )
             }
         }
+        if (hasMore == true) item { LoadingFooter() }
     }
 }
 
@@ -159,10 +171,28 @@ fun SearchedEmptyComponent() {
     }
 }
 
+@Composable
+fun LoadingFooter() {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.padding(10.dp),
+            color = black
+        )
+    }
+}
+
 @Preview
 @Composable
 fun PreviewSearchTextField() {
-    SearchTextField(searchText = "hoge", onValueChanged = {}, onSearchButtonClick = {})
+    SearchTextField(
+        searchText = "hoge",
+        isTextError = true,
+        onValueChanged = {},
+        onSearchButtonClick = {})
 }
 
 @Preview

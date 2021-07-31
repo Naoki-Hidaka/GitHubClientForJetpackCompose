@@ -18,15 +18,15 @@ class MainViewModel @Inject constructor(
     val onEvent = NoCacheMutableLiveData<Event>()
 
     override fun onLoginButtonClick() {
-        onEvent.setValue(Event.ClickedLoginButton)
+        onEvent.setValue(Event.NavigateToChrome(VERIFY_URL))
     }
 
     override fun onCardClick(url: String) {
-        onEvent.setValue(Event.ClickedCard(url))
+        onEvent.setValue(Event.NavigateToChrome(url))
     }
 
     override fun onRepositoryItemClick(url: String) {
-        onEvent.setValue(Event.ClickedRepositoryItem(url))
+        onEvent.setValue(Event.NavigateToChrome(url))
     }
 
     override fun onGetCode(code: String?) {
@@ -43,15 +43,14 @@ class MainViewModel @Inject constructor(
     }
 
     override fun onSearchedItemClick(url: String) {
-        TODO("Not yet implemented")
+        onEvent.setValue(Event.NavigateToChrome(url))
     }
 
     sealed class Event {
-        object ClickedLoginButton : Event()
         object CompleteGetAccessToken : Event()
         class FailedGetAccessToken(val throwable: Throwable) : Event()
-        class ClickedCard(val url: String) : Event()
-        class ClickedRepositoryItem(val url: String) : Event()
+        class NavigateToChrome(val url: String) : Event()
+        object EmptySearchWord : Event()
     }
 
     companion object {

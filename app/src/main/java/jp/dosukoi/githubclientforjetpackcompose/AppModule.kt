@@ -18,7 +18,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -82,7 +81,6 @@ object AppModule {
                 }
             ).addInterceptor { chain ->
                 val token = accessTokenProvider.provide()
-                Timber.d("debug: token $token")
                 val request = chain.request().newBuilder()
                     .header("Authorization", "token $token")
                     .header("Accept", "application/json")

@@ -111,9 +111,11 @@ fun RepositoryItem(
     onRepositoryItemClick: (String) -> Unit
 ) {
     Column(
-        modifier = Modifier.clickable {
-            onRepositoryItemClick(repository.htmlUrl)
-        }
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onRepositoryItemClick(repository.htmlUrl)
+            }
     ) {
         Text(
             repository.fullName,
