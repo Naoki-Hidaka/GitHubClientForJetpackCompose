@@ -16,7 +16,6 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/data/api" />
             <option value="$PROJECT_DIR$/data/entity" />
-            <option value="$PROJECT_DIR$/data/local" />
             <option value="$PROJECT_DIR$/data/repository" />
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/ui/view" />
