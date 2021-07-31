@@ -6,7 +6,6 @@ import jp.dosukoi.data.entity.auth.AuthDao
 import jp.dosukoi.data.entity.auth.AuthEntity
 import jp.dosukoi.data.repository.common.asyncFetch
 import retrofit2.HttpException
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -25,13 +24,11 @@ class AuthRepository @Inject constructor(
         try {
             val response = api.getAccessToken(clientId, clientSecret, code)
             if (response.isSuccessful) {
-                Timber.d("debug: insert")
                 authDao.insert(AuthEntity(0, response.body()!!.accessToken))
             } else {
                 throw HttpException(response)
             }
         } catch (throwable: Throwable) {
-            Timber.e("debug: error $throwable")
             throw throwable
         }
     }

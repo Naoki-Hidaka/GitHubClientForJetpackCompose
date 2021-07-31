@@ -15,8 +15,8 @@ fun appColors(): Colors {
         onPrimary = black,
         onSecondary = white,
         onBackground = black,
-        onSurface = white,
-        onError = white,
+        onSurface = black,
+        onError = error,
         isLight = true
     )
 }

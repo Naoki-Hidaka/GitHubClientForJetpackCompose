@@ -18,13 +18,15 @@ import jp.dosukoi.ui.view.common.AppBarScaffold
 import jp.dosukoi.ui.view.common.black
 import jp.dosukoi.ui.view.common.gray
 import jp.dosukoi.ui.view.common.white
-import jp.dosukoi.ui.view.list.TopPageScreen
 import jp.dosukoi.ui.view.myPage.MyPageScreen
+import jp.dosukoi.ui.view.search.SearchScreen
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
+import jp.dosukoi.ui.viewmodel.search.SearchViewModel
 
 @Composable
 fun TopScreen(
-    myPageViewModel: MyPageViewModel,
+    searchViewModel: SearchViewModel,
+    myPageViewModel: MyPageViewModel
 ) {
     val bottomNavigationItemList = listOf(
         TopScreens.Search,
@@ -51,7 +53,7 @@ fun TopScreen(
     }, content = {
         NavHost(navController = navController, startDestination = TopScreens.MyPage.route) {
             composable(TopScreens.Search.route) {
-                TopPageScreen()
+                SearchScreen(searchViewModel)
             }
             composable(TopScreens.MyPage.route) {
                 MyPageScreen(
