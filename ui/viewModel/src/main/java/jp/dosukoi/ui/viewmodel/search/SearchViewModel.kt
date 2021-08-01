@@ -1,5 +1,6 @@
 package jp.dosukoi.ui.viewmodel.search
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 interface SearchPageListener {
     fun onSearchedItemClick(url: String)
+    fun onLoadError(throwable: Throwable)
 }
 
 class SearchViewModel @AssistedInject constructor(
@@ -34,7 +36,9 @@ class SearchViewModel @AssistedInject constructor(
     private val items = mutableListOf<Repository>()
     val loadState = MutableLiveData<LoadState<State>>(LoadState.Loaded(State.Initialized))
     val hasMore = MutableLiveData<Boolean>()
-    private val isLoadingMore = AtomicBoolean()
+
+    @VisibleForTesting
+    val isLoadingMore = AtomicBoolean()
     private val pageCount = AtomicInteger(1)
 
     val searchWord = MutableLiveData<String>()
@@ -62,6 +66,8 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     fun onScrollEnd() {
+        println(hasMore.value)
+        println(isLoadingMore.get())
         if (hasMore.value == true && isLoadingMore.compareAndSet(false, true)) {
             refresh()
         }
@@ -70,17 +76,23 @@ class SearchViewModel @AssistedInject constructor(
     private fun refresh() {
         viewModelScope.launch {
             runCatching {
-                searchRepository.findRepositories(searchWord.value!!, pageCount.getAndIncrement())
+                searchRepository.findRepositories(searchWord.value, pageCount.getAndIncrement())
             }.onSuccess {
                 hasMore.value = !it.incompleteResults
-                isLoadingMore.set(false)
                 items.addAll(it.items)
 
                 if (it.items.isNotEmpty()) loadState.value = LoadState.Loaded(State.Data(items))
                 else loadState.value = LoadState.Loaded(State.Empty)
             }.onFailure {
-                loadState.value = LoadState.Error
+                println(it)
+                when (loadState.value) {
+                    is LoadState.Loaded -> {
+                        searchPageListener.onLoadError(it)
+                    }
+                    else -> loadState.value = LoadState.Error
+                }
             }
+            isLoadingMore.set(false)
         }
     }
 

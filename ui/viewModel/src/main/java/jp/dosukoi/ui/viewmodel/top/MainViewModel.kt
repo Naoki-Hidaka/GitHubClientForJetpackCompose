@@ -37,7 +37,7 @@ class MainViewModel @Inject constructor(
             }.onSuccess {
                 onEvent.setValue(Event.CompleteGetAccessToken)
             }.onFailure {
-                onEvent.setValue(Event.FailedGetAccessToken(it))
+                onEvent.setValue(Event.FailedFetch(it))
             }
         }
     }
@@ -46,11 +46,14 @@ class MainViewModel @Inject constructor(
         onEvent.setValue(Event.NavigateToChrome(url))
     }
 
+    override fun onLoadError(throwable: Throwable) {
+        onEvent.setValue(Event.FailedFetch(throwable))
+    }
+
     sealed class Event {
         object CompleteGetAccessToken : Event()
-        class FailedGetAccessToken(val throwable: Throwable) : Event()
+        class FailedFetch(val throwable: Throwable) : Event()
         class NavigateToChrome(val url: String) : Event()
-        object EmptySearchWord : Event()
     }
 
     companion object {

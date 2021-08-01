@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             MainViewModel.Event.CompleteGetAccessToken -> {
                 myPageViewModel.onRetryClick()
             }
-            is MainViewModel.Event.FailedGetAccessToken -> {
+            is MainViewModel.Event.FailedFetch -> {
                 showErrorToast(event.throwable)
             }
             is MainViewModel.Event.NavigateToChrome -> navigateChrome(event.url)

@@ -9,7 +9,7 @@ class SearchRepository @Inject constructor(
     private val api: IApiType
 ) {
     suspend fun findRepositories(
-        query: String,
+        query: String?,
         page: Int
     ): Search {
         return asyncFetch { api.findRepositories(query, page) }
