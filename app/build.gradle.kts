@@ -47,10 +47,12 @@ android {
         kotlinCompilerExtensionVersion = "1.0.0"
     }
 
-    useLibrary("android.test.runner")
-
-    useLibrary("android.test.base")
-    useLibrary("android.test.mock")
+    packagingOptions {
+        exclude("META-INF/AL2.0")
+        exclude("META-INF/LGPL2.1")
+        exclude("**/attach_hotspot_windows.dll")
+        exclude("META-INF/licenses/**")
+    }
 }
 
 dependencies {

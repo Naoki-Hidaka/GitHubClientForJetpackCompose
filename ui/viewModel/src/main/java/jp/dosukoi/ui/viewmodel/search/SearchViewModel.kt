@@ -66,8 +66,6 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     fun onScrollEnd() {
-        println(hasMore.value)
-        println(isLoadingMore.get())
         if (hasMore.value == true && isLoadingMore.compareAndSet(false, true)) {
             refresh()
         }
@@ -84,7 +82,6 @@ class SearchViewModel @AssistedInject constructor(
                 if (it.items.isNotEmpty()) loadState.value = LoadState.Loaded(State.Data(items))
                 else loadState.value = LoadState.Loaded(State.Empty)
             }.onFailure {
-                println(it)
                 when (loadState.value) {
                     is LoadState.Loaded -> {
                         searchPageListener.onLoadError(it)
