@@ -48,21 +48,11 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     fun onSearchButtonClick() {
-        if (searchWord.value.isNullOrBlank()) {
-            isError.setValue(true)
-            return
-        } else isError.setValue(false)
-        loadState.value = LoadState.Loading
-        refresh()
+        validateAndRefresh()
     }
 
     fun onRetryClick() {
-        if (searchWord.value.isNullOrBlank()) {
-            isError.setValue(true)
-            return
-        } else isError.setValue(false)
-        loadState.value = LoadState.Loading
-        refresh()
+        validateAndRefresh()
     }
 
     fun onScrollEnd() {
@@ -71,12 +61,25 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
+    private fun validateAndRefresh() {
+        if (searchWord.value.isNullOrBlank()) {
+            isError.setValue(true)
+            return
+        } else {
+            items.clear()
+            pageCount.set(0)
+            isError.setValue(false)
+        }
+        loadState.value = LoadState.Loading
+        refresh()
+    }
+
     private fun refresh() {
         viewModelScope.launch {
             runCatching {
                 searchRepository.findRepositories(searchWord.value, pageCount.getAndIncrement())
             }.onSuccess {
-                hasMore.value = !it.incompleteResults
+                hasMore.value = it.totalCount > PER_PAGE
                 items.addAll(it.items)
 
                 if (it.items.isNotEmpty()) loadState.value = LoadState.Loaded(State.Data(items))
@@ -100,6 +103,8 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     companion object {
+        private const val PER_PAGE = 30
+
         class Provider(
             private val factory: Factory,
             private val searchPageListener: SearchPageListener
