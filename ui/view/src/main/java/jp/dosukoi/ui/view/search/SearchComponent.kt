@@ -3,6 +3,7 @@ package jp.dosukoi.ui.view.search
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -137,14 +138,12 @@ fun SearchedListComponent(
         contentPadding = PaddingValues(top = 10.dp, bottom = 16.dp),
         state = listState
     ) {
-        repositoryList.forEachIndexed { index, repository ->
-            item {
-                RepositoryItem(
-                    repository,
-                    index == repositoryList.size - 1 && hasMore == false,
-                    onItemClick
-                )
-            }
+        itemsIndexed(repositoryList) { index, repository ->
+            RepositoryItem(
+                repository = repository,
+                isLastItem = index == repositoryList.size && hasMore == false,
+                onRepositoryItemClick = onItemClick
+            )
         }
         if (hasMore == true) item { LoadingFooter() }
     }

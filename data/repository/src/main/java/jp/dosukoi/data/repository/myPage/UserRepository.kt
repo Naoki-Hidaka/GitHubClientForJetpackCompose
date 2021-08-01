@@ -16,6 +16,7 @@ class UserRepository @Inject constructor(
     suspend fun getUser(): User {
         return try {
             asyncFetch { api.getUser() }
+            throw UnAuthorizeException("")
         } catch (throwable: Throwable) {
             Timber.e("error: $throwable")
             if (throwable is HttpException) {

@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -38,14 +39,12 @@ fun MyPageComponent(
             contentPadding = PaddingValues(vertical = 20.dp)
         ) {
             item { UserInfoCard(item.user, onCardClick) }
-            item.repositoryList.forEachIndexed { index, repository ->
-                item {
-                    RepositoryItem(
-                        repository = repository,
-                        isLastItem = index == item.repositoryList.size - 1,
-                        onRepositoryItemClick = onRepositoryItemClick
-                    )
-                }
+            itemsIndexed(item.repositoryList) { index, repository ->
+                RepositoryItem(
+                    repository = repository,
+                    isLastItem = index == item.repositoryList.size,
+                    onRepositoryItemClick = onRepositoryItemClick
+                )
             }
         }
     }
