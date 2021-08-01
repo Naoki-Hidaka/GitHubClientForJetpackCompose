@@ -36,6 +36,7 @@ dependencies {
     val coroutineVersion = "1.5.1"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
 
     // Timber
     implementation("com.jakewharton.timber:timber:4.7.1")
@@ -43,6 +44,16 @@ dependencies {
     // Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
+    // Test
+    val mockkVersion = "1.10.3"
+    implementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("androidx.test.ext:junit-ktx:1.1.3")
+
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("androidx.test:core-ktx:1.4.0")
+    testImplementation("androidx.test:rules:1.4.0")
+    testImplementation("androidx.test:runner:1.4.0")
 }
