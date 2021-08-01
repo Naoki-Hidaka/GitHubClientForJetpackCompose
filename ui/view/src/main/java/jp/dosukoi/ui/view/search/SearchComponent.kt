@@ -3,12 +3,16 @@ package jp.dosukoi.ui.view.search
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,6 +63,11 @@ fun SearchTextField(
     onValueChanged: (String) -> Unit,
     onSearchButtonClick: () -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
+    val onSearch = {
+        onSearchButtonClick.invoke()
+        focusManager.clearFocus()
+    }
     TextField(
         modifier = Modifier
             .fillMaxWidth()
@@ -74,7 +83,7 @@ fun SearchTextField(
         ),
         trailingIcon = {
             IconButton(
-                onClick = onSearchButtonClick,
+                onClick = onSearch,
                 content = {
                     Icon(
                         imageVector = Icons.Filled.Search,
@@ -86,7 +95,10 @@ fun SearchTextField(
         placeholder = {
             Text(text = "Search")
         },
-        isError = isTextError ?: false
+        isError = isTextError ?: false,
+        maxLines = 1,
+        keyboardActions = KeyboardActions(onSearch = { onSearch.invoke() }),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search)
     )
 }
 
