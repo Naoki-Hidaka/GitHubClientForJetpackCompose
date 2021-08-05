@@ -16,3 +16,4 @@ include(
     ":data:repository",
     ":data:api",
 )
+include(":data:usecase")

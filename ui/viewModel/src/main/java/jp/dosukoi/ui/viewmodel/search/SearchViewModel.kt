@@ -3,14 +3,14 @@ package jp.dosukoi.ui.viewmodel.search
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import jp.dosukoi.data.entity.myPage.Repository
-import jp.dosukoi.data.repository.search.SearchRepository
-import jp.dosukoi.ui.viewmodel.common.LoadState
+import jp.dosukoi.data.entity.common.LoadState
+import jp.dosukoi.data.entity.search.SearchPageState
+import jp.dosukoi.data.usecase.search.GetSearchDataUseCase
 import jp.dosukoi.ui.viewmodel.common.NoCacheMutableLiveData
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
@@ -23,7 +23,7 @@ interface SearchPageListener {
 
 class SearchViewModel @AssistedInject constructor(
     @Assisted private val searchPageListener: SearchPageListener,
-    private val searchRepository: SearchRepository,
+    private val getSearchDataUseCase: GetSearchDataUseCase
 ) : ViewModel(), SearchPageListener by searchPageListener {
 
     @AssistedFactory
@@ -33,9 +33,13 @@ class SearchViewModel @AssistedInject constructor(
 
     val isError = NoCacheMutableLiveData<Boolean>()
 
-    private val items = mutableListOf<Repository>()
-    val loadState = MutableLiveData<LoadState<State>>(LoadState.Loaded(State.Initialized))
-    val hasMore = MutableLiveData<Boolean>()
+    val searchData = getSearchDataUseCase.searchData
+
+    val loadState = MutableLiveData(LoadState.LOADED)
+    val hasMore = searchData.map {
+        if (it is SearchPageState.Data) it.hasMore
+        else false
+    }
 
     @VisibleForTesting
     val isLoadingMore = AtomicBoolean()
@@ -57,7 +61,7 @@ class SearchViewModel @AssistedInject constructor(
 
     fun onScrollEnd() {
         if (hasMore.value == true && isLoadingMore.compareAndSet(false, true)) {
-            refresh()
+            refresh(false)
         }
     }
 
@@ -66,52 +70,32 @@ class SearchViewModel @AssistedInject constructor(
             isError.setValue(true)
             return
         } else {
-            items.clear()
-            pageCount.set(0)
+            pageCount.set(1)
             isError.setValue(false)
         }
-        loadState.value = LoadState.Loading
-        refresh()
+        loadState.value = LoadState.LOADING
+        refresh(true)
     }
 
-    private fun refresh() {
+    private fun refresh(isRefresh: Boolean) {
         viewModelScope.launch {
             runCatching {
-                searchRepository.findRepositories(searchWord.value, pageCount.getAndIncrement())
+                getSearchDataUseCase.execute(
+                    searchWord.value,
+                    pageCount.getAndIncrement(),
+                    isRefresh
+                )
             }.onSuccess {
-                hasMore.value = it.totalCount > PER_PAGE
-                items.addAll(it.items)
-
-                if (it.items.isNotEmpty()) loadState.value = LoadState.Loaded(State.Data(items))
-                else loadState.value = LoadState.Loaded(State.Empty)
+                loadState.value = LoadState.LOADED
             }.onFailure {
                 when (loadState.value) {
-                    is LoadState.Loaded -> {
+                    LoadState.LOADED -> {
                         searchPageListener.onLoadError(it)
                     }
-                    else -> loadState.value = LoadState.Error
+                    else -> loadState.value = LoadState.ERROR
                 }
             }
             isLoadingMore.set(false)
-        }
-    }
-
-    sealed class State {
-        object Initialized : State()
-        class Data(val repositoryList: List<Repository>) : State()
-        object Empty : State()
-    }
-
-    companion object {
-        private const val PER_PAGE = 30
-
-        class Provider(
-            private val factory: Factory,
-            private val searchPageListener: SearchPageListener
-        ) : ViewModelProvider.NewInstanceFactory() {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                factory.create(searchPageListener) as T
         }
     }
 }

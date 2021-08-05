@@ -17,17 +17,18 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jp.dosukoi.data.entity.common.LoadState
 import jp.dosukoi.data.entity.myPage.Repository
+import jp.dosukoi.data.entity.search.SearchPageState
 import jp.dosukoi.ui.view.common.LoadingAndErrorScreen
 import jp.dosukoi.ui.view.common.black
 import jp.dosukoi.ui.view.common.white
 import jp.dosukoi.ui.view.myPage.RepositoryItem
-import jp.dosukoi.ui.viewmodel.common.LoadState
-import jp.dosukoi.ui.viewmodel.search.SearchViewModel
 
 @Composable
 fun SearchComponent(
-    loadState: LoadState<SearchViewModel.State>?,
+    loadState: LoadState?,
+    searchPageState: SearchPageState?,
     searchText: String?,
     hasMore: Boolean?,
     isTextError: Boolean?,
@@ -49,6 +50,7 @@ fun SearchComponent(
         )
         SearchList(
             loadState = loadState,
+            searchPageState = searchPageState,
             hasMore = hasMore,
             listState = listState,
             onRetryClick = onRetryClick,
@@ -105,7 +107,8 @@ fun SearchTextField(
 
 @Composable
 fun SearchList(
-    loadState: LoadState<SearchViewModel.State>?,
+    loadState: LoadState?,
+    searchPageState: SearchPageState?,
     hasMore: Boolean?,
     listState: LazyListState,
     onRetryClick: () -> Unit,
@@ -115,11 +118,16 @@ fun SearchList(
         LoadingAndErrorScreen(
             state = it,
             loadedContent = {
-                when (it) {
-                    SearchViewModel.State.Initialized -> SearchInitialComponent()
-                    SearchViewModel.State.Empty -> SearchedEmptyComponent()
-                    is SearchViewModel.State.Data ->
-                        SearchedListComponent(it.repositoryList, hasMore, listState, onItemClick)
+                when (searchPageState) {
+                    SearchPageState.Initialized -> SearchInitialComponent()
+                    SearchPageState.Empty -> SearchedEmptyComponent()
+                    is SearchPageState.Data ->
+                        SearchedListComponent(
+                            searchPageState.repositoryList,
+                            hasMore,
+                            listState,
+                            onItemClick
+                        )
                 }
             },
             onRetryClick = onRetryClick

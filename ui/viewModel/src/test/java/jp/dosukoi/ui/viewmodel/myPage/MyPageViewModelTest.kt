@@ -5,12 +5,12 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
+import jp.dosukoi.data.entity.common.LoadState
 import jp.dosukoi.data.entity.common.UnAuthorizeException
 import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.myPage.User
 import jp.dosukoi.data.repository.myPage.ReposRepository
 import jp.dosukoi.data.repository.myPage.UserRepository
-import jp.dosukoi.ui.viewmodel.common.LoadState
 import jp.dosukoi.ui.viewmodel.common.assertType
 import jp.dosukoi.ui.viewmodel.common.test
 import jp.dosukoi.ui.viewmodel.common.testRule

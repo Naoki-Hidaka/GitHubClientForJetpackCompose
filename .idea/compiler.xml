@@ -8,6 +8,7 @@
       <module name="GitHubClientForJetpackCompose.data.entity" target="15" />
       <module name="GitHubClientForJetpackCompose.data.local" target="15" />
       <module name="GitHubClientForJetpackCompose.data.repository" target="15" />
+      <module name="GitHubClientForJetpackCompose.data.usecase" target="15" />
       <module name="GitHubClientForJetpackCompose.ui.view" target="15" />
       <module name="GitHubClientForJetpackCompose.ui.viewModel" target="15" />
     </bytecodeTargetLevel>

@@ -3,7 +3,7 @@ package jp.dosukoi.ui.viewmodel.top
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.dosukoi.data.repository.auth.AuthRepository
+import jp.dosukoi.data.usecase.auth.GetAccessTokenUseCase
 import jp.dosukoi.ui.viewmodel.common.NoCacheMutableLiveData
 import jp.dosukoi.ui.viewmodel.myPage.MyPageListener
 import jp.dosukoi.ui.viewmodel.search.SearchPageListener
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val getAccessTokenUseCase: GetAccessTokenUseCase
 ) : ViewModel(), MyPageListener, SearchPageListener {
 
     val onEvent = NoCacheMutableLiveData<Event>()
@@ -33,7 +33,7 @@ class MainViewModel @Inject constructor(
         code ?: return
         viewModelScope.launch {
             runCatching {
-                authRepository.getAccessToken(code)
+                getAccessTokenUseCase.execute(code)
             }.onSuccess {
                 onEvent.setValue(Event.CompleteGetAccessToken)
             }.onFailure {

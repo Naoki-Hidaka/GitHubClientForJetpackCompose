@@ -6,10 +6,10 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
+import jp.dosukoi.data.entity.common.LoadState
 import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.search.Search
 import jp.dosukoi.data.repository.search.SearchRepository
-import jp.dosukoi.ui.viewmodel.common.LoadState
 import jp.dosukoi.ui.viewmodel.common.assertType
 import jp.dosukoi.ui.viewmodel.common.test
 import jp.dosukoi.ui.viewmodel.common.testRule
