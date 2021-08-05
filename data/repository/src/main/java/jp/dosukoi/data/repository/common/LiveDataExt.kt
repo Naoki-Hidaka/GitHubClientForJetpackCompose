@@ -2,6 +2,7 @@ package jp.dosukoi.data.repository.common
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.distinctUntilChanged
 
 fun <T, R, C> zip(
     liveData1: LiveData<T>,
@@ -23,5 +24,5 @@ fun <T, R, C> zip(
                 }
             }
         }
-    }
+    }.distinctUntilChanged()
 }
