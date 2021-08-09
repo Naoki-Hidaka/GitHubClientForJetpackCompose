@@ -143,10 +143,6 @@ dependencies {
 
 val ktlint by configurations.creating
 
-configurations {
-    ktlint
-}
-
 dependencies {
     ktlint("com.pinterest:ktlint:0.42.1") {
         attributes {
@@ -168,5 +164,12 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
     args = listOf("src/**/*.kt")
 }
 
-check.dependsOn ktlint
+val ktlintFormat by tasks.creating(JavaExec::class) {
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
 
+    description = "Fix Kotlin code style deviations."
+    classpath = ktlint
+    main = "com.pinterest.ktlint.Main"
+    args = listOf("-F", "src/**/*.kt")
+}
