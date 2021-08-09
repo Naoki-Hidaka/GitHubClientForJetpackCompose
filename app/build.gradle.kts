@@ -167,3 +167,6 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
     main = "com.pinterest.ktlint.Main"
     args = listOf("src/**/*.kt")
 }
+
+check.dependsOn ktlint
+
