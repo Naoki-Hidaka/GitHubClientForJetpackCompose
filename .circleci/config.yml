@@ -25,6 +25,8 @@ jobs:
       name: android/android-machine
     steps:
       - checkout
+      - run:
+          command: ktlint
 
 workflows:
   android:
