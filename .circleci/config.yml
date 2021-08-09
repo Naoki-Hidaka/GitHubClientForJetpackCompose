@@ -26,7 +26,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: ./gradlew ktlint
+          command: ktlint
 
 workflows:
   android:

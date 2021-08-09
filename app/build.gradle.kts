@@ -167,13 +167,3 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
     main = "com.pinterest.ktlint.Main"
     args = listOf("src/**/*.kt")
 }
-
-val ktlintFormat by tasks.creating(JavaExec::class) {
-    inputs.files(inputFiles)
-    outputs.dir(outputDir)
-
-    description = "Fix Kotlin code style deviations."
-    classpath = ktlint
-    main = "com.pinterest.ktlint.Main"
-    args = listOf("-F", "src/**/*.kt")
-}
