@@ -36,7 +36,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
 
     // Timber
-    implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation("com.jakewharton.timber:timber:5.0.0")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")

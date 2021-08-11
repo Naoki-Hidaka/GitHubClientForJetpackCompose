@@ -37,7 +37,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
 
     // Timber
-    implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation("com.jakewharton.timber:timber:5.0.0")
 
     testImplementation("junit:junit:4.13.2")
 

@@ -84,7 +84,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
 
     // Timber
-    implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation("com.jakewharton.timber:timber:5.0.0")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
