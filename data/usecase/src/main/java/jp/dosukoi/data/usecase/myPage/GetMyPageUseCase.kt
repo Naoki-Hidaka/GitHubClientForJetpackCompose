@@ -24,5 +24,4 @@ class GetMyPageUseCase @Inject constructor(
         userRepository.getUser()
         reposRepository.getRepositoryList()
     }
-
 }
