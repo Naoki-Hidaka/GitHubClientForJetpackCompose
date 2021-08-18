@@ -1,0 +1,18 @@
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+
+[*.json]
+indent_style = space
+indent_size = 2
+
+[{*.yml, *.yaml}]
+indent_style = space
+indent_size = 2
+
+[{*.kt, *.kts}]
+max_line_length = off
+disabled_rules = import-ordering, no-wildcard-imports, parameter-list-wrapping, indent

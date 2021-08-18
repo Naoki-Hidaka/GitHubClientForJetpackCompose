@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="11">
-      <module name="GitHubClientForJetpackCompose.app" target="15" />
-      <module name="GitHubClientForJetpackCompose.buildSrc" target="15" />
-      <module name="GitHubClientForJetpackCompose.data.api" target="15" />
-      <module name="GitHubClientForJetpackCompose.data.entity" target="15" />
+    <bytecodeTargetLevel target="15">
       <module name="GitHubClientForJetpackCompose.data.local" target="15" />
-      <module name="GitHubClientForJetpackCompose.data.repository" target="15" />
-      <module name="GitHubClientForJetpackCompose.ui.view" target="15" />
-      <module name="GitHubClientForJetpackCompose.ui.viewModel" target="15" />
     </bytecodeTargetLevel>
   </component>
 </project>
