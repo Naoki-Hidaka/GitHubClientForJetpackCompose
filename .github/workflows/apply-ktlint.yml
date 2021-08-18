@@ -1,0 +1,25 @@
+name: ApplyKtlint
+
+on:
+  pull_request
+
+jobs:
+  applyKtlint:
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+          distribution: 'adopt'
+      - name: Ktlint Format
+        run: ./gradlew ktlintFormat
+      - name: Commit formatted
+        run: |
+          git config --local user.email "dosukoroid@gmail.com"
+          git config --local user.name "github bot"
+          git commit -am "Apply ktlint Format" && git push origin HEAD
+          exit 0
