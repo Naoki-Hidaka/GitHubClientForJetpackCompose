@@ -4,33 +4,26 @@ orbs:
   android: circleci/android@1.0.3
 
 jobs:
-  build:
+  build_and_test:
     executor:
       name: android/android-machine
     steps:
       - checkout
       - run:
-          command: ./gradlew assembleRelease
-
-  test:
-    executor:
-      name: android/android-machine
-    steps:
-      - checkout
+          name: ktlint Format
+          command: ./gradlew ktlintFormat
       - run:
+          name: ktlint check
+          command: ./gradlew ktlintCheck
+      - run:
+          name: run build
+          command: ./gradlew compileDebugSources
+      - run:
+          name: run test
           command: ./gradlew test
 
-  lint:
-    executor:
-      name: android/android-machine
-    steps:
-      - checkout
-      - run:
-          command: .gradlew/ktlint
-
 workflows:
-  android:
+  build_and_test:
     jobs:
-      - build
-      - test
-      - lint
+      - build_and_test
+
