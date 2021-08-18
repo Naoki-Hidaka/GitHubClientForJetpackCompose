@@ -138,4 +138,5 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     testImplementation("com.google.truth:truth:1.1.3")
+
 }

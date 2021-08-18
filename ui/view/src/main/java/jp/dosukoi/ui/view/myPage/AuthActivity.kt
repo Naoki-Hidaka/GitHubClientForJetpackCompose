@@ -11,7 +11,6 @@ import jp.dosukoi.ui.view.R
 import jp.dosukoi.ui.view.databinding.ActivityAuthBinding
 import jp.dosukoi.ui.viewmodel.myPage.AuthViewModel
 
-
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
 
