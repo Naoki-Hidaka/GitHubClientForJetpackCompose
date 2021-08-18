@@ -24,11 +24,11 @@ import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.myPage.User
 import jp.dosukoi.ui.view.common.gray
 import jp.dosukoi.ui.view.common.whiteGray
-import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 
 @Composable
 fun MyPageComponent(
-    item: MyPageViewModel.RenderItem,
+    user: User,
+    repositoryList: List<Repository>,
     onCardClick: (String) -> Unit,
     onRepositoryItemClick: (String) -> Unit,
     isRefreshing: Boolean?,
@@ -38,11 +38,11 @@ fun MyPageComponent(
         LazyColumn(
             contentPadding = PaddingValues(vertical = 20.dp)
         ) {
-            item { UserInfoCard(item.user, onCardClick) }
-            itemsIndexed(item.repositoryList) { index, repository ->
+            item { UserInfoCard(user, onCardClick) }
+            itemsIndexed(repositoryList) { index, repository ->
                 RepositoryItem(
                     repository = repository,
-                    isLastItem = index == item.repositoryList.size,
+                    isLastItem = index == repositoryList.size,
                     onRepositoryItemClick = onRepositoryItemClick
                 )
             }

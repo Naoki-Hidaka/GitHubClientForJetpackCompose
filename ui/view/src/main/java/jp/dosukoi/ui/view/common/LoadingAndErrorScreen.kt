@@ -20,19 +20,19 @@ import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
+import jp.dosukoi.data.entity.common.LoadState
 import jp.dosukoi.ui.view.R
-import jp.dosukoi.ui.viewmodel.common.LoadState
 
 @Composable
-fun <T> LoadingAndErrorScreen(
-    state: LoadState<T>,
-    loadedContent: @Composable (T) -> Unit,
+fun LoadingAndErrorScreen(
+    state: LoadState,
+    loadedContent: @Composable () -> Unit,
     onRetryClick: () -> Unit
 ) {
     when (state) {
-        is LoadState.Loading -> LottieLoadingAnimation()
-        is LoadState.Loaded -> loadedContent.invoke(state.value)
-        is LoadState.Error -> LoadErrorContent(onRetryClick)
+        LoadState.LOADING -> LottieLoadingAnimation()
+        LoadState.LOADED -> loadedContent.invoke()
+        LoadState.ERROR -> LoadErrorContent(onRetryClick)
     }
 }
 

@@ -11,6 +11,7 @@ fun SearchScreen(
     viewModel: SearchViewModel
 ) {
     val loadState by viewModel.loadState.observeAsState()
+    val searchPageState by viewModel.searchData.observeAsState()
     val searchWord by viewModel.searchWord.observeAsState()
     val hasMore by viewModel.hasMore.observeAsState()
     val isTextError by viewModel.isError.observeAsState()
@@ -23,6 +24,7 @@ fun SearchScreen(
     }
     SearchComponent(
         loadState,
+        searchPageState,
         searchWord,
         hasMore,
         isTextError,

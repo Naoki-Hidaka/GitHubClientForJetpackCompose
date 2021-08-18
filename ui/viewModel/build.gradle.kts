@@ -16,8 +16,9 @@ android {
 
 dependencies {
 
-    implementation(project(":data:repository"))
     implementation(project(":data:entity"))
+    implementation(project(":data:usecase"))
+    testImplementation(project(":testing"))
 
     // Hilt
     val hiltVersion = "2.38"
