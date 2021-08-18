@@ -195,12 +195,12 @@ class SearchViewModelTest {
             ),
             Repository(
                 1, "foo", null, "https://example.com"
-            )
+            ),
         )
 
         private val MOCK_SEARCH_RESULT_HAS_MORE =
             Search(
-                2,
+                99,
                 false,
                 MOCK_REPO_LIST
             )
