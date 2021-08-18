@@ -22,5 +22,4 @@ class ActivitySaveStateViewModelProvider<VM : ViewModel>(
         modelClass: Class<T>,
         handle: SavedStateHandle
     ): T = factory(handle) as T
-
 }
