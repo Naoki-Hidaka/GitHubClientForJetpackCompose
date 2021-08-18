@@ -12,11 +12,11 @@ import javax.inject.Inject
 class ReposRepository @Inject constructor(
     private val api: IApiType
 ) {
-
     private val _repositoryList = MutableLiveData<List<Repository>>()
     val repositoryList: LiveData<List<Repository>> = _repositoryList
 
     suspend fun getRepositoryList() {
-        _repositoryList.value = asyncFetch { api.getMyRepositoryList() }
+        val fetchedData = asyncFetch { api.getMyRepositoryList() }
+        _repositoryList.value = fetchedData
     }
 }

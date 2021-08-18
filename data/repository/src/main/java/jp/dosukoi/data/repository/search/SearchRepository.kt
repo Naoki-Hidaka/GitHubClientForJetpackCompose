@@ -13,7 +13,6 @@ import javax.inject.Singleton
 class SearchRepository @Inject constructor(
     private val api: IApiType
 ) {
-
     private val items = mutableListOf<Repository>()
     private val _searchData = MutableLiveData<SearchPageState>(SearchPageState.Initialized)
     val searchData: LiveData<SearchPageState> = _searchData
@@ -23,12 +22,18 @@ class SearchRepository @Inject constructor(
         page: Int,
         isRefresh: Boolean
     ) {
-        if (isRefresh) items.clear()
+        if (isRefresh) {
+            items.clear()
+        }
         val item = asyncFetch { api.findRepositories(query, page) }
         items.addAll(item.items)
-        if (item.items.isNotEmpty()) _searchData.value =
-            SearchPageState.Data(items, item.totalCount > PER_PAGE * page)
-        else _searchData.value = SearchPageState.Empty
+
+        if (item.items.isNotEmpty()) {
+            _searchData.value =
+                SearchPageState.Data(items, item.totalCount > PER_PAGE * page)
+        } else {
+            _searchData.value = SearchPageState.Empty
+        }
     }
 
     companion object {
