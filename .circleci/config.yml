@@ -10,12 +10,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: ktlint Format
-          command: ./gradlew ktlintFormat
-      - run:
-          name: ktlint check
-          command: ./gradlew ktlintCheck
-      - run:
           name: run build
           command: ./gradlew compileDebugSources
       - run:
