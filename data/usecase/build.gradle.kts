@@ -38,7 +38,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
 
     // Timber
-    implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation("com.jakewharton.timber:timber:5.0.1")
 
     // Lifecycle
     val lifecycleVersion = "2.3.1"
