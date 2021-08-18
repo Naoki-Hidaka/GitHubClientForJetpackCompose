@@ -1,4 +1,4 @@
-package jp.dosukoi.ui.viewmodel.common
+package jp.dosukoi.testing.common
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

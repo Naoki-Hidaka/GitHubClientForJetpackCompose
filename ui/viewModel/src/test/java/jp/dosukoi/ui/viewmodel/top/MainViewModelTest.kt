@@ -5,9 +5,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
 import jp.dosukoi.data.usecase.auth.GetAccessTokenUseCase
-import jp.dosukoi.ui.viewmodel.common.assertType
-import jp.dosukoi.ui.viewmodel.common.test
-import jp.dosukoi.ui.viewmodel.common.testRule
+import jp.dosukoi.testing.common.test
 import jp.dosukoi.ui.viewmodel.top.MainViewModel.Event
 import org.junit.Before
 import org.junit.Rule
@@ -16,7 +14,7 @@ import org.junit.Test
 class MainViewModelTest {
 
     @get:Rule
-    val rule = testRule()
+    val rule = jp.dosukoi.testing.common.testRule()
 
     @RelaxedMockK
     private lateinit var getAccessTokenUseCase: GetAccessTokenUseCase
@@ -50,7 +48,7 @@ class MainViewModelTest {
         viewModel.onCardClick(MOCK_URL)
 
         // then
-        assertType<Event.NavigateToChrome>(event.lastValue()) {
+        jp.dosukoi.testing.common.assertType<Event.NavigateToChrome>(event.lastValue()) {
             assertThat(this.url).isEqualTo(MOCK_URL)
         }
     }
@@ -64,7 +62,7 @@ class MainViewModelTest {
         viewModel.onRepositoryItemClick(MOCK_URL)
 
         // then
-        assertType<Event.NavigateToChrome>(event.lastValue()) {
+        jp.dosukoi.testing.common.assertType<Event.NavigateToChrome>(event.lastValue()) {
             assertThat(this.url).isEqualTo(MOCK_URL)
         }
     }
@@ -78,7 +76,7 @@ class MainViewModelTest {
         viewModel.onSearchedItemClick(MOCK_URL)
 
         // then
-        assertType<Event.NavigateToChrome>(event.lastValue()) {
+        jp.dosukoi.testing.common.assertType<Event.NavigateToChrome>(event.lastValue()) {
             assertThat(this.url).isEqualTo(MOCK_URL)
         }
     }

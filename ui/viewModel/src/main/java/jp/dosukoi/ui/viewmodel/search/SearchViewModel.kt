@@ -78,16 +78,20 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     private fun refresh(isRefresh: Boolean) {
+        println("called refresh")
         viewModelScope.launch {
             runCatching {
+                println("called runCatching")
                 getSearchDataUseCase.execute(
                     searchWord.value,
                     pageCount.getAndIncrement(),
                     isRefresh
                 )
             }.onSuccess {
+                println("success")
                 loadState.value = LoadState.LOADED
             }.onFailure {
+                println("error $it")
                 when (loadState.value) {
                     LoadState.LOADED -> {
                         searchPageListener.onLoadError(it)

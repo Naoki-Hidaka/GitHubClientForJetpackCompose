@@ -11,6 +11,7 @@ class GetSearchDataUseCase @Inject constructor(
     val searchData = searchRepository.searchData
 
     suspend fun execute(query: String?, page: Int, isRefresh: Boolean) {
+        println("called execute")
         searchRepository.findRepositories(query, page, isRefresh)
     }
 }

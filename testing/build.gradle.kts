@@ -8,17 +8,9 @@ plugins {
 
 android {
     applyCommon()
-
-    buildFeatures {
-        dataBinding = true
-    }
 }
 
 dependencies {
-
-    implementation(project(":data:entity"))
-    implementation(project(":data:usecase"))
-    testImplementation(project(":testing"))
 
     // Hilt
     val hiltVersion = "2.38"
@@ -48,13 +40,13 @@ dependencies {
     // Test
     val mockkVersion = "1.10.3"
     implementation("io.mockk:mockk:$mockkVersion")
-    testImplementation("androidx.test.ext:junit-ktx:1.1.3")
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
 
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
-    testImplementation("androidx.test:core-ktx:1.4.0")
-    testImplementation("androidx.test:rules:1.4.0")
-    testImplementation("androidx.test:runner:1.4.0")
+    implementation("junit:junit:4.13.2")
+    implementation("com.google.truth:truth:1.1.3")
+    implementation("androidx.arch.core:core-testing:2.1.0")
+    implementation("androidx.test:core-ktx:1.4.0")
+    implementation("androidx.test:rules:1.4.0")
+    implementation("androidx.test:runner:1.4.0")
 }

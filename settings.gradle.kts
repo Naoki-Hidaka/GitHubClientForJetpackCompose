@@ -15,5 +15,6 @@ include(
     ":data:entity",
     ":data:repository",
     ":data:api",
+    ":data:usecase",
+    ":testing"
 )
-include(":data:usecase")

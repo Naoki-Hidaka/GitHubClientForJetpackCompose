@@ -11,8 +11,8 @@ import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.search.Search
 import jp.dosukoi.data.entity.search.SearchPageState
 import jp.dosukoi.data.usecase.search.GetSearchDataUseCase
-import jp.dosukoi.ui.viewmodel.common.test
-import jp.dosukoi.ui.viewmodel.common.testRule
+import jp.dosukoi.testing.common.test
+import jp.dosukoi.testing.common.testRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

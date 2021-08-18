@@ -7,15 +7,15 @@ import io.mockk.impl.annotations.RelaxedMockK
 import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.myPage.User
 import jp.dosukoi.data.usecase.myPage.GetMyPageUseCase
-import jp.dosukoi.ui.viewmodel.common.test
-import jp.dosukoi.ui.viewmodel.common.testRule
+import jp.dosukoi.testing.common.test
+import jp.dosukoi.testing.common.testRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class MyPageViewModelTest {
     @get:Rule
-    val rule = testRule()
+    val rule = jp.dosukoi.testing.common.testRule()
 
     @RelaxedMockK
     private lateinit var getMyPageUseCase: GetMyPageUseCase
