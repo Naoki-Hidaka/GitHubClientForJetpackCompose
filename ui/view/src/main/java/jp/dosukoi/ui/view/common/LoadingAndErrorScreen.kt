@@ -90,6 +90,5 @@ private fun LoadErrorContent(
 @Composable
 private fun PreviewLoadErrorContent() {
     LoadErrorContent {
-
     }
 }

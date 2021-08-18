@@ -39,5 +39,4 @@ fun MyPageScreen(
             onRetryClick = viewModel::onRetryClick
         )
     }
-
 }

@@ -2,10 +2,9 @@ package jp.dosukoi.ui.viewmodel.top
 
 import com.google.common.truth.Truth.assertThat
 import io.mockk.MockKAnnotations
-import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
-import jp.dosukoi.data.repository.auth.AuthRepository
+import jp.dosukoi.data.usecase.auth.GetAccessTokenUseCase
 import jp.dosukoi.ui.viewmodel.common.assertType
 import jp.dosukoi.ui.viewmodel.common.test
 import jp.dosukoi.ui.viewmodel.common.testRule
@@ -20,7 +19,7 @@ class MainViewModelTest {
     val rule = testRule()
 
     @RelaxedMockK
-    private lateinit var authRepository: AuthRepository
+    private lateinit var getAccessTokenUseCase: GetAccessTokenUseCase
 
     @InjectMockKs
     private lateinit var viewModel: MainViewModel
@@ -88,7 +87,7 @@ class MainViewModelTest {
     fun onGetCode_success() {
         // given
         val event = viewModel.onEvent.test()
-        coEvery { authRepository.getAccessToken(any()) } returns Unit
+//        coEvery { authRepository.getAccessToken(any()) } returns Unit
 
         // when
         viewModel.onGetCode("")
@@ -101,7 +100,7 @@ class MainViewModelTest {
     fun onGetCode_failure() {
         // given
         val event = viewModel.onEvent.test()
-        coEvery { authRepository.getAccessToken(any()) } throws RuntimeException()
+//        coEvery { authRepository.getAccessToken(any()) } throws RuntimeException()
 
         // when
         viewModel.onGetCode("")

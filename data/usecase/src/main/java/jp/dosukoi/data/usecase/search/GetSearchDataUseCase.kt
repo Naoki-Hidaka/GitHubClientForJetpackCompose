@@ -13,8 +13,4 @@ class GetSearchDataUseCase @Inject constructor(
     suspend fun execute(query: String?, page: Int, isRefresh: Boolean) {
         searchRepository.findRepositories(query, page, isRefresh)
     }
-
-    companion object {
-        private const val PER_PAGE = 30
-    }
 }

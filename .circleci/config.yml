@@ -1,0 +1,23 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@1.0.3
+
+jobs:
+  build_and_test:
+    executor:
+      name: android/android-machine
+    steps:
+      - checkout
+      - run:
+          name: run build
+          command: ./gradlew compileDebugSources
+      - run:
+          name: run test
+          command: ./gradlew test
+
+workflows:
+  build_and_test:
+    jobs:
+      - build_and_test
+

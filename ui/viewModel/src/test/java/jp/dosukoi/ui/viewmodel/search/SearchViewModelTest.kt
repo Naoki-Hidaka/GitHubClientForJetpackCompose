@@ -9,8 +9,8 @@ import io.mockk.impl.annotations.RelaxedMockK
 import jp.dosukoi.data.entity.common.LoadState
 import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.search.Search
-import jp.dosukoi.data.repository.search.SearchRepository
-import jp.dosukoi.ui.viewmodel.common.assertType
+import jp.dosukoi.data.entity.search.SearchPageState
+import jp.dosukoi.data.usecase.search.GetSearchDataUseCase
 import jp.dosukoi.ui.viewmodel.common.test
 import jp.dosukoi.ui.viewmodel.common.testRule
 import org.junit.Before
@@ -26,7 +26,7 @@ class SearchViewModelTest {
     private lateinit var searchPageListener: SearchPageListener
 
     @RelaxedMockK
-    private lateinit var searchRepository: SearchRepository
+    private lateinit var getSearchDataUseCase: GetSearchDataUseCase
 
     @InjectMockKs
     private lateinit var viewModel: SearchViewModel
@@ -54,25 +54,23 @@ class SearchViewModelTest {
         // given
         val loadState = viewModel.loadState.test()
         val hasMore = viewModel.hasMore.test()
+        val searchData = viewModel.searchData.test()
         coEvery {
-            searchRepository.findRepositories(
+            getSearchDataUseCase.execute(
+                any(),
                 any(),
                 any()
             )
-        } returns MOCK_SEARCH_RESULT_HAS_MORE
+        } returns Unit
         viewModel.searchWord.value = "hoge"
 
         // when
         viewModel.onSearchButtonClick()
 
         // then
-        assertType<LoadState.Loaded<SearchViewModel.State.Data>>(loadState.lastValue()) {
-            assertType<SearchViewModel.State.Data>(this.value) {
-                assertThat(this.repositoryList).isEqualTo(MOCK_REPO_LIST)
-            }
-        }
-
+        assertThat(loadState.lastValue()).isEqualTo(LoadState.LOADED)
         assertThat(hasMore.lastValue()).isTrue()
+        assertThat(searchData.lastValue()).isInstanceOf(SearchPageState.Data::class.java)
     }
 
     @Test
@@ -81,47 +79,43 @@ class SearchViewModelTest {
         val loadState = viewModel.loadState.test()
         val hasMore = viewModel.hasMore.test()
         coEvery {
-            searchRepository.findRepositories(
+            getSearchDataUseCase.execute(
+                any(),
                 any(),
                 any()
             )
-        } returns MOCK_SEARCH_RESULT_NO_MORE
+        } returns Unit
         viewModel.searchWord.value = "hoge"
 
         // when
         viewModel.onSearchButtonClick()
 
         // then
-        assertType<LoadState.Loaded<SearchViewModel.State.Data>>(loadState.lastValue()) {
-            assertType<SearchViewModel.State.Data>(this.value) {
-                assertThat(this.repositoryList).isEqualTo(MOCK_REPO_LIST)
-            }
-        }
-
+        assertThat(loadState.lastValue()).isEqualTo(LoadState.LOADED)
         assertThat(hasMore.lastValue()).isFalse()
     }
 
     @Test
     fun onSearchButtonClick_success_empty() {
         // given
+        val searchData = viewModel.searchData.test()
         val loadState = viewModel.loadState.test()
         val hasMore = viewModel.hasMore.test()
         coEvery {
-            searchRepository.findRepositories(
+            getSearchDataUseCase.execute(
+                any(),
                 any(),
                 any()
             )
-        } returns MOCK_SEARCH_RESULT_EMPTY
+        } returns Unit
         viewModel.searchWord.value = "hoge"
 
         // when
         viewModel.onSearchButtonClick()
 
         // then
-        assertType<LoadState.Loaded<SearchViewModel.State.Empty>>(loadState.lastValue()) {
-            assertThat(this.value).isEqualTo(SearchViewModel.State.Empty)
-        }
-
+        assertThat(searchData.lastValue()).isEqualTo(SearchPageState.Empty)
+        assertThat(loadState.lastValue()).isEqualTo(LoadState.LOADED)
         assertThat(hasMore.lastValue()).isFalse()
     }
 
@@ -129,36 +123,47 @@ class SearchViewModelTest {
     fun onSearchButtonClick_failure() {
         // given
         val loadState = viewModel.loadState.test()
-        coEvery { searchRepository.findRepositories(any(), any()) } throws RuntimeException()
+        coEvery {
+            getSearchDataUseCase.execute(
+                any(),
+                any(),
+                any()
+            )
+        } throws RuntimeException()
         viewModel.searchWord.value = "hoge"
 
         // when
         viewModel.onSearchButtonClick()
 
         // then
-        assertThat(loadState.lastValue()).isEqualTo(LoadState.Error)
+        assertThat(loadState.lastValue()).isEqualTo(LoadState.ERROR)
     }
 
     @Test
     fun onSearchButtonClick_already_loaded_failure() {
         // given
         val loadState = viewModel.loadState.test()
-        coEvery { searchRepository.findRepositories(any(), any()) } throws RuntimeException()
+        coEvery {
+            getSearchDataUseCase.execute(
+                any(),
+                any(),
+                any()
+            )
+        } throws RuntimeException()
         viewModel.searchWord.value = "hoge"
-        viewModel.loadState.value = LoadState.Loaded(SearchViewModel.State.Empty)
+        viewModel.loadState.value = LoadState.LOADED
 
         // when
         viewModel.onSearchButtonClick()
 
         // then
-        assertThat(loadState.lastValue()).isEqualTo(LoadState.Error)
+        assertThat(loadState.lastValue()).isEqualTo(LoadState.LOADED)
     }
 
     @Test
     fun onSearchButtonClick_search_word_empty() {
         // given
         val isError = viewModel.isError.test()
-        coEvery { searchRepository.findRepositories(any(), any()) } throws RuntimeException()
         viewModel.searchWord.value = ""
 
         // when
@@ -171,20 +176,20 @@ class SearchViewModelTest {
     @Test
     fun onScrollEnd() {
         // given
-        viewModel.hasMore.value = true
         viewModel.isLoadingMore.set(false)
         coEvery {
-            searchRepository.findRepositories(
+            getSearchDataUseCase.execute(
+                any(),
                 any(),
                 any()
             )
-        } returns MOCK_SEARCH_RESULT_NO_MORE
+        } returns Unit
 
         // when
         viewModel.onScrollEnd()
 
         // then
-        coVerify { searchRepository.findRepositories(any(), any()) }
+        coVerify { getSearchDataUseCase.execute(any(), any(), any()) }
         assertThat(viewModel.isLoadingMore.get()).isFalse()
     }
 
@@ -195,12 +200,12 @@ class SearchViewModelTest {
             ),
             Repository(
                 1, "foo", null, "https://example.com"
-            )
+            ),
         )
 
         private val MOCK_SEARCH_RESULT_HAS_MORE =
             Search(
-                2,
+                99,
                 false,
                 MOCK_REPO_LIST
             )
