@@ -44,7 +44,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation-layout:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.ui:ui-util:$composeVersion")
-    implementation("io.coil-kt:coil-compose:1.3.1")
+    implementation("io.coil-kt:coil-compose:1.3.2")
 
     // Compose Accompanist
     val accompanistVersion = "0.15.0"
