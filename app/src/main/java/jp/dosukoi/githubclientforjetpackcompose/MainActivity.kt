@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import dagger.hilt.android.AndroidEntryPoint
 import jp.dosukoi.ui.view.common.appColors
 import jp.dosukoi.ui.view.common.navigateChrome
+import jp.dosukoi.ui.view.common.produceViewModels
 import jp.dosukoi.ui.view.common.showErrorToast
 import jp.dosukoi.ui.view.top.TopScreen
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
@@ -23,14 +24,14 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var myPageViewModelFactory: MyPageViewModel.Factory
-    private val myPageViewModel: MyPageViewModel by viewModels {
-        MyPageViewModel.Companion.Provider(myPageViewModelFactory, viewModel)
+    private val myPageViewModel: MyPageViewModel by produceViewModels {
+        myPageViewModelFactory.create(viewModel)
     }
 
     @Inject
     lateinit var searchViewModelFactory: SearchViewModel.Factory
-    private val searchViewModel: SearchViewModel by viewModels {
-        SearchViewModel.Companion.Provider(searchViewModelFactory, viewModel)
+    private val searchViewModel: SearchViewModel by produceViewModels {
+        searchViewModelFactory.create(viewModel)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             MainViewModel.Event.CompleteGetAccessToken -> {
                 myPageViewModel.onRetryClick()
             }
-            is MainViewModel.Event.FailedGetAccessToken -> {
+            is MainViewModel.Event.FailedFetch -> {
                 showErrorToast(event.throwable)
             }
             is MainViewModel.Event.NavigateToChrome -> navigateChrome(event.url)

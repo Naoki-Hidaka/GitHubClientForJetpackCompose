@@ -1,5 +1,6 @@
 package jp.dosukoi.ui.viewmodel.myPage
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -42,7 +43,8 @@ class MyPageViewModel @AssistedInject constructor(
         refresh()
     }
 
-    private fun refresh() {
+    @VisibleForTesting
+    fun refresh() {
         viewModelScope.launch {
             runCatching {
                 RenderItem(

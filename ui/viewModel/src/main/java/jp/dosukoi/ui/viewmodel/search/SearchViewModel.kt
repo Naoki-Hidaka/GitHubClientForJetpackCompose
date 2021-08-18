@@ -1,5 +1,6 @@
 package jp.dosukoi.ui.viewmodel.search
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 interface SearchPageListener {
     fun onSearchedItemClick(url: String)
+    fun onLoadError(throwable: Throwable)
 }
 
 class SearchViewModel @AssistedInject constructor(
@@ -34,7 +36,9 @@ class SearchViewModel @AssistedInject constructor(
     private val items = mutableListOf<Repository>()
     val loadState = MutableLiveData<LoadState<State>>(LoadState.Loaded(State.Initialized))
     val hasMore = MutableLiveData<Boolean>()
-    private val isLoadingMore = AtomicBoolean()
+
+    @VisibleForTesting
+    val isLoadingMore = AtomicBoolean()
     private val pageCount = AtomicInteger(1)
 
     val searchWord = MutableLiveData<String>()
@@ -44,21 +48,11 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     fun onSearchButtonClick() {
-        if (searchWord.value.isNullOrBlank()) {
-            isError.setValue(true)
-            return
-        } else isError.setValue(false)
-        loadState.value = LoadState.Loading
-        refresh()
+        validateAndRefresh()
     }
 
     fun onRetryClick() {
-        if (searchWord.value.isNullOrBlank()) {
-            isError.setValue(true)
-            return
-        } else isError.setValue(false)
-        loadState.value = LoadState.Loading
-        refresh()
+        validateAndRefresh()
     }
 
     fun onScrollEnd() {
@@ -67,20 +61,38 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
+    private fun validateAndRefresh() {
+        if (searchWord.value.isNullOrBlank()) {
+            isError.setValue(true)
+            return
+        } else {
+            items.clear()
+            pageCount.set(0)
+            isError.setValue(false)
+        }
+        loadState.value = LoadState.Loading
+        refresh()
+    }
+
     private fun refresh() {
         viewModelScope.launch {
             runCatching {
-                searchRepository.findRepositories(searchWord.value!!, pageCount.getAndIncrement())
+                searchRepository.findRepositories(searchWord.value, pageCount.getAndIncrement())
             }.onSuccess {
-                hasMore.value = !it.incompleteResults
-                isLoadingMore.set(false)
+                hasMore.value = it.totalCount > PER_PAGE
                 items.addAll(it.items)
 
                 if (it.items.isNotEmpty()) loadState.value = LoadState.Loaded(State.Data(items))
                 else loadState.value = LoadState.Loaded(State.Empty)
             }.onFailure {
-                loadState.value = LoadState.Error
+                when (loadState.value) {
+                    is LoadState.Loaded -> {
+                        searchPageListener.onLoadError(it)
+                    }
+                    else -> loadState.value = LoadState.Error
+                }
             }
+            isLoadingMore.set(false)
         }
     }
 
@@ -91,6 +103,8 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     companion object {
+        private const val PER_PAGE = 30
+
         class Provider(
             private val factory: Factory,
             private val searchPageListener: SearchPageListener

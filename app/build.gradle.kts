@@ -47,10 +47,12 @@ android {
         kotlinCompilerExtensionVersion = "1.0.0"
     }
 
-    useLibrary("android.test.runner")
-
-    useLibrary("android.test.base")
-    useLibrary("android.test.mock")
+    packagingOptions {
+        exclude("META-INF/AL2.0")
+        exclude("META-INF/LGPL2.1")
+        exclude("**/attach_hotspot_windows.dll")
+        exclude("META-INF/licenses/**")
+    }
 }
 
 dependencies {
@@ -103,6 +105,7 @@ dependencies {
     val coroutineVersion = "1.5.1"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
 
     // Timber
     implementation("com.jakewharton.timber:timber:4.7.1")
@@ -133,10 +136,19 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
+    // Test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-    testImplementation("com.google.truth:truth:1.1.3")
+    val mockkVersion = "1.10.3"
+    implementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("androidx.test.ext:junit-ktx:1.1.3")
 
+
+    testImplementation("com.google.truth:truth:1.1.3")
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("androidx.test:core-ktx:1.4.0")
+    testImplementation("androidx.test:rules:1.4.0")
+    testImplementation("androidx.test:runner:1.4.0")
 }

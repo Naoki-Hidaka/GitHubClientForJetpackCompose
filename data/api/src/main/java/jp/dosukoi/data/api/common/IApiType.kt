@@ -19,7 +19,7 @@ interface IApiType {
 
     @GET("/search/repositories")
     suspend fun findRepositories(
-        @Query("q") query: String,
+        @Query("q") query: String?,
         @Query("page") page: Int,
         @Query("sort") sort: String = "updated",
         @Query("per_page") perPage: Int? = null
