@@ -1,7 +1,5 @@
 package jp.dosukoi.data.repository.myPage
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import jp.dosukoi.data.api.common.IApiType
 import jp.dosukoi.data.entity.myPage.UserStatus
 import jp.dosukoi.data.repository.common.asyncFetch
@@ -14,17 +12,15 @@ import javax.inject.Singleton
 class UserRepository @Inject constructor(
     private val api: IApiType
 ) {
-    private val _userStatus = MutableLiveData<UserStatus>()
-    val userStatus: LiveData<UserStatus> = _userStatus
 
-    suspend fun getUser() {
-        try {
-            _userStatus.value = UserStatus.Authenticated(asyncFetch { api.getUser() })
+    suspend fun getUser(): UserStatus {
+        return try {
+            UserStatus.Authenticated(asyncFetch { api.getUser() })
         } catch (throwable: Throwable) {
             Timber.e("error: $throwable")
             if (throwable is HttpException) {
                 when (throwable.code()) {
-                    401, 403 -> _userStatus.value = UserStatus.UnAuthenticated
+                    401, 403 -> UserStatus.UnAuthenticated
                     else -> throw throwable
                 }
             } else {

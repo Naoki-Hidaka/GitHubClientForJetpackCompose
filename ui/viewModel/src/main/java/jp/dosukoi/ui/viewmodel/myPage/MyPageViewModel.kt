@@ -8,6 +8,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import jp.dosukoi.data.entity.common.LoadState
+import jp.dosukoi.data.entity.myPage.MyPageState
 import jp.dosukoi.data.usecase.myPage.GetMyPageUseCase
 import kotlinx.coroutines.launch
 
@@ -30,7 +31,7 @@ class MyPageViewModel @AssistedInject constructor(
 
     val loadState = MutableLiveData(LoadState.LOADING)
 
-    val myPageState = getMyPageUseCase.myPageState
+    val myPageState = MutableLiveData<MyPageState>()
 
     val isRefreshing = MutableLiveData<Boolean>()
 
@@ -43,7 +44,7 @@ class MyPageViewModel @AssistedInject constructor(
     fun refresh() {
         viewModelScope.launch {
             runCatching {
-                getMyPageUseCase.execute()
+                myPageState.value = getMyPageUseCase.execute()
             }.onSuccess {
                 loadState.value = LoadState.LOADED
             }.onFailure {
