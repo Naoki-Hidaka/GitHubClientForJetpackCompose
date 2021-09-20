@@ -8,7 +8,7 @@ buildscript {
         val kotlinVersion = "1.5.10"
 
         classpath("com.android.tools.build:gradle:4.2.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.38")
 
         val navVersion = "2.3.5"
