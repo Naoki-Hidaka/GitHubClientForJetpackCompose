@@ -6,7 +6,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import jp.dosukoi.data.entity.myPage.UserStatus
 import jp.dosukoi.ui.view.common.LoadingAndErrorScreen
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
-import timber.log.Timber
 
 @Composable
 fun MyPageScreen(
@@ -15,7 +14,6 @@ fun MyPageScreen(
     val loadState by viewModel.loadState.observeAsState()
     val isRefreshing by viewModel.isRefreshing.observeAsState()
     val myPageState by viewModel.myPageState.observeAsState()
-    Timber.d("debug: myPageState $myPageState")
     loadState?.let {
         LoadingAndErrorScreen(
             state = it,
