@@ -67,7 +67,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.1")
 
     // Compose
     val composeVersion = "1.0.0"
@@ -100,7 +100,7 @@ dependencies {
     // Navigation
     val navVersion = "2.3.5"
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha05")
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
 
     // Coroutine
     val coroutineVersion = "1.5.2"
@@ -120,8 +120,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
 
     // DataStore
-    implementation("androidx.datastore:datastore-preferences:1.0.0-rc02")
-    implementation("androidx.datastore:datastore:1.0.0-rc02")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore:1.0.0")
 
     // Kotlin Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")

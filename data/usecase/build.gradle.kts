@@ -13,6 +13,7 @@ android {
 dependencies {
 
     api(project(":data:repository"))
+    testImplementation(project(":testing"))
 
     // Hilt
     val hiltVersion = "2.38"
@@ -26,6 +27,7 @@ dependencies {
     val coroutineVersion = "1.5.2"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -50,6 +52,16 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
+    // Test
+    val mockkVersion = "1.12.0"
+    implementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("androidx.test.ext:junit-ktx:1.1.3")
+
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("androidx.test:core-ktx:1.4.0")
+    testImplementation("androidx.test:rules:1.4.0")
+    testImplementation("androidx.test:runner:1.4.0")
 }
