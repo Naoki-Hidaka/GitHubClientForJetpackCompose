@@ -35,7 +35,7 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
 
     // Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     // Test
     val mockkVersion = "1.12.0"

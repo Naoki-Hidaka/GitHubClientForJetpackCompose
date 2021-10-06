@@ -47,13 +47,13 @@ dependencies {
     implementation("io.coil-kt:coil-compose:1.3.2")
 
     // Compose Accompanist
-    val accompanistVersion = "0.18.0"
+    val accompanistVersion = "0.19.0"
     implementation("com.google.accompanist:accompanist-pager:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-swiperefresh:$accompanistVersion")
 
 
     // Lottie
-    implementation("com.airbnb.android:lottie-compose:4.1.0")
+    implementation("com.airbnb.android:lottie-compose:4.2.0")
 
     // DataStore
     implementation("androidx.datastore:datastore:1.0.0-rc02")
