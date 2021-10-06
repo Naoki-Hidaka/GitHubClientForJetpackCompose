@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="jp.dosukoi.widget">
+
+    <application>
+        <receiver
+            android:name=".repository.RepositoryListWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/repository_list_widget_meta_data" />
+        </receiver>
+
+        <service
+            android:name=".repository.RepositoryListService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+    </application>
+</manifest>

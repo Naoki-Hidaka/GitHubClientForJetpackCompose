@@ -79,7 +79,8 @@ object AppModule {
                 HttpLoggingInterceptor().apply {
                     this.level = HttpLoggingInterceptor.Level.BODY
                 }
-            ).addInterceptor { chain ->
+            )
+            .addInterceptor { chain ->
                 val token = accessTokenProvider.provide()
                 val request = chain.request().newBuilder()
                     .header("Authorization", "token $token")

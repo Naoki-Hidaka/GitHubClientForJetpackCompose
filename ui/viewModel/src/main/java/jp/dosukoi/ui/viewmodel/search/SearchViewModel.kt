@@ -9,6 +9,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import jp.dosukoi.data.entity.common.LoadState
+import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.search.SearchPageState
 import jp.dosukoi.data.usecase.search.GetSearchDataUseCase
 import jp.dosukoi.ui.viewmodel.common.NoCacheMutableLiveData
@@ -33,7 +34,8 @@ class SearchViewModel @AssistedInject constructor(
 
     val isError = NoCacheMutableLiveData<Boolean>()
 
-    val searchData = getSearchDataUseCase.searchData
+    private val items = mutableListOf<Repository>()
+    val searchData = MutableLiveData<SearchPageState>()
 
     val loadState = MutableLiveData(LoadState.LOADED)
     val hasMore = searchData.map {
@@ -78,20 +80,30 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     private fun refresh(isRefresh: Boolean) {
-        println("called refresh")
         viewModelScope.launch {
             runCatching {
-                println("called runCatching")
                 getSearchDataUseCase.execute(
                     searchWord.value,
                     pageCount.getAndIncrement(),
-                    isRefresh
                 )
             }.onSuccess {
-                println("success")
+                if (isRefresh) items.clear()
+                if (it.items.isNotEmpty()) {
+                    items.addAll(it.items)
+                    searchData.value =
+                        SearchPageState.Data(items, it.totalCount > PER_PAGE * pageCount.get())
+                } else {
+                    when (loadState.value) {
+                        LoadState.LOADED -> {
+                            searchData.value = SearchPageState.Data(items, false)
+                        }
+                        else -> {
+                            searchData.value = SearchPageState.Empty
+                        }
+                    }
+                }
                 loadState.value = LoadState.LOADED
             }.onFailure {
-                println("error $it")
                 when (loadState.value) {
                     LoadState.LOADED -> {
                         searchPageListener.onLoadError(it)
@@ -101,5 +113,9 @@ class SearchViewModel @AssistedInject constructor(
             }
             isLoadingMore.set(false)
         }
+    }
+
+    companion object {
+        private const val PER_PAGE = 30
     }
 }
