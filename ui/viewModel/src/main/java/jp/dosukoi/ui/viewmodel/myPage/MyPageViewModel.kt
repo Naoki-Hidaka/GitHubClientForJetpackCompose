@@ -1,6 +1,5 @@
 package jp.dosukoi.ui.viewmodel.myPage
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,19 +28,17 @@ class MyPageViewModel @AssistedInject constructor(
         fun create(myPageListener: MyPageListener): MyPageViewModel
     }
 
-    val loadState = MutableLiveData(LoadState.LOADING)
+    val loadState = MutableLiveData<LoadState>()
 
     val myPageState = MutableLiveData<MyPageState>()
 
     val isRefreshing = MutableLiveData<Boolean>()
 
-    init {
-        loadState.value = LoadState.LOADING
+    fun init() {
         refresh()
     }
 
-    @VisibleForTesting
-    fun refresh() {
+    private fun refresh() {
         viewModelScope.launch {
             runCatching {
                 myPageState.value = getMyPageUseCase.execute()

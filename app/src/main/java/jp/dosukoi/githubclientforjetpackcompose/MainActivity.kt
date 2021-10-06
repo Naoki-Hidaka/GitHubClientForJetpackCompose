@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        myPageViewModel.init()
         viewModel.onEvent.observe(this, ::handleEvent)
     }
 
