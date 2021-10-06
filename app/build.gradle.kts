@@ -63,7 +63,6 @@ dependencies {
     implementation(project(":data:entity"))
     implementation(project(":data:repository"))
     implementation(project(":data:usecase"))
-    implementation(project(":widget"))
 
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")

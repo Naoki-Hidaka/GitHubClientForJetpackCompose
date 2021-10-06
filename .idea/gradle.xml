@@ -22,7 +22,6 @@
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/ui/view" />
             <option value="$PROJECT_DIR$/ui/viewModel" />
-            <option value="$PROJECT_DIR$/widget" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

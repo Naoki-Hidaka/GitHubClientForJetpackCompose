@@ -18,4 +18,3 @@ include(
     ":data:usecase",
     ":testing"
 )
-include(":widget")
