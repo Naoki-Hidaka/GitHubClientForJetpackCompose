@@ -100,7 +100,7 @@ dependencies {
     // Navigation
     val navVersion = "2.3.5"
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha05")
 
     // Coroutine
     val coroutineVersion = "1.5.2"
