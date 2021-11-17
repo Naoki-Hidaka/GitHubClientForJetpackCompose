@@ -53,7 +53,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
 
     // Test
-    val mockkVersion = "1.12.0"
+    val mockkVersion = "1.12.1"
     implementation("io.mockk:mockk:$mockkVersion")
     testImplementation("androidx.test.ext:junit-ktx:1.1.3")
 
