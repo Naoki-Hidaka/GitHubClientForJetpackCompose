@@ -38,7 +38,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     // Test
-    val mockkVersion = "1.12.0"
+    val mockkVersion = "1.12.1"
     implementation("io.mockk:mockk:$mockkVersion")
     implementation("androidx.test.ext:junit-ktx:1.1.3")
 
