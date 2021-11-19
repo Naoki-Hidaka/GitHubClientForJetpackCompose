@@ -37,7 +37,7 @@ subprojects {
 allprojects {
     val ktlint by configurations.creating
     dependencies {
-        ktlint("com.pinterest:ktlint:0.42.1") {
+        ktlint("com.pinterest:ktlint:0.43.0") {
             attributes {
                 attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
             }
