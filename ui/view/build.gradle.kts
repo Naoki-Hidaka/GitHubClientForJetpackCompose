@@ -47,7 +47,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:1.4.0")
 
     // Compose Accompanist
-    val accompanistVersion = "0.20.0"
+    val accompanistVersion = "0.20.2"
     implementation("com.google.accompanist:accompanist-pager:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-swiperefresh:$accompanistVersion")
 
