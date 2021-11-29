@@ -53,7 +53,7 @@ dependencies {
 
 
     // Lottie
-    implementation("com.airbnb.android:lottie-compose:4.2.1")
+    implementation("com.airbnb.android:lottie-compose:4.2.2")
 
     // DataStore
     implementation("androidx.datastore:datastore:1.0.0-rc02")
