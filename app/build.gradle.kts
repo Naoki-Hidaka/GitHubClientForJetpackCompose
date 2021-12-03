@@ -84,7 +84,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.20.2")
 
     // Hilt
-    val hiltVersion = "2.40.3"
+    val hiltVersion = "2.40.4"
     val hiltJetpackVersion = "1.0.0"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
 

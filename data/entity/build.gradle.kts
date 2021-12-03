@@ -13,7 +13,7 @@ android {
 dependencies {
 
     // Hilt
-    val hiltVersion = "2.40.3"
+    val hiltVersion = "2.40.4"
     val hiltJetpackVersion = "1.0.0"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
 
