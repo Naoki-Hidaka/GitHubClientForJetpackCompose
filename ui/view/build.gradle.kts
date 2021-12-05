@@ -15,7 +15,6 @@ android {
         dataBinding = true
     }
     composeOptions {
-        kotlinCompilerVersion = "1.5.10"
         kotlinCompilerExtensionVersion = "1.0.0"
     }
     kotlinOptions {
@@ -28,8 +27,8 @@ dependencies {
     implementation(project(":ui:viewModel"))
     implementation(project(":data:entity"))
 
-    implementation("androidx.core:core-ktx:1.6.0")
-    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("com.google.android.material:material:1.4.0")
 
     // Compose
@@ -51,19 +50,24 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-swiperefresh:$accompanistVersion")
 
+    // Glance
+    val glanceVersion = "1.0.0-SNAPSHOT"
+    implementation("androidx.glance:glance:$glanceVersion")
+    implementation("androidx.glance:glance-appwidget:$glanceVersion")
+    implementation("androidx.glance:glance-appwidget-proto:$glanceVersion")
 
     // Lottie
     implementation("com.airbnb.android:lottie-compose:4.2.1")
 
     // DataStore
-    implementation("androidx.datastore:datastore:1.0.0-rc02")
-    implementation("androidx.datastore:datastore-preferences:1.0.0-rc02")
+    implementation("androidx.datastore:datastore:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Hilt
     val hiltVersion = "2.40.2"
     val hiltJetpackVersion = "1.0.0"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0-alpha03")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0-beta01")
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
     kapt("androidx.hilt:hilt-compiler:$hiltJetpackVersion")
 
@@ -76,7 +80,7 @@ dependencies {
     // Navigation
     val navVersion = "2.3.5"
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha05")
+    implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
 
     // Coroutine
     val coroutineVersion = "1.5.2"

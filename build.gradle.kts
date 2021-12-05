@@ -7,7 +7,7 @@ buildscript {
     dependencies {
         val kotlinVersion = "1.5.10"
 
-        classpath("com.android.tools.build:gradle:4.2.2")
+        classpath("com.android.tools.build:gradle:7.0.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.40.1")
 
@@ -35,6 +35,13 @@ subprojects {
 }
 
 allprojects {
+    repositories {
+        google()
+        mavenCentral()
+
+        maven("https://androidx.dev/snapshots/builds/7957905/artifacts/repository")
+    }
+    
     val ktlint by configurations.creating
     dependencies {
         ktlint("com.pinterest:ktlint:0.43.0") {

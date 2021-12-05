@@ -21,11 +21,15 @@
         <entry key="../../../../layout/compose-model-1627856901370.xml" value="0.17326732673267325" />
         <entry key="../../../../layout/compose-model-1628138969842.xml" value="0.19256756756756757" />
         <entry key="../../../../layout/compose-model-1628141346685.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1638359252369.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1638359265855.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1638711438829.xml" value="0.18331922099915327" />
         <entry key="../../../../layout/custom_preview.xml" value="0.22604166666666667" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3921875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3921875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3921875" />
         <entry key="ui/view/src/main/res/layout/activity_auth.xml" value="0.21197916666666666" />
+        <entry key="ui/view/src/main/res/layout/glance_initial_layout.xml" value="0.2" />
         <entry key="widget/src/main/res/drawable/ic_launcher_background.xml" value="0.3921875" />
         <entry key="widget/src/main/res/drawable/ic_launcher_foreground.xml" value="0.3921875" />
         <entry key="widget/src/main/res/layout/repository_item.xml" value="0.21770833333333334" />

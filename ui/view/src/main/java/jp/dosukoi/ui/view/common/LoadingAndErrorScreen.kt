@@ -1,7 +1,12 @@
 package jp.dosukoi.ui.view.common
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -20,19 +25,19 @@ import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
-import jp.dosukoi.data.entity.common.LoadState
 import jp.dosukoi.ui.view.R
+import jp.dosukoi.ui.viewmodel.common.LoadState
 
 @Composable
-fun LoadingAndErrorScreen(
-    state: LoadState,
-    loadedContent: @Composable () -> Unit,
+fun <T> LoadingAndErrorScreen(
+    state: LoadState<T>,
+    loadedContent: @Composable (T) -> Unit,
     onRetryClick: () -> Unit
 ) {
     when (state) {
-        LoadState.LOADING -> LottieLoadingAnimation()
-        LoadState.LOADED -> loadedContent.invoke()
-        LoadState.ERROR -> LoadErrorContent(onRetryClick)
+        LoadState.Loading -> LottieLoadingAnimation()
+        is LoadState.Loaded -> loadedContent.invoke(state.data)
+        is LoadState.Error -> LoadErrorContent(onRetryClick)
     }
 }
 
@@ -44,7 +49,7 @@ fun LottieLoadingAnimation() {
             .background(Color.White)
     ) {
         val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_animation))
-        LottieAnimation(composition = composition)
+        LottieAnimation(modifier = Modifier.align(Alignment.Center), composition = composition)
     }
 }
 

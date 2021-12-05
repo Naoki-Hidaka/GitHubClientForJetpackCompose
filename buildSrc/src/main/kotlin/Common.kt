@@ -2,14 +2,12 @@ import com.android.build.gradle.LibraryExtension
 import org.gradle.api.JavaVersion
 
 fun LibraryExtension.applyCommon() {
-    compileSdk = 30
+    compileSdk = 31
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
         minSdk = 26
-        targetSdk = 30
-        versionCode = 1
-        versionName = "1.0.0"
+        targetSdk = 31
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

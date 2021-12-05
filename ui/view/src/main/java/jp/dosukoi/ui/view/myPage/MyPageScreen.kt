@@ -11,27 +11,23 @@ import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 fun MyPageScreen(
     viewModel: MyPageViewModel,
 ) {
-    val loadState by viewModel.loadState.observeAsState()
-    val isRefreshing by viewModel.isRefreshing.observeAsState()
     val myPageState by viewModel.myPageState.observeAsState()
-    loadState?.let {
+    myPageState?.let {
         LoadingAndErrorScreen(
             state = it,
-            loadedContent = {
-                myPageState?.let {
-                    when (it.userStatus) {
-                        is UserStatus.Authenticated -> MyPageComponent(
-                            (it.userStatus as UserStatus.Authenticated).user,
-                            it.repositoryList,
-                            viewModel::onCardClick,
-                            viewModel::onRepositoryItemClick,
-                            isRefreshing,
-                            viewModel::onRefresh
-                        )
-                        UserStatus.UnAuthenticated -> UnAuthenticatedUserComponent(
-                            viewModel::onLoginButtonClick
-                        )
-                    }
+            loadedContent = { data ->
+                when (val state = data.userStatus) {
+                    is UserStatus.Authenticated -> MyPageComponent(
+                        state.user,
+                        data.repositoryList,
+                        viewModel::onCardClick,
+                        viewModel::onRepositoryItemClick,
+                        data.isRefreshing,
+                        viewModel::onRefresh
+                    )
+                    UserStatus.UnAuthenticated -> UnAuthenticatedUserComponent(
+                        viewModel::onLoginButtonClick
+                    )
                 }
             },
             onRetryClick = viewModel::onRetryClick

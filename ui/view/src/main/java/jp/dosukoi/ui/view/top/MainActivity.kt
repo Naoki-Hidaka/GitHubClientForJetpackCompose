@@ -1,4 +1,4 @@
-package jp.dosukoi.githubclientforjetpackcompose
+package jp.dosukoi.ui.view.top
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,12 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.CompositionLocalProvider
+import coil.compose.LocalImageLoader
 import dagger.hilt.android.AndroidEntryPoint
+import jp.dosukoi.ui.view.common.CompositionLocalProvider
 import jp.dosukoi.ui.view.common.appColors
 import jp.dosukoi.ui.view.common.navigateChrome
 import jp.dosukoi.ui.view.common.produceViewModels
 import jp.dosukoi.ui.view.common.showErrorToast
-import jp.dosukoi.ui.view.top.TopScreen
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 import jp.dosukoi.ui.viewmodel.search.SearchViewModel
 import jp.dosukoi.ui.viewmodel.top.MainViewModel
@@ -34,6 +36,9 @@ class MainActivity : AppCompatActivity() {
         searchViewModelFactory.create(viewModel)
     }
 
+    @Inject
+    lateinit var compositionLocalProvider: CompositionLocalProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,10 +46,14 @@ class MainActivity : AppCompatActivity() {
             MaterialTheme(
                 colors = appColors()
             ) {
-                TopScreen(
-                    searchViewModel,
-                    myPageViewModel,
-                )
+                CompositionLocalProvider(
+                    LocalImageLoader provides compositionLocalProvider.provideImageLoader()
+                ) {
+                    TopScreen(
+                        searchViewModel,
+                        myPageViewModel,
+                    )
+                }
             }
         }
 

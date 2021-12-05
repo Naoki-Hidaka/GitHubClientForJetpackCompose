@@ -8,13 +8,13 @@ plugins {
 }
 
 android {
-    compileSdk = 30
+    compileSdk = 31
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
         applicationId = "jp.dosukoi.githubclientforjetpackcompose"
         minSdk = 26
-        targetSdk = 30
+        targetSdk = 31
         versionCode = 1
         versionName = "1.0.0"
 
@@ -43,7 +43,6 @@ android {
         dataBinding = true
     }
     composeOptions {
-        kotlinCompilerVersion = "1.5.10"
         kotlinCompilerExtensionVersion = "1.0.0"
     }
 
@@ -64,10 +63,10 @@ dependencies {
     implementation(project(":data:repository"))
     implementation(project(":data:usecase"))
 
-    implementation("androidx.core:core-ktx:1.6.0")
-    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
 
     // Compose
     val composeVersion = "1.0.0"
@@ -82,6 +81,11 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.ui:ui-util:$composeVersion")
     implementation("com.google.accompanist:accompanist-pager:0.20.2")
+
+    // Glance
+    val glanceVersion = "1.0.0-SNAPSHOT"
+    implementation("androidx.glance:glance:$glanceVersion")
+    implementation("androidx.glance:glance-appwidget:$glanceVersion")
 
     // Hilt
     val hiltVersion = "2.40.2"
@@ -100,7 +104,7 @@ dependencies {
     // Navigation
     val navVersion = "2.3.5"
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha05")
+    implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
 
     // Coroutine
     val coroutineVersion = "1.5.2"

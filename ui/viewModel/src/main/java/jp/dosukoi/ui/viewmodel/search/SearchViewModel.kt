@@ -8,10 +8,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import jp.dosukoi.data.entity.common.LoadState
 import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.search.SearchPageState
 import jp.dosukoi.data.usecase.search.GetSearchDataUseCase
+import jp.dosukoi.ui.viewmodel.common.LoadState
 import jp.dosukoi.ui.viewmodel.common.NoCacheMutableLiveData
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
@@ -35,12 +35,16 @@ class SearchViewModel @AssistedInject constructor(
     val isError = NoCacheMutableLiveData<Boolean>()
 
     private val items = mutableListOf<Repository>()
-    val searchData = MutableLiveData<SearchPageState>()
+    val searchData = MutableLiveData<LoadState<SearchPageState>>(LoadState.Loading)
 
-    val loadState = MutableLiveData(LoadState.LOADED)
     val hasMore = searchData.map {
-        if (it is SearchPageState.Data) it.hasMore
-        else false
+        when (val state = it) {
+            is LoadState.Loaded -> when (val searchState = state.data) {
+                is SearchPageState.Data -> searchState.hasMore
+                else -> false
+            }
+            else -> false
+        }
     }
 
     @VisibleForTesting
@@ -75,7 +79,7 @@ class SearchViewModel @AssistedInject constructor(
             pageCount.set(1)
             isError.setValue(false)
         }
-        loadState.value = LoadState.LOADING
+        searchData.value = LoadState.Loading
         refresh(true)
     }
 
@@ -91,24 +95,28 @@ class SearchViewModel @AssistedInject constructor(
                 if (it.items.isNotEmpty()) {
                     items.addAll(it.items)
                     searchData.value =
-                        SearchPageState.Data(items, it.totalCount > PER_PAGE * pageCount.get())
+                        LoadState.Loaded(
+                            SearchPageState.Data(
+                                items,
+                                it.totalCount > PER_PAGE * pageCount.get()
+                            )
+                        )
                 } else {
-                    when (loadState.value) {
-                        LoadState.LOADED -> {
-                            searchData.value = SearchPageState.Data(items, false)
+                    when (searchData.value) {
+                        is LoadState.Loaded -> {
+                            searchData.value = LoadState.Loaded(SearchPageState.Data(items, false))
                         }
                         else -> {
-                            searchData.value = SearchPageState.Empty
+                            searchData.value = LoadState.Loaded(SearchPageState.Empty)
                         }
                     }
                 }
-                loadState.value = LoadState.LOADED
             }.onFailure {
-                when (loadState.value) {
-                    LoadState.LOADED -> {
+                when (searchData.value) {
+                    is LoadState.Loaded -> {
                         searchPageListener.onLoadError(it)
                     }
-                    else -> loadState.value = LoadState.ERROR
+                    else -> searchData.value = LoadState.Error("error")
                 }
             }
             isLoadingMore.set(false)

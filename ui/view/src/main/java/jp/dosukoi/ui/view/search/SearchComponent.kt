@@ -17,18 +17,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import jp.dosukoi.data.entity.common.LoadState
 import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.search.SearchPageState
 import jp.dosukoi.ui.view.common.LoadingAndErrorScreen
 import jp.dosukoi.ui.view.common.black
 import jp.dosukoi.ui.view.common.white
 import jp.dosukoi.ui.view.myPage.RepositoryItem
+import jp.dosukoi.ui.viewmodel.common.LoadState
 
 @Composable
 fun SearchComponent(
-    loadState: LoadState?,
-    searchPageState: SearchPageState?,
+    searchPageState: LoadState<SearchPageState>?,
     searchText: String?,
     hasMore: Boolean?,
     isTextError: Boolean?,
@@ -49,7 +48,6 @@ fun SearchComponent(
             onSearchButtonClick = onSearchButtonClick
         )
         SearchList(
-            loadState = loadState,
             searchPageState = searchPageState,
             hasMore = hasMore,
             listState = listState,
@@ -107,23 +105,22 @@ fun SearchTextField(
 
 @Composable
 fun SearchList(
-    loadState: LoadState?,
-    searchPageState: SearchPageState?,
+    searchPageState: LoadState<SearchPageState>?,
     hasMore: Boolean?,
     listState: LazyListState,
     onRetryClick: () -> Unit,
     onItemClick: (String) -> Unit,
 ) {
-    loadState?.let {
+    searchPageState?.let {
         LoadingAndErrorScreen(
             state = it,
             loadedContent = {
-                when (searchPageState) {
+                when (it) {
                     SearchPageState.Initialized -> SearchInitialComponent()
                     SearchPageState.Empty -> SearchedEmptyComponent()
                     is SearchPageState.Data ->
                         SearchedListComponent(
-                            searchPageState.repositoryList,
+                            it.repositoryList,
                             hasMore,
                             listState,
                             onItemClick
@@ -184,7 +181,7 @@ fun SearchedEmptyComponent() {
     ) {
         Text(
             text = "Oops, Repository is not found.\n" +
-                    "Please change search word and retry again.",
+                "Please change search word and retry again.",
             textAlign = TextAlign.Center
         )
     }

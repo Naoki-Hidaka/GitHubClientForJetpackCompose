@@ -10,7 +10,6 @@ import jp.dosukoi.ui.viewmodel.search.SearchViewModel
 fun SearchScreen(
     viewModel: SearchViewModel
 ) {
-    val loadState by viewModel.loadState.observeAsState()
     val searchPageState by viewModel.searchData.observeAsState()
     val searchWord by viewModel.searchWord.observeAsState()
     val hasMore by viewModel.hasMore.observeAsState()
@@ -23,7 +22,6 @@ fun SearchScreen(
         viewModel.onScrollEnd()
     }
     SearchComponent(
-        loadState,
         searchPageState,
         searchWord,
         hasMore,
