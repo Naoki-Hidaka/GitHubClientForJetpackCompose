@@ -57,14 +57,14 @@ dependencies {
     implementation("androidx.glance:glance-appwidget-proto:$glanceVersion")
 
     // Lottie
-    implementation("com.airbnb.android:lottie-compose:4.2.1")
+    implementation("com.airbnb.android:lottie-compose:4.2.2")
 
     // DataStore
     implementation("androidx.datastore:datastore:1.0.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Hilt
-    val hiltVersion = "2.40.2"
+    val hiltVersion = "2.40.4"
     val hiltJetpackVersion = "1.0.0"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0-beta01")

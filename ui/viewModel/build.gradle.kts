@@ -21,7 +21,7 @@ dependencies {
     testImplementation(project(":testing"))
 
     // Hilt
-    val hiltVersion = "2.40.2"
+    val hiltVersion = "2.40.4"
     val hiltJetpackVersion = "1.0.0"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
 
