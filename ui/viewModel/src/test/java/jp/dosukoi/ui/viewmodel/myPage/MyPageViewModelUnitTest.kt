@@ -85,12 +85,6 @@ class MyPageViewModelUnitTest {
         viewModel.onRetryClick()
 
         // then
-        assertThat(myPageState.values()).isEqualTo(
-            listOf(
-                LoadState.Loading,
-                LoadState.Loaded(mockk<MyPageState>(relaxed = true))
-            )
-        )
         myPageState.values().apply {
             assertThat(this[0]).isEqualTo(LoadState.Loading)
             assertType<LoadState.Loaded<MyPageState>>(this[1]) {
