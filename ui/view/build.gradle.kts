@@ -25,6 +25,7 @@ android {
 dependencies {
 
     implementation(project(":ui:viewModel"))
+    implementation(project(":data:usecase"))
     implementation(project(":data:entity"))
 
     implementation("androidx.core:core-ktx:1.7.0")

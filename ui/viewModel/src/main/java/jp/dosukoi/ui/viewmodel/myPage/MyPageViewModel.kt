@@ -9,8 +9,8 @@ import dagger.assisted.AssistedInject
 import jp.dosukoi.data.entity.common.UnAuthorizeException
 import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.myPage.UserStatus
-import jp.dosukoi.data.usecase.myPage.GetMyPageUseCase
 import jp.dosukoi.data.usecase.myPage.GetRepositoriesUseCase
+import jp.dosukoi.data.usecase.myPage.GetUserStatusUseCase
 import jp.dosukoi.ui.viewmodel.common.LoadState
 import kotlinx.coroutines.launch
 
@@ -22,7 +22,7 @@ interface MyPageListener {
 }
 
 class MyPageViewModel @AssistedInject constructor(
-    private val getMyPageUseCase: GetMyPageUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase,
     private val getRepositoriesUseCase: GetRepositoriesUseCase,
     @Assisted private val myPageListener: MyPageListener
 ) : ViewModel(), MyPageListener by myPageListener {
@@ -43,7 +43,7 @@ class MyPageViewModel @AssistedInject constructor(
         viewModelScope.launch {
             runCatching {
                 MyPageState(
-                    getMyPageUseCase.execute(),
+                    getUserStatusUseCase.execute(),
                     getRepositoriesUseCase.execute(),
                     false
                 )

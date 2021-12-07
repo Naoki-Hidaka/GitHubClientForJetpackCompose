@@ -25,6 +25,7 @@ import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.Text
 import dagger.hilt.android.AndroidEntryPoint
+import jp.dosukoi.data.usecase.myPage.GetUserStatusUseCase
 import java.util.*
 import javax.inject.Inject
 
@@ -53,7 +54,7 @@ class GlanceAppWidgetSample @Inject constructor() : GlanceAppWidget() {
 }
 
 
-class GlanceAppWidgetSampleAction : ActionCallback {
+class GlanceAppWidgetSampleAction @Inject constructor() : ActionCallback {
     override suspend fun onRun(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         GlanceAppWidgetSample().apply {
             updateAppWidgetState<Preferences>(context, glanceId) { prefs ->
@@ -69,5 +70,12 @@ class GlanceAppWidgetSampleAction : ActionCallback {
 @AndroidEntryPoint
 class GlanceAppWidgetProviderSample : GlanceAppWidgetReceiver() {
 
-    override val glanceAppWidget: GlanceAppWidget = GlanceAppWidgetSample()
+    @Inject
+    lateinit var getUserStatusUseCase: GetUserStatusUseCase
+
+    @Inject
+    lateinit var glanceAppWidgetSample: GlanceAppWidgetSample
+
+    override val glanceAppWidget: GlanceAppWidget
+        get() = glanceAppWidgetSample
 }

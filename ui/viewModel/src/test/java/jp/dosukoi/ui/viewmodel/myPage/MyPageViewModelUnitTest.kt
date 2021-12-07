@@ -7,8 +7,8 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockk
 import jp.dosukoi.data.entity.myPage.UserStatus
-import jp.dosukoi.data.usecase.myPage.GetMyPageUseCase
 import jp.dosukoi.data.usecase.myPage.GetRepositoriesUseCase
+import jp.dosukoi.data.usecase.myPage.GetUserStatusUseCase
 import jp.dosukoi.testing.common.assertType
 import jp.dosukoi.testing.common.test
 import jp.dosukoi.testing.common.testRule
@@ -24,7 +24,7 @@ class MyPageViewModelUnitTest {
     val rule = testRule()
 
     @RelaxedMockK
-    private lateinit var getMyPageUseCase: GetMyPageUseCase
+    private lateinit var getUserStatusUseCase: GetUserStatusUseCase
 
     @RelaxedMockK
     private lateinit var getRepositoriesUseCase: GetRepositoriesUseCase
@@ -38,7 +38,7 @@ class MyPageViewModelUnitTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        coEvery { getMyPageUseCase.execute() } returns UserStatus.Authenticated(mockk())
+        coEvery { getUserStatusUseCase.execute() } returns UserStatus.Authenticated(mockk())
         coEvery { getRepositoriesUseCase.execute() } returns listOf(
             mockk(),
             mockk(),
@@ -65,7 +65,7 @@ class MyPageViewModelUnitTest {
     fun init_success_un_authenticated() {
         // given
         val myPageState = viewModel.myPageState.test()
-        coEvery { getMyPageUseCase.execute() } returns UserStatus.UnAuthenticated
+        coEvery { getUserStatusUseCase.execute() } returns UserStatus.UnAuthenticated
 
         // when
         viewModel.init()
