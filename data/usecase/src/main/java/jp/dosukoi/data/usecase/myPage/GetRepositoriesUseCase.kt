@@ -10,5 +10,4 @@ class GetRepositoriesUseCase @Inject constructor(
     private val reposRepository: ReposRepository
 ) {
     suspend fun execute(): List<Repository> = reposRepository.getRepositoryList()
-
 }
