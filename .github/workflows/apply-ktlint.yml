@@ -22,6 +22,6 @@ jobs:
       - name: Commit formatted
         run: |
           git config --local user.email "dosukoroid@gmail.com"
-          git config --local user.name "github bot"
+          git config --local user.name "Naoki-Hidaka"
           git commit -am "Apply ktlint Format" && git push origin HEAD
           exit 0
