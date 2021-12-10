@@ -103,7 +103,6 @@ class MyPageViewModelUnitTest {
 
         // then
         myPageState.values().apply {
-
         }
     }
 }
