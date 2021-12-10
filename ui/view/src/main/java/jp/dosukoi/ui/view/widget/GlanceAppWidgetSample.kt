@@ -53,7 +53,6 @@ class GlanceAppWidgetSample @Inject constructor() : GlanceAppWidget() {
     }
 }
 
-
 class GlanceAppWidgetSampleAction @Inject constructor() : ActionCallback {
     override suspend fun onRun(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         GlanceAppWidgetSample().apply {
