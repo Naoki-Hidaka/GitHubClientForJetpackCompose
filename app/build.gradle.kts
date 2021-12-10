@@ -69,7 +69,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.2")
 
     // Compose
-    val composeVersion = "1.0.0"
+    val composeVersion = "1.0.5"
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.runtime:runtime:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
