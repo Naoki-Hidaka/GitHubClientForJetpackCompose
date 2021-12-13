@@ -80,7 +80,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation-layout:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.ui:ui-util:$composeVersion")
-    implementation("com.google.accompanist:accompanist-pager:0.20.2")
+    implementation("com.google.accompanist:accompanist-pager:0.20.3")
 
     // Glance
     val glanceVersion = "1.0.0-SNAPSHOT"
