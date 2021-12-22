@@ -24,7 +24,7 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:$hiltJetpackVersion")
 
     // Coroutine
-    val coroutineVersion = "1.5.2"
+    val coroutineVersion = "1.6.0"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
