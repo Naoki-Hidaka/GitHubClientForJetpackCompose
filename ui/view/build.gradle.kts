@@ -79,7 +79,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
 
     // Navigation
-    val navVersion = "2.3.5"
+    val navVersion = "2.4.0"
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
     implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
 
