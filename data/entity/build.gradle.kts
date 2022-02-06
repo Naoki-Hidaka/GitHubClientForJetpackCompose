@@ -20,7 +20,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
     kapt("androidx.hilt:hilt-compiler:$hiltJetpackVersion")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     // Kotlin Serialization Converter
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
