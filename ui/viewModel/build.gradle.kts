@@ -29,7 +29,7 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:$hiltJetpackVersion")
 
     // Lifecycle
-    val lifecycleVersion = "2.4.0"
+    val lifecycleVersion = "2.4.1"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
 
