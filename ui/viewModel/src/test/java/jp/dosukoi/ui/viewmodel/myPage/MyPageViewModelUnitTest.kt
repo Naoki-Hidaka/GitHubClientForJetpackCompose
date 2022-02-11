@@ -91,6 +91,25 @@ class MyPageViewModelUnitTest {
     }
 
     @Test
+    fun init_failure() = runBlockingTest {
+        // given
+        coEvery { getUserStatusUseCase.execute() } throws RuntimeException()
+        val myPageState = mutableListOf<LoadState<MyPageState>>()
+        val job = viewModel.myPageState.onEach {
+            myPageState.add(it)
+        }.launchIn(this)
+
+        // when
+        viewModel.init()
+
+        // then
+        assertThat(myPageState[0]).isEqualTo(LoadState.Loading)
+        assertThat(myPageState[1]).isInstanceOf(LoadState.Error::class.java)
+
+        job.cancel()
+    }
+
+    @Test
     fun onRetryClick() = runBlockingTest {
         // given
         val myPageState = mutableListOf<LoadState<MyPageState>>()
