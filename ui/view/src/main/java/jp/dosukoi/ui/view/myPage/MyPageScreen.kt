@@ -11,9 +11,9 @@ import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 fun MyPageScreen(
     viewModel: MyPageViewModel,
 ) {
-    val myPageState by viewModel.myPageState.collectAsState()
+    val myPageUiState by viewModel.myPageState.collectAsState()
     LoadingAndErrorScreen(
-        state = myPageState,
+        state = myPageUiState,
         loadedContent = { data ->
             when (val state = data.userStatus) {
                 is UserStatus.Authenticated -> MyPageComponent(

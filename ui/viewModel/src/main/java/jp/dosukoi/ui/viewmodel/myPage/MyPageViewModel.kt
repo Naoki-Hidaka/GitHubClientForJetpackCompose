@@ -6,7 +6,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import jp.dosukoi.data.entity.common.UnAuthorizeException
-import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.myPage.UserStatus
 import jp.dosukoi.data.usecase.myPage.GetRepositoriesUseCase
 import jp.dosukoi.data.usecase.myPage.GetUserStatusUseCase
@@ -34,9 +33,9 @@ class MyPageViewModel @AssistedInject constructor(
         fun create(myPageListener: MyPageListener): MyPageViewModel
     }
 
-    private val _myPageState: MutableStateFlow<LoadState<MyPageState>> =
+    private val _myPageState: MutableStateFlow<LoadState<MyPageUiState>> =
         MutableStateFlow(LoadState.Loading)
-    val myPageState: StateFlow<LoadState<MyPageState>> = _myPageState
+    val myPageState: StateFlow<LoadState<MyPageUiState>> = _myPageState
 
     fun init() {
         refresh()
@@ -45,7 +44,7 @@ class MyPageViewModel @AssistedInject constructor(
     private fun refresh() {
         viewModelScope.launch {
             runCatching {
-                MyPageState(
+                MyPageUiState(
                     getUserStatusUseCase.execute(),
                     getRepositoriesUseCase.execute(),
                     false
@@ -56,7 +55,7 @@ class MyPageViewModel @AssistedInject constructor(
                 when (it) {
                     is UnAuthorizeException -> {
                         _myPageState.value = LoadState.Loaded(
-                            MyPageState(
+                            MyPageUiState(
                                 UserStatus.UnAuthenticated,
                                 emptyList(),
                                 isRefreshing = false
@@ -85,10 +84,4 @@ class MyPageViewModel @AssistedInject constructor(
         }
         refresh()
     }
-
-    data class MyPageState(
-        val userStatus: UserStatus,
-        val repositoryList: List<Repository>,
-        val isRefreshing: Boolean
-    )
 }
