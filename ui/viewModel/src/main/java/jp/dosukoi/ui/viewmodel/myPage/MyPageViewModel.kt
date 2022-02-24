@@ -1,17 +1,18 @@
 package jp.dosukoi.ui.viewmodel.myPage
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import jp.dosukoi.data.entity.common.UnAuthorizeException
-import jp.dosukoi.data.entity.myPage.Repository
 import jp.dosukoi.data.entity.myPage.UserStatus
 import jp.dosukoi.data.usecase.myPage.GetRepositoriesUseCase
 import jp.dosukoi.data.usecase.myPage.GetUserStatusUseCase
 import jp.dosukoi.ui.viewmodel.common.LoadState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 interface MyPageListener {
@@ -32,28 +33,29 @@ class MyPageViewModel @AssistedInject constructor(
         fun create(myPageListener: MyPageListener): MyPageViewModel
     }
 
-    val myPageState = MutableLiveData<LoadState<MyPageState>>()
+    private val _myPageState: MutableStateFlow<LoadState<MyPageUiState>> =
+        MutableStateFlow(LoadState.Loading)
+    val myPageState: StateFlow<LoadState<MyPageUiState>> = _myPageState
 
     fun init() {
-        myPageState.value = LoadState.Loading
         refresh()
     }
 
     private fun refresh() {
         viewModelScope.launch {
             runCatching {
-                MyPageState(
+                MyPageUiState(
                     getUserStatusUseCase.execute(),
                     getRepositoriesUseCase.execute(),
                     false
                 )
             }.onSuccess {
-                myPageState.value = LoadState.Loaded(it)
+                _myPageState.value = LoadState.Loaded(it)
             }.onFailure {
                 when (it) {
                     is UnAuthorizeException -> {
-                        myPageState.value = LoadState.Loaded(
-                            MyPageState(
+                        _myPageState.value = LoadState.Loaded(
+                            MyPageUiState(
                                 UserStatus.UnAuthenticated,
                                 emptyList(),
                                 isRefreshing = false
@@ -61,7 +63,7 @@ class MyPageViewModel @AssistedInject constructor(
                         )
                     }
                     else -> {
-                        myPageState.value = LoadState.Error("error")
+                        _myPageState.value = LoadState.Error("error")
                     }
                 }
             }
@@ -69,21 +71,17 @@ class MyPageViewModel @AssistedInject constructor(
     }
 
     fun onRetryClick() {
-        myPageState.value = LoadState.Loading
+        _myPageState.value = LoadState.Loading
         refresh()
     }
 
     fun onRefresh() {
-        myPageState.value = when (val state = myPageState.value) {
-            is LoadState.Loaded -> state.copy(data = state.data.copy(isRefreshing = true))
-            else -> state
+        _myPageState.update {
+            when (it) {
+                is LoadState.Loaded -> it.copy(data = it.data.copy(isRefreshing = true))
+                else -> it
+            }
         }
         refresh()
     }
-
-    data class MyPageState(
-        val userStatus: UserStatus,
-        val repositoryList: List<Repository>,
-        val isRefreshing: Boolean
-    )
 }

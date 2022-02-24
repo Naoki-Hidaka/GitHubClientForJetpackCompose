@@ -10,14 +10,17 @@ import jp.dosukoi.data.entity.myPage.UserStatus
 import jp.dosukoi.data.usecase.myPage.GetRepositoriesUseCase
 import jp.dosukoi.data.usecase.myPage.GetUserStatusUseCase
 import jp.dosukoi.testing.common.assertType
-import jp.dosukoi.testing.common.test
 import jp.dosukoi.testing.common.testRule
 import jp.dosukoi.ui.viewmodel.common.LoadState
-import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel.MyPageState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class MyPageViewModelUnitTest {
 
     @get:Rule
@@ -47,62 +50,121 @@ class MyPageViewModelUnitTest {
     }
 
     @Test
-    fun init_success_authenticated() {
+    fun init_success_authenticated() = runBlockingTest {
         // given
-        val myPageState = viewModel.myPageState.test()
+        val myPageState = mutableListOf<LoadState<MyPageUiState>>()
+        val job = viewModel.myPageState.onEach {
+            myPageState.add(it)
+        }.launchIn(this)
 
         // when
         viewModel.init()
 
         // then
-        assertType<LoadState.Loaded<MyPageState>>(myPageState.lastValue()) {
+        assertThat(myPageState[0]).isEqualTo(LoadState.Loading)
+        assertType<LoadState.Loaded<MyPageUiState>>(myPageState[1]) {
             assertThat(this.data.userStatus).isInstanceOf(UserStatus.Authenticated::class.java)
             assertThat(this.data.repositoryList.size).isEqualTo(3)
         }
+        job.cancel()
     }
 
     @Test
-    fun init_success_un_authenticated() {
+    fun init_success_un_authenticated() = runBlockingTest {
         // given
-        val myPageState = viewModel.myPageState.test()
         coEvery { getUserStatusUseCase.execute() } returns UserStatus.UnAuthenticated
+        val myPageState = mutableListOf<LoadState<MyPageUiState>>()
+        val job = viewModel.myPageState.onEach {
+            myPageState.add(it)
+        }.launchIn(this)
 
         // when
         viewModel.init()
 
         // then
-        assertType<LoadState.Loaded<MyPageState>>(myPageState.lastValue()) {
+        assertThat(myPageState[0]).isEqualTo(LoadState.Loading)
+        assertType<LoadState.Loaded<MyPageUiState>>(myPageState[1]) {
             assertThat(this.data.userStatus).isEqualTo(UserStatus.UnAuthenticated)
         }
+        job.cancel()
     }
 
     @Test
-    fun onRetryClick() {
+    fun init_failure() = runBlockingTest {
         // given
-        val myPageState = viewModel.myPageState.test()
+        coEvery { getUserStatusUseCase.execute() } throws RuntimeException()
+        val myPageState = mutableListOf<LoadState<MyPageUiState>>()
+        val job = viewModel.myPageState.onEach {
+            myPageState.add(it)
+        }.launchIn(this)
+
+        // when
+        viewModel.init()
+
+        // then
+        assertThat(myPageState[0]).isEqualTo(LoadState.Loading)
+        assertThat(myPageState[1]).isInstanceOf(LoadState.Error::class.java)
+
+        job.cancel()
+    }
+
+    @Test
+    fun onRetryClick() = runBlockingTest {
+        // given
+        val myPageState = mutableListOf<LoadState<MyPageUiState>>()
+        val job = viewModel.myPageState.onEach {
+            myPageState.add(it)
+        }.launchIn(this)
 
         // when
         viewModel.onRetryClick()
 
         // then
-        myPageState.values().apply {
-            assertThat(this[0]).isEqualTo(LoadState.Loading)
-            assertType<LoadState.Loaded<MyPageState>>(this[1]) {
-                assertThat(this.data.repositoryList.size).isEqualTo(3)
-            }
+        assertThat(myPageState[0]).isEqualTo(LoadState.Loading)
+        assertType<LoadState.Loaded<MyPageUiState>>(myPageState[1]) {
+            assertThat(this.data.repositoryList.size).isEqualTo(3)
         }
+        job.cancel()
     }
 
     @Test
-    fun onRefresh() {
+    fun onRefresh() = runBlockingTest {
         // given
-        val myPageState = viewModel.myPageState.test()
+        coEvery { getRepositoriesUseCase.execute() } returnsMany listOf(
+            listOf(
+                mockk(),
+                mockk(),
+                mockk()
+            ),
+            listOf(
+                mockk(),
+                mockk(),
+                mockk(),
+                mockk()
+            )
+        )
+        val myPageState = mutableListOf<LoadState<MyPageUiState>>()
+        val job = viewModel.myPageState.onEach {
+            myPageState.add(it)
+        }.launchIn(this)
 
         // when
+        viewModel.init()
         viewModel.onRefresh()
 
         // then
-        myPageState.values().apply {
+        assertThat(myPageState[0]).isEqualTo(LoadState.Loading)
+        assertType<LoadState.Loaded<MyPageUiState>>(myPageState[1]) {
+            assertThat(this.data.repositoryList.size).isEqualTo(3)
         }
+        assertType<LoadState.Loaded<MyPageUiState>>(myPageState[2]) {
+            assertThat(this.data.isRefreshing).isTrue()
+        }
+        assertType<LoadState.Loaded<MyPageUiState>>(myPageState[3]) {
+            assertThat(this.data.repositoryList.size).isEqualTo(4)
+            assertThat(this.data.isRefreshing).isFalse()
+        }
+
+        job.cancel()
     }
 }

@@ -2,29 +2,22 @@ package jp.dosukoi.ui.view.search
 
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import jp.dosukoi.ui.view.common.OnScrollEnd
 import jp.dosukoi.ui.viewmodel.search.SearchViewModel
 
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel
 ) {
-    val searchPageState by viewModel.searchData.observeAsState()
-    val searchWord by viewModel.searchWord.observeAsState()
-    val hasMore by viewModel.hasMore.observeAsState()
+    val uiState by viewModel.searchUiState.collectAsState()
     val isTextError by viewModel.isError.observeAsState()
     val listState = rememberLazyListState()
-    val totalItemCount = listState.layoutInfo.totalItemsCount
-    val visibleItemCount = listState.layoutInfo.visibleItemsInfo.size
-    val firstItemIndex = listState.firstVisibleItemIndex
-    if (firstItemIndex + visibleItemCount >= totalItemCount) {
-        viewModel.onScrollEnd()
-    }
+    OnScrollEnd(lazyListState = listState, onAppearLastItem = viewModel::onScrollEnd)
     SearchComponent(
-        searchPageState,
-        searchWord,
-        hasMore,
+        uiState,
         isTextError,
         listState,
         viewModel::onSearchWordChanged,

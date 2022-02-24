@@ -1,18 +1,18 @@
 package jp.dosukoi.ui.viewmodel.search
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import jp.dosukoi.data.entity.myPage.Repository
-import jp.dosukoi.data.entity.search.SearchPageState
+import jp.dosukoi.data.entity.search.Search
 import jp.dosukoi.data.usecase.search.GetSearchDataUseCase
 import jp.dosukoi.ui.viewmodel.common.LoadState
 import jp.dosukoi.ui.viewmodel.common.NoCacheMutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
@@ -34,27 +34,18 @@ class SearchViewModel @AssistedInject constructor(
 
     val isError = NoCacheMutableLiveData<Boolean>()
 
-    private val items = mutableListOf<Repository>()
-    val searchData = MutableLiveData<LoadState<SearchPageState>>(LoadState.Loading)
-
-    val hasMore = searchData.map {
-        when (val state = it) {
-            is LoadState.Loaded -> when (val searchState = state.data) {
-                is SearchPageState.Data -> searchState.hasMore
-                else -> false
-            }
-            else -> false
-        }
-    }
+    private val _searchUiState: MutableStateFlow<SearchUiState> =
+        MutableStateFlow(SearchUiState())
+    val searchUiState: StateFlow<SearchUiState> = _searchUiState
 
     @VisibleForTesting
     val isLoadingMore = AtomicBoolean()
     private val pageCount = AtomicInteger(1)
 
-    val searchWord = MutableLiveData<String>()
-
     fun onSearchWordChanged(text: String) {
-        searchWord.value = text
+        _searchUiState.update {
+            it.copy(searchWord = text)
+        }
     }
 
     fun onSearchButtonClick() {
@@ -66,20 +57,36 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     fun onScrollEnd() {
-        if (hasMore.value == true && isLoadingMore.compareAndSet(false, true)) {
-            refresh(false)
+        when (val loadState = searchUiState.value.searchState) {
+            is LoadState.Loaded -> {
+                when (val searchState = loadState.data) {
+                    is SearchState.Data -> {
+                        if (searchState.hasMore && isLoadingMore.compareAndSet(false, true)) {
+                            refresh(false)
+                        }
+                    }
+                    else -> {
+                        // do nothing
+                    }
+                }
+            }
+            else -> {
+                // do nothing
+            }
         }
     }
 
     private fun validateAndRefresh() {
-        if (searchWord.value.isNullOrBlank()) {
+        if (searchUiState.value.searchWord.isBlank()) {
             isError.setValue(true)
             return
         } else {
             pageCount.set(1)
             isError.setValue(false)
         }
-        searchData.value = LoadState.Loading
+        _searchUiState.update {
+            it.copy(searchState = LoadState.Loading)
+        }
         refresh(true)
     }
 
@@ -87,39 +94,89 @@ class SearchViewModel @AssistedInject constructor(
         viewModelScope.launch {
             runCatching {
                 getSearchDataUseCase.execute(
-                    searchWord.value,
+                    searchUiState.value.searchWord,
                     pageCount.getAndIncrement(),
                 )
             }.onSuccess {
-                if (isRefresh) items.clear()
                 if (it.items.isNotEmpty()) {
-                    items.addAll(it.items)
-                    searchData.value =
-                        LoadState.Loaded(
-                            SearchPageState.Data(
-                                items,
-                                it.totalCount > PER_PAGE * pageCount.get()
-                            )
-                        )
+                    updateUiState(isRefresh, it)
                 } else {
-                    when (searchData.value) {
-                        is LoadState.Loaded -> {
-                            searchData.value = LoadState.Loaded(SearchPageState.Data(items, false))
-                        }
-                        else -> {
-                            searchData.value = LoadState.Loaded(SearchPageState.Empty)
+                    _searchUiState.update { uiState ->
+                        when (val loadState = uiState.searchState) {
+                            is LoadState.Loaded -> {
+                                val searchState = when (val state = loadState.data) {
+                                    is SearchState.Data -> state.copy(
+                                        hasMore = false
+                                    )
+                                    else -> SearchState.Empty
+                                }
+                                uiState.copy(searchState = loadState.copy(data = searchState))
+                            }
+                            else -> uiState
                         }
                     }
                 }
             }.onFailure {
-                when (searchData.value) {
-                    is LoadState.Loaded -> {
-                        searchPageListener.onLoadError(it)
+                _searchUiState.update { uiState ->
+                    when (uiState.searchState) {
+                        is LoadState.Loaded -> {
+                            searchPageListener.onLoadError(it)
+                            uiState
+                        }
+                        else -> {
+                            uiState.copy(searchState = LoadState.Error("Error"))
+                        }
                     }
-                    else -> searchData.value = LoadState.Error("error")
                 }
             }
             isLoadingMore.set(false)
+        }
+    }
+
+    private fun updateUiState(isRefresh: Boolean, search: Search) {
+        val hasMore = search.totalCount > PER_PAGE * pageCount.get()
+        _searchUiState.update { uiState ->
+            when (val loadState = uiState.searchState) {
+                is LoadState.Loaded -> {
+                    when (val searchState = loadState.data) {
+                        is SearchState.Data -> {
+                            val repositoryList = if (isRefresh) {
+                                search.items
+                            } else {
+                                searchState.repositoryList + search.items
+                            }
+                            uiState.copy(
+                                searchState = loadState.copy(
+                                    data = searchState.copy(
+                                        repositoryList = repositoryList,
+                                        hasMore = hasMore
+                                    )
+                                )
+                            )
+                        }
+                        else -> {
+                            uiState.copy(
+                                searchState = loadState.copy(
+                                    data = SearchState.Data(
+                                        repositoryList = search.items,
+                                        hasMore = hasMore
+                                    )
+                                )
+                            )
+                        }
+                    }
+                }
+                else -> {
+                    uiState.copy(
+                        searchState = LoadState.Loaded(
+                            data = SearchState.Data(
+                                repositoryList = search.items,
+                                hasMore = hasMore
+                            )
+                        )
+                    )
+                }
+            }
         }
     }
 

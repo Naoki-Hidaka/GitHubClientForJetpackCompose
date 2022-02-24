@@ -1,7 +1,9 @@
 package jp.dosukoi.ui.view.myPage
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -19,8 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
@@ -67,10 +72,12 @@ fun UserInfoCard(user: User, onCardClick: (String) -> Unit) {
         elevation = 4.dp
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-//            UserIcon(user.avatarUrl)
+            UserIcon(user.avatarUrl)
             UserInfo(user)
         }
     }
@@ -78,14 +85,21 @@ fun UserInfoCard(user: User, onCardClick: (String) -> Unit) {
 
 @Composable
 fun UserIcon(imageUrl: String) {
-    Image(
-        painter = rememberImagePainter(data = imageUrl),
-        contentDescription = null,
-        modifier = Modifier
-            .size(125.dp)
-            .padding(top = 16.dp, start = 16.dp, bottom = 16.dp)
-            .clip(CircleShape),
-    )
+    Box(
+        modifier =
+        Modifier
+            .size(120.dp)
+            .background(color = Color.White, shape = CircleShape)
+            .clip(CircleShape)
+
+    ) {
+        Image(
+            painter = rememberImagePainter(data = imageUrl),
+            contentDescription = null,
+            modifier = Modifier.fillMaxWidth(),
+            contentScale = ContentScale.FillWidth
+        )
+    }
 }
 
 @Composable
@@ -131,3 +145,23 @@ fun RepositoryItem(
         if (!isLastItem) Divider(color = whiteGray)
     }
 }
+
+//region Preview
+@Preview
+@Composable
+private fun UserInfoCardPreview() {
+    UserInfoCard(
+        user = User(
+            "Dosukoi",
+            0L,
+            "https://placehold.jp/150x150.png",
+            "",
+            "",
+            null,
+            null,
+            null
+        ),
+        onCardClick = {}
+    )
+}
+//endregion

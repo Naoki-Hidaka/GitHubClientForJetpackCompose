@@ -25,7 +25,7 @@ class MainCoroutineRule(
 
     override fun finished(description: Description?) {
         super.finished(description)
-        testDispatcher.advanceUntilIdle()
+        testDispatcher.scheduler.advanceUntilIdle()
         Dispatchers.resetMain()
         testDispatcher.cleanupTestCoroutines()
     }

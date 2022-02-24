@@ -1,12 +1,22 @@
 package jp.dosukoi.ui.view.search
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
@@ -18,18 +28,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.dosukoi.data.entity.myPage.Repository
-import jp.dosukoi.data.entity.search.SearchPageState
 import jp.dosukoi.ui.view.common.LoadingAndErrorScreen
 import jp.dosukoi.ui.view.common.black
 import jp.dosukoi.ui.view.common.white
 import jp.dosukoi.ui.view.myPage.RepositoryItem
-import jp.dosukoi.ui.viewmodel.common.LoadState
+import jp.dosukoi.ui.viewmodel.search.SearchState
+import jp.dosukoi.ui.viewmodel.search.SearchUiState
 
 @Composable
 fun SearchComponent(
-    searchPageState: LoadState<SearchPageState>?,
-    searchText: String?,
-    hasMore: Boolean?,
+    uiState: SearchUiState,
     isTextError: Boolean?,
     listState: LazyListState,
     onValueChanged: (String) -> Unit,
@@ -42,14 +50,13 @@ fun SearchComponent(
             .fillMaxSize()
     ) {
         SearchTextField(
-            searchText = searchText ?: "",
+            searchText = uiState.searchWord,
             isTextError = isTextError,
             onValueChanged = onValueChanged,
             onSearchButtonClick = onSearchButtonClick
         )
         SearchList(
-            searchPageState = searchPageState,
-            hasMore = hasMore,
+            uiState = uiState,
             listState = listState,
             onRetryClick = onRetryClick,
             onItemClick = onItemClick
@@ -105,37 +112,34 @@ fun SearchTextField(
 
 @Composable
 fun SearchList(
-    searchPageState: LoadState<SearchPageState>?,
-    hasMore: Boolean?,
+    uiState: SearchUiState,
     listState: LazyListState,
     onRetryClick: () -> Unit,
     onItemClick: (String) -> Unit,
 ) {
-    searchPageState?.let {
-        LoadingAndErrorScreen(
-            state = it,
-            loadedContent = {
-                when (it) {
-                    SearchPageState.Initialized -> SearchInitialComponent()
-                    SearchPageState.Empty -> SearchedEmptyComponent()
-                    is SearchPageState.Data ->
-                        SearchedListComponent(
-                            it.repositoryList,
-                            hasMore,
-                            listState,
-                            onItemClick
-                        )
-                }
-            },
-            onRetryClick = onRetryClick
-        )
-    }
+    LoadingAndErrorScreen(
+        state = uiState.searchState,
+        loadedContent = {
+            when (it) {
+                SearchState.Initialized -> SearchInitialComponent()
+                SearchState.Empty -> SearchedEmptyComponent()
+                is SearchState.Data ->
+                    SearchedListComponent(
+                        it.repositoryList,
+                        it.hasMore,
+                        listState,
+                        onItemClick
+                    )
+            }
+        },
+        onRetryClick = onRetryClick
+    )
 }
 
 @Composable
 fun SearchedListComponent(
     repositoryList: List<Repository>,
-    hasMore: Boolean?,
+    hasMore: Boolean,
     listState: LazyListState,
     onItemClick: (String) -> Unit
 ) {
@@ -146,11 +150,11 @@ fun SearchedListComponent(
         itemsIndexed(repositoryList) { index, repository ->
             RepositoryItem(
                 repository = repository,
-                isLastItem = index == repositoryList.size && hasMore == false,
+                isLastItem = index == repositoryList.size && !hasMore,
                 onRepositoryItemClick = onItemClick
             )
         }
-        if (hasMore == true) item { LoadingFooter() }
+        if (hasMore) item { LoadingFooter() }
     }
 }
 
