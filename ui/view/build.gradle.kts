@@ -58,7 +58,7 @@ dependencies {
     implementation("androidx.glance:glance-appwidget-proto:$glanceVersion")
 
     // Lottie
-    implementation("com.airbnb.android:lottie-compose:4.2.2")
+    implementation("com.airbnb.android:lottie-compose:5.0.1")
 
     // DataStore
     implementation("androidx.datastore:datastore:1.0.0")
