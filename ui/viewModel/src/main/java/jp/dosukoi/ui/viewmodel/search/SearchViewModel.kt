@@ -9,7 +9,6 @@ import dagger.assisted.AssistedInject
 import jp.dosukoi.data.entity.search.Search
 import jp.dosukoi.data.usecase.search.GetSearchDataUseCase
 import jp.dosukoi.ui.viewmodel.common.LoadState
-import jp.dosukoi.ui.viewmodel.common.NoCacheMutableLiveData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -30,8 +29,6 @@ class SearchViewModel @AssistedInject constructor(
     interface Factory {
         fun create(searchPageListener: SearchPageListener): SearchViewModel
     }
-
-    val isError = NoCacheMutableLiveData<Boolean>()
 
     private val _searchUiState: MutableStateFlow<SearchUiState> =
         MutableStateFlow(SearchUiState())
@@ -77,11 +74,15 @@ class SearchViewModel @AssistedInject constructor(
 
     private fun validateAndRefresh() {
         if (searchUiState.value.searchWord.isBlank()) {
-            isError.setValue(true)
+            _searchUiState.update {
+                it.copy(isSearchWordError = true)
+            }
             return
         } else {
             pageCount.set(1)
-            isError.setValue(false)
+            _searchUiState.update {
+                it.copy(isSearchWordError = false)
+            }
         }
         _searchUiState.update {
             it.copy(searchState = LoadState.Loading)

@@ -38,7 +38,6 @@ import jp.dosukoi.ui.viewmodel.search.SearchUiState
 @Composable
 fun SearchComponent(
     uiState: SearchUiState,
-    isTextError: Boolean?,
     listState: LazyListState,
     onValueChanged: (String) -> Unit,
     onSearchButtonClick: () -> Unit,
@@ -50,7 +49,7 @@ fun SearchComponent(
     ) {
         SearchTextField(
             searchText = uiState.searchWord,
-            isTextError = isTextError,
+            isTextError = uiState.isSearchWordError,
             onValueChanged = onValueChanged,
             onSearchButtonClick = onSearchButtonClick
         )

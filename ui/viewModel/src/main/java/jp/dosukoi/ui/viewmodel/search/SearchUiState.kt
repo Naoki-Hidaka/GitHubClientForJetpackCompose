@@ -5,7 +5,8 @@ import jp.dosukoi.ui.viewmodel.common.LoadState
 
 data class SearchUiState(
     val searchWord: String = "",
-    val searchState: LoadState<SearchState> = LoadState.Loaded(SearchState.Initialized)
+    val searchState: LoadState<SearchState> = LoadState.Loaded(SearchState.Initialized),
+    val isSearchWordError: Boolean = false
 )
 
 sealed class SearchState {
