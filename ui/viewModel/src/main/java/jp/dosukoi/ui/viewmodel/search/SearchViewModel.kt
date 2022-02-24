@@ -41,7 +41,7 @@ class SearchViewModel @AssistedInject constructor(
     @VisibleForTesting
     val isLoadingMore = AtomicBoolean()
     private val pageCount = AtomicInteger(1)
-    
+
     fun onSearchWordChanged(text: String) {
         _searchUiState.update {
             it.copy(searchWord = text)
@@ -164,7 +164,6 @@ class SearchViewModel @AssistedInject constructor(
                                 )
                             )
                         }
-
                     }
                 }
                 else -> {

@@ -92,7 +92,6 @@ fun UserIcon(imageUrl: String) {
             .background(color = Color.White, shape = CircleShape)
             .clip(CircleShape)
 
-
     ) {
         Image(
             painter = rememberImagePainter(data = imageUrl),

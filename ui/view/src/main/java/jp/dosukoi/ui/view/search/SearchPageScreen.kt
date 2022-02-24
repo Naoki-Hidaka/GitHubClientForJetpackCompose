@@ -8,7 +8,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import jp.dosukoi.ui.view.common.OnScrollEnd
 import jp.dosukoi.ui.viewmodel.search.SearchViewModel
 
-
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel

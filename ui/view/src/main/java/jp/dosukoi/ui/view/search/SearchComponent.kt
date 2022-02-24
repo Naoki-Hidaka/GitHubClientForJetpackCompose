@@ -134,7 +134,6 @@ fun SearchList(
         },
         onRetryClick = onRetryClick
     )
-
 }
 
 @Composable
