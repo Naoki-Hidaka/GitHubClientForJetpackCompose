@@ -24,9 +24,6 @@ class SearchViewModelUnitTest {
     val rule = testRule()
 
     @RelaxedMockK
-    private lateinit var searchPageListener: SearchPageListener
-
-    @RelaxedMockK
     private lateinit var getSearchDataUseCase: GetSearchDataUseCase
 
     @InjectMockKs

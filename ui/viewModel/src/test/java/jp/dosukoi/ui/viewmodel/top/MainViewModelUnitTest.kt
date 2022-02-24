@@ -53,16 +53,4 @@ class MainViewModelUnitTest {
         // then
         assertThat(onEvent.lastValue()).isInstanceOf(MainViewModel.Event.FailedFetch::class.java)
     }
-
-    @Test
-    fun onLoadError() {
-        // given
-        val onEvent = viewModel.onEvent.test()
-
-        // when
-        viewModel.onLoadError(RuntimeException())
-
-        // then
-        assertThat(onEvent.lastValue()).isInstanceOf(MainViewModel.Event.FailedFetch::class.java)
-    }
 }
