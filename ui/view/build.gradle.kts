@@ -33,7 +33,7 @@ dependencies {
     implementation("com.google.android.material:material:1.5.0")
 
     // Compose
-    val composeVersion = "1.1.0"
+    val composeVersion = "1.1.1"
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.runtime:runtime:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
