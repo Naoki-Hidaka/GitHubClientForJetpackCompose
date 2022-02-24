@@ -81,7 +81,13 @@ class SearchViewModel @Inject constructor(
             }
         }
         _searchUiState.update {
-            it.copy(searchState = LoadState.Loading)
+            when (val loadState = it.searchState) {
+                is LoadState.Loaded -> when (loadState.data) {
+                    SearchState.Initialized, SearchState.Empty -> it.copy(searchState = LoadState.Loading)
+                    else -> it
+                }
+                else -> it.copy(searchState = LoadState.Loading)
+            }
         }
         refresh(true)
     }

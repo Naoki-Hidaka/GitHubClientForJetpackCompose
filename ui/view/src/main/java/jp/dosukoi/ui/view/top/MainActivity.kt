@@ -28,12 +28,8 @@ class MainActivity : AppCompatActivity() {
     private val myPageViewModel: MyPageViewModel by produceViewModels {
         myPageViewModelFactory.create(viewModel)
     }
-
-    @Inject
-    lateinit var searchViewModelFactory: SearchViewModel.Factory
-    private val searchViewModel: SearchViewModel by produceViewModels {
-        searchViewModelFactory.create(viewModel)
-    }
+    
+    private val searchViewModel: SearchViewModel by viewModels()
 
     @Inject
     lateinit var compositionLocalProvider: CompositionLocalProvider
