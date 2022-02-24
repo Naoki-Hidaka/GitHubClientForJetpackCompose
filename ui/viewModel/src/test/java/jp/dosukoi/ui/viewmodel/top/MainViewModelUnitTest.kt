@@ -58,21 +58,6 @@ class MainViewModelUnitTest {
     }
 
     @Test
-    fun onRepositoryItemClick() {
-        // given
-        val onEvent = viewModel.onEvent.test()
-        val url = "http://example.com"
-
-        // when
-        viewModel.onRepositoryItemClick(url)
-
-        // then
-        assertType<MainViewModel.Event.NavigateToChrome>(onEvent.lastValue()) {
-            assertThat(this.url).isEqualTo(url)
-        }
-    }
-
-    @Test
     fun onGetCode_success() {
         // given
         val onEvent = viewModel.onEvent.test()

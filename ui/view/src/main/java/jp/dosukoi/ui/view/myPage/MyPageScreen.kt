@@ -20,7 +20,6 @@ fun MyPageScreen(
                     state.user,
                     data.repositoryList,
                     viewModel::onCardClick,
-                    viewModel::onRepositoryItemClick,
                     data.isRefreshing,
                     viewModel::onRefresh
                 )

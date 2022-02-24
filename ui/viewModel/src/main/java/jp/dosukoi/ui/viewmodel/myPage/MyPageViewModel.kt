@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 interface MyPageListener {
     fun onLoginButtonClick()
     fun onCardClick(url: String)
-    fun onRepositoryItemClick(url: String)
     fun onGetCode(code: String?)
 }
 

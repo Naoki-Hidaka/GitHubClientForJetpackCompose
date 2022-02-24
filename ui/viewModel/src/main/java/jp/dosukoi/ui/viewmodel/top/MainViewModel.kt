@@ -25,10 +25,6 @@ class MainViewModel @Inject constructor(
         onEvent.setValue(Event.NavigateToChrome(url))
     }
 
-    override fun onRepositoryItemClick(url: String) {
-        onEvent.setValue(Event.NavigateToChrome(url))
-    }
-
     override fun onGetCode(code: String?) {
         code ?: return
         viewModelScope.launch {
