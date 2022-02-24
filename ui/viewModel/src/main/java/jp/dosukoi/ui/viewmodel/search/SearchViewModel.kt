@@ -1,7 +1,6 @@
 package jp.dosukoi.ui.viewmodel.search
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -42,9 +41,7 @@ class SearchViewModel @AssistedInject constructor(
     @VisibleForTesting
     val isLoadingMore = AtomicBoolean()
     private val pageCount = AtomicInteger(1)
-
-    val searchWord = MutableLiveData<String>()
-
+    
     fun onSearchWordChanged(text: String) {
         _searchUiState.update {
             it.copy(searchWord = text)
