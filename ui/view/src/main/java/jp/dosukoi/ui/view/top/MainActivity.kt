@@ -11,7 +11,6 @@ import coil.compose.LocalImageLoader
 import dagger.hilt.android.AndroidEntryPoint
 import jp.dosukoi.ui.view.common.CompositionLocalProvider
 import jp.dosukoi.ui.view.common.appColors
-import jp.dosukoi.ui.view.common.navigateChrome
 import jp.dosukoi.ui.view.common.produceViewModels
 import jp.dosukoi.ui.view.common.showErrorToast
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
@@ -69,7 +68,6 @@ class MainActivity : AppCompatActivity() {
             is MainViewModel.Event.FailedFetch -> {
                 showErrorToast(event.throwable)
             }
-            is MainViewModel.Event.NavigateToChrome -> navigateChrome(event.url)
         }
     }
 

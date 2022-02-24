@@ -17,14 +17,6 @@ class MainViewModel @Inject constructor(
 
     val onEvent = NoCacheMutableLiveData<Event>()
 
-    override fun onLoginButtonClick() {
-        onEvent.setValue(Event.NavigateToChrome(VERIFY_URL))
-    }
-
-    override fun onCardClick(url: String) {
-        onEvent.setValue(Event.NavigateToChrome(url))
-    }
-
     override fun onGetCode(code: String?) {
         code ?: return
         viewModelScope.launch {
@@ -38,10 +30,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    override fun onSearchedItemClick(url: String) {
-        onEvent.setValue(Event.NavigateToChrome(url))
-    }
-
     override fun onLoadError(throwable: Throwable) {
         onEvent.setValue(Event.FailedFetch(throwable))
     }
@@ -49,7 +37,6 @@ class MainViewModel @Inject constructor(
     sealed class Event {
         object CompleteGetAccessToken : Event()
         class FailedFetch(val throwable: Throwable) : Event()
-        class NavigateToChrome(val url: String) : Event()
     }
 
     companion object {

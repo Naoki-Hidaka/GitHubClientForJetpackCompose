@@ -19,13 +19,10 @@ fun MyPageScreen(
                 is UserStatus.Authenticated -> MyPageComponent(
                     state.user,
                     data.repositoryList,
-                    viewModel::onCardClick,
                     data.isRefreshing,
                     viewModel::onRefresh
                 )
-                UserStatus.UnAuthenticated -> UnAuthenticatedUserComponent(
-                    viewModel::onLoginButtonClick
-                )
+                UserStatus.UnAuthenticated -> UnAuthenticatedUserComponent()
             }
         },
         onRetryClick = viewModel::onRetryClick

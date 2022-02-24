@@ -16,8 +16,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 interface MyPageListener {
-    fun onLoginButtonClick()
-    fun onCardClick(url: String)
     fun onGetCode(code: String?)
 }
 

@@ -42,8 +42,7 @@ fun SearchComponent(
     listState: LazyListState,
     onValueChanged: (String) -> Unit,
     onSearchButtonClick: () -> Unit,
-    onRetryClick: () -> Unit,
-    onItemClick: (String) -> Unit
+    onRetryClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -58,8 +57,7 @@ fun SearchComponent(
         SearchList(
             uiState = uiState,
             listState = listState,
-            onRetryClick = onRetryClick,
-            onItemClick = onItemClick
+            onRetryClick = onRetryClick
         )
     }
 }
@@ -114,8 +112,7 @@ fun SearchTextField(
 fun SearchList(
     uiState: SearchUiState,
     listState: LazyListState,
-    onRetryClick: () -> Unit,
-    onItemClick: (String) -> Unit,
+    onRetryClick: () -> Unit
 ) {
     LoadingAndErrorScreen(
         state = uiState.searchState,
@@ -127,8 +124,7 @@ fun SearchList(
                     SearchedListComponent(
                         it.repositoryList,
                         it.hasMore,
-                        listState,
-                        onItemClick
+                        listState
                     )
             }
         },
@@ -140,8 +136,7 @@ fun SearchList(
 fun SearchedListComponent(
     repositoryList: List<Repository>,
     hasMore: Boolean,
-    listState: LazyListState,
-    onItemClick: (String) -> Unit
+    listState: LazyListState
 ) {
     LazyColumn(
         contentPadding = PaddingValues(top = 10.dp, bottom = 16.dp),
@@ -150,8 +145,7 @@ fun SearchedListComponent(
         itemsIndexed(repositoryList) { index, repository ->
             RepositoryItem(
                 repository = repository,
-                isLastItem = index == repositoryList.size && !hasMore,
-                onRepositoryItemClick = onItemClick
+                isLastItem = index == repositoryList.size && !hasMore
             )
         }
         if (hasMore) item { LoadingFooter() }

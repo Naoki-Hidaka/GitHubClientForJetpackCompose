@@ -44,7 +44,6 @@ import jp.dosukoi.ui.view.common.whiteGray
 fun MyPageComponent(
     user: User,
     repositoryList: List<Repository>,
-    onCardClick: (String) -> Unit,
     isRefreshing: Boolean?,
     onRefresh: () -> Unit
 ) {
@@ -52,7 +51,7 @@ fun MyPageComponent(
         LazyColumn(
             contentPadding = PaddingValues(vertical = 20.dp)
         ) {
-            item { UserInfoCard(user, onCardClick) }
+            item { UserInfoCard(user) }
             itemsIndexed(repositoryList) { index, repository ->
                 RepositoryItem(
                     repository = repository,
@@ -64,12 +63,16 @@ fun MyPageComponent(
 }
 
 @Composable
-fun UserInfoCard(user: User, onCardClick: (String) -> Unit) {
+fun UserInfoCard(user: User) {
+    val context = LocalContext.current
+    val intent = remember {
+        Intent(Intent.ACTION_VIEW, Uri.parse(user.htmlUrl))
+    }
     Card(
         modifier = Modifier
             .padding(vertical = 10.dp, horizontal = 16.dp)
             .fillMaxWidth()
-            .clickable { onCardClick(user.htmlUrl) },
+            .clickable { context.startActivity(intent) },
         shape = RoundedCornerShape(10.dp),
         elevation = 4.dp
     ) {
@@ -165,8 +168,7 @@ private fun UserInfoCardPreview() {
             null,
             null,
             null
-        ),
-        onCardClick = {}
+        )
     )
 }
 //endregion

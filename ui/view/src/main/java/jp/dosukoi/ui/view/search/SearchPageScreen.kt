@@ -22,7 +22,6 @@ fun SearchScreen(
         listState,
         viewModel::onSearchWordChanged,
         viewModel::onSearchButtonClick,
-        viewModel::onRetryClick,
-        viewModel::onSearchedItemClick
+        viewModel::onRetryClick
     )
 }
