@@ -6,7 +6,6 @@ import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
 import jp.dosukoi.data.usecase.auth.GetAccessTokenUseCase
-import jp.dosukoi.testing.common.assertType
 import jp.dosukoi.testing.common.test
 import jp.dosukoi.testing.common.testRule
 import org.junit.Before
@@ -28,33 +27,6 @@ class MainViewModelUnitTest {
     fun setup() {
         MockKAnnotations.init(this)
         coEvery { getAccessTokenUseCase.execute(any()) } returns Unit
-    }
-
-    @Test
-    fun onLoginButtonClick() {
-        // given
-        val onEvent = viewModel.onEvent.test()
-
-        // when
-        viewModel.onLoginButtonClick()
-
-        // then
-        assertThat(onEvent.lastValue()).isInstanceOf(MainViewModel.Event.NavigateToChrome::class.java)
-    }
-
-    @Test
-    fun onCardClick() {
-        // given
-        val onEvent = viewModel.onEvent.test()
-        val url = "http://example.com"
-
-        // when
-        viewModel.onCardClick(url)
-
-        // then
-        assertType<MainViewModel.Event.NavigateToChrome>(onEvent.lastValue()) {
-            assertThat(this.url).isEqualTo(url)
-        }
     }
 
     @Test
@@ -80,21 +52,6 @@ class MainViewModelUnitTest {
 
         // then
         assertThat(onEvent.lastValue()).isInstanceOf(MainViewModel.Event.FailedFetch::class.java)
-    }
-
-    @Test
-    fun onSearchItemClick() {
-        // given
-        val onEvent = viewModel.onEvent.test()
-        val url = "http://example.com"
-
-        // when
-        viewModel.onSearchedItemClick(url)
-
-        // then
-        assertType<MainViewModel.Event.NavigateToChrome>(onEvent.lastValue()) {
-            assertThat(this.url).isEqualTo(url)
-        }
     }
 
     @Test
