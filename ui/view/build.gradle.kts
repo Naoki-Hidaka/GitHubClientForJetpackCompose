@@ -33,7 +33,7 @@ dependencies {
     implementation("com.google.android.material:material:1.5.0")
 
     // Compose
-    val composeVersion = "1.1.0"
+    val composeVersion = "1.1.1"
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.runtime:runtime:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
@@ -58,14 +58,14 @@ dependencies {
     implementation("androidx.glance:glance-appwidget-proto:$glanceVersion")
 
     // Lottie
-    implementation("com.airbnb.android:lottie-compose:4.2.2")
+    implementation("com.airbnb.android:lottie-compose:5.0.1")
 
     // DataStore
     implementation("androidx.datastore:datastore:1.0.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Hilt
-    val hiltVersion = "2.40.5"
+    val hiltVersion = "2.41"
     val hiltJetpackVersion = "1.0.0"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
