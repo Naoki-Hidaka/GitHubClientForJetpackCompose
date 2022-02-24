@@ -6,14 +6,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.dosukoi.data.usecase.auth.GetAccessTokenUseCase
 import jp.dosukoi.ui.viewmodel.common.NoCacheMutableLiveData
 import jp.dosukoi.ui.viewmodel.myPage.MyPageListener
-import jp.dosukoi.ui.viewmodel.search.SearchPageListener
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase
-) : ViewModel(), MyPageListener, SearchPageListener {
+) : ViewModel(), MyPageListener {
 
     val onEvent = NoCacheMutableLiveData<Event>()
 
@@ -30,18 +29,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    override fun onLoadError(throwable: Throwable) {
-        onEvent.setValue(Event.FailedFetch(throwable))
-    }
-
     sealed class Event {
         object CompleteGetAccessToken : Event()
         class FailedFetch(val throwable: Throwable) : Event()
-    }
-
-    companion object {
-        private const val CLIENT_ID = "52b65f6025ea1e4264cd"
-        const val VERIFY_URL =
-            "https://github.com/login/oauth/authorize?client_id=$CLIENT_ID&scope=user repo"
     }
 }

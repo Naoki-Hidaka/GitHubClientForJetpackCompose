@@ -1,6 +1,7 @@
 package jp.dosukoi.ui.view.common
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
@@ -19,7 +20,7 @@ fun Activity.showToast(@StringRes messageResId: Int) {
     showToast(message)
 }
 
-fun Activity.showErrorToast(throwable: Throwable) {
+fun Context.showErrorToast(throwable: Throwable) {
     val message = when (throwable) {
         is IOException -> getString(R.string.io_exception)
         is HttpException -> when (throwable.code()) {
