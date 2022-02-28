@@ -19,8 +19,6 @@ jobs:
 
       - name: Commmit
         run: |
-          git config --local user.email 'action@github.com'
-          git config --local user.name 'GitHub Action'
+          git config --local user.email 'dosukoroid@github.com'
+          git config --local user.name 'Naoki-Hidaka'
           git diff --quiet && git diff --staged --quiet || git commit -am 'Update dependency graph'
-      - name: Push
-        uses: ad-m/github-push-action@master
