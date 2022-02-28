@@ -39,7 +39,7 @@ class MyPageViewModel @Inject constructor(
                 )
             }.onSuccess { screenState ->
                 _myPageState.update {
-                    it.copy(screenState = LoadState.Loaded(screenState))
+                    it.copy(screenState = LoadState.Loaded(screenState), isRefreshing = false)
                 }
             }.onFailure {
                 when (it) {
