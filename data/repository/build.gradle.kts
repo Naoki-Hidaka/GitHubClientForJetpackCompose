@@ -13,6 +13,7 @@ android {
 dependencies {
 
     api(project(":data:api"))
+    api(project(":domain:repository"))
 
     // Hilt
     val hiltVersion = "2.41"

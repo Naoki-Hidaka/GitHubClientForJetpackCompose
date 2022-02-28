@@ -35,8 +35,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import jp.dosukoi.data.entity.myPage.Repository
-import jp.dosukoi.data.entity.myPage.User
+import jp.dosukoi.githubclient.domain.entity.myPage.Repository
+import jp.dosukoi.githubclient.domain.entity.myPage.User
 import jp.dosukoi.ui.view.common.gray
 import jp.dosukoi.ui.view.common.whiteGray
 

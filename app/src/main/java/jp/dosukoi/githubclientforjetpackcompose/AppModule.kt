@@ -2,6 +2,7 @@ package jp.dosukoi.githubclientforjetpackcompose
 
 import android.content.Context
 import androidx.room.Room
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,14 +11,14 @@ import dagger.hilt.components.SingletonComponent
 import jp.dosukoi.data.api.common.AccessTokenProvider
 import jp.dosukoi.data.api.common.IApiType
 import jp.dosukoi.data.api.common.IAuthApiType
-import jp.dosukoi.data.entity.auth.AuthDao
-import jp.dosukoi.data.entity.common.JsonConverter
 import jp.dosukoi.data.repository.common.AppDatabase
+import jp.dosukoi.githubclient.domain.entity.auth.AuthDao
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -32,10 +33,12 @@ object AppModule {
     fun provideRetrofit(
         okHttpClient: OkHttpClient
     ): Retrofit {
+        val contentType = "application/json".toMediaType()
+        val format = Json { ignoreUnknownKeys = true }
         return Retrofit.Builder()
             .baseUrl("https://api.github.com")
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create(JsonConverter.gson))
+            .addConverterFactory(format.asConverterFactory(contentType))
             .build()
     }
 
@@ -46,10 +49,12 @@ object AppModule {
     fun provideAuthRetrofit(
         okHttpClient: OkHttpClient
     ): Retrofit {
+        val contentType = "application/json".toMediaType()
+        val format = Json { ignoreUnknownKeys = true }
         return Retrofit.Builder()
             .baseUrl("https://github.com")
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create(JsonConverter.gson))
+            .addConverterFactory(format.asConverterFactory(contentType))
             .build()
     }
 

@@ -4,10 +4,10 @@ include(
     ":ui",
     ":ui:view",
     ":ui:viewModel",
-    ":data",
-    ":data:entity",
     ":data:repository",
     ":data:api",
-    ":data:usecase",
+    ":domain:entity",
+    ":domain:usecase",
+    ":domain:repository",
     ":testing"
 )

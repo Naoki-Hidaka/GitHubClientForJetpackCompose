@@ -15,9 +15,11 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/data/api" />
-            <option value="$PROJECT_DIR$/data/entity" />
             <option value="$PROJECT_DIR$/data/repository" />
-            <option value="$PROJECT_DIR$/data/usecase" />
+            <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/domain/entity" />
+            <option value="$PROJECT_DIR$/domain/repository" />
+            <option value="$PROJECT_DIR$/domain/usecase" />
             <option value="$PROJECT_DIR$/testing" />
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/ui/view" />

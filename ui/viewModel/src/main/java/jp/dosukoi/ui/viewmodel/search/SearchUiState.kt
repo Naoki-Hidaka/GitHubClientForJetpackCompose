@@ -1,6 +1,6 @@
 package jp.dosukoi.ui.viewmodel.search
 
-import jp.dosukoi.data.entity.myPage.Repository
+import jp.dosukoi.githubclient.domain.entity.myPage.Repository
 import jp.dosukoi.ui.viewmodel.common.LoadState
 
 data class SearchUiState(

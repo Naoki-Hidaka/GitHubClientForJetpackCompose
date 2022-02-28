@@ -1,7 +1,7 @@
 package jp.dosukoi.ui.viewmodel.myPage
 
-import jp.dosukoi.data.entity.myPage.Repository
-import jp.dosukoi.data.entity.myPage.UserStatus
+import jp.dosukoi.githubclient.domain.entity.myPage.Repository
+import jp.dosukoi.githubclient.domain.entity.myPage.UserStatus
 import jp.dosukoi.ui.viewmodel.common.LoadState
 
 data class MyPageUiState(
