@@ -11,30 +11,16 @@ import coil.compose.LocalImageLoader
 import dagger.hilt.android.AndroidEntryPoint
 import jp.dosukoi.ui.view.common.CompositionLocalProvider
 import jp.dosukoi.ui.view.common.appColors
-import jp.dosukoi.ui.view.common.navigateChrome
-import jp.dosukoi.ui.view.common.produceViewModels
-import jp.dosukoi.ui.view.common.showErrorToast
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 import jp.dosukoi.ui.viewmodel.search.SearchViewModel
-import jp.dosukoi.ui.viewmodel.top.MainViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val myPageViewModel: MyPageViewModel by viewModels()
 
-    @Inject
-    lateinit var myPageViewModelFactory: MyPageViewModel.Factory
-    private val myPageViewModel: MyPageViewModel by produceViewModels {
-        myPageViewModelFactory.create(viewModel)
-    }
-
-    @Inject
-    lateinit var searchViewModelFactory: SearchViewModel.Factory
-    private val searchViewModel: SearchViewModel by produceViewModels {
-        searchViewModelFactory.create(viewModel)
-    }
+    private val searchViewModel: SearchViewModel by viewModels()
 
     @Inject
     lateinit var compositionLocalProvider: CompositionLocalProvider
@@ -58,19 +44,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         myPageViewModel.init()
-        viewModel.onEvent.observe(this, ::handleEvent)
-    }
-
-    private fun handleEvent(event: MainViewModel.Event) {
-        when (event) {
-            MainViewModel.Event.CompleteGetAccessToken -> {
-                myPageViewModel.onRetryClick()
-            }
-            is MainViewModel.Event.FailedFetch -> {
-                showErrorToast(event.throwable)
-            }
-            is MainViewModel.Event.NavigateToChrome -> navigateChrome(event.url)
-        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -81,6 +54,6 @@ class MainActivity : AppCompatActivity() {
         }
         val uri = intent.data ?: return
         val code = uri.getQueryParameter("code")
-        viewModel.onGetCode(code)
+        myPageViewModel.onGetCode(code)
     }
 }

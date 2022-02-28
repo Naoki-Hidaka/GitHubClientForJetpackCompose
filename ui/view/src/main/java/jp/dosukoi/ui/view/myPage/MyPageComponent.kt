@@ -1,5 +1,7 @@
 package jp.dosukoi.ui.view.myPage
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,11 +20,13 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,8 +44,6 @@ import jp.dosukoi.ui.view.common.whiteGray
 fun MyPageComponent(
     user: User,
     repositoryList: List<Repository>,
-    onCardClick: (String) -> Unit,
-    onRepositoryItemClick: (String) -> Unit,
     isRefreshing: Boolean?,
     onRefresh: () -> Unit
 ) {
@@ -49,12 +51,11 @@ fun MyPageComponent(
         LazyColumn(
             contentPadding = PaddingValues(vertical = 20.dp)
         ) {
-            item { UserInfoCard(user, onCardClick) }
+            item { UserInfoCard(user) }
             itemsIndexed(repositoryList) { index, repository ->
                 RepositoryItem(
                     repository = repository,
-                    isLastItem = index == repositoryList.size,
-                    onRepositoryItemClick = onRepositoryItemClick
+                    isLastItem = index == repositoryList.size
                 )
             }
         }
@@ -62,12 +63,16 @@ fun MyPageComponent(
 }
 
 @Composable
-fun UserInfoCard(user: User, onCardClick: (String) -> Unit) {
+fun UserInfoCard(user: User) {
+    val context = LocalContext.current
+    val intent = remember {
+        Intent(Intent.ACTION_VIEW, Uri.parse(user.htmlUrl))
+    }
     Card(
         modifier = Modifier
             .padding(vertical = 10.dp, horizontal = 16.dp)
             .fillMaxWidth()
-            .clickable { onCardClick(user.htmlUrl) },
+            .clickable { context.startActivity(intent) },
         shape = RoundedCornerShape(10.dp),
         elevation = 4.dp
     ) {
@@ -122,14 +127,17 @@ fun UserInfo(user: User) {
 @Composable
 fun RepositoryItem(
     repository: Repository,
-    isLastItem: Boolean,
-    onRepositoryItemClick: (String) -> Unit
+    isLastItem: Boolean
 ) {
+    val context = LocalContext.current
+    val intent = remember {
+        Intent(Intent.ACTION_VIEW, Uri.parse(repository.htmlUrl))
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onRepositoryItemClick(repository.htmlUrl)
+                context.startActivity(intent)
             }
     ) {
         Text(
@@ -160,8 +168,7 @@ private fun UserInfoCardPreview() {
             null,
             null,
             null
-        ),
-        onCardClick = {}
+        )
     )
 }
 //endregion

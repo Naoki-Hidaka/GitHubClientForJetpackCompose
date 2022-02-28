@@ -3,36 +3,22 @@ package jp.dosukoi.ui.viewmodel.search
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.dosukoi.data.entity.search.Search
 import jp.dosukoi.data.usecase.search.GetSearchDataUseCase
 import jp.dosukoi.ui.viewmodel.common.LoadState
-import jp.dosukoi.ui.viewmodel.common.NoCacheMutableLiveData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
 
-interface SearchPageListener {
-    fun onSearchedItemClick(url: String)
-    fun onLoadError(throwable: Throwable)
-}
-
-class SearchViewModel @AssistedInject constructor(
-    @Assisted private val searchPageListener: SearchPageListener,
+@HiltViewModel
+class SearchViewModel @Inject constructor(
     private val getSearchDataUseCase: GetSearchDataUseCase
-) : ViewModel(), SearchPageListener by searchPageListener {
-
-    @AssistedFactory
-    interface Factory {
-        fun create(searchPageListener: SearchPageListener): SearchViewModel
-    }
-
-    val isError = NoCacheMutableLiveData<Boolean>()
+) : ViewModel() {
 
     private val _searchUiState: MutableStateFlow<SearchUiState> =
         MutableStateFlow(SearchUiState())
@@ -76,16 +62,32 @@ class SearchViewModel @AssistedInject constructor(
         }
     }
 
+    fun onConsumeErrors(throwable: Throwable) {
+        _searchUiState.update {
+            it.copy(errors = it.errors.minus(throwable))
+        }
+    }
+
     private fun validateAndRefresh() {
         if (searchUiState.value.searchWord.isBlank()) {
-            isError.setValue(true)
+            _searchUiState.update {
+                it.copy(isSearchWordError = true)
+            }
             return
         } else {
             pageCount.set(1)
-            isError.setValue(false)
+            _searchUiState.update {
+                it.copy(isSearchWordError = false)
+            }
         }
         _searchUiState.update {
-            it.copy(searchState = LoadState.Loading)
+            when (val loadState = it.searchState) {
+                is LoadState.Loaded -> when (loadState.data) {
+                    SearchState.Initialized, SearchState.Empty -> it.copy(searchState = LoadState.Loading)
+                    else -> it
+                }
+                else -> it.copy(searchState = LoadState.Loading)
+            }
         }
         refresh(true)
     }
@@ -120,8 +122,7 @@ class SearchViewModel @AssistedInject constructor(
                 _searchUiState.update { uiState ->
                     when (uiState.searchState) {
                         is LoadState.Loaded -> {
-                            searchPageListener.onLoadError(it)
-                            uiState
+                            uiState.copy(errors = uiState.errors.plus(it))
                         }
                         else -> {
                             uiState.copy(searchState = LoadState.Error("Error"))
