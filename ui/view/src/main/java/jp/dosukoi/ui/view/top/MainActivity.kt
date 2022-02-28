@@ -11,7 +11,6 @@ import coil.compose.LocalImageLoader
 import dagger.hilt.android.AndroidEntryPoint
 import jp.dosukoi.ui.view.common.CompositionLocalProvider
 import jp.dosukoi.ui.view.common.appColors
-import jp.dosukoi.ui.view.common.showErrorToast
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel
 import jp.dosukoi.ui.viewmodel.search.SearchViewModel
 import javax.inject.Inject
@@ -45,17 +44,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         myPageViewModel.init()
-    }
-
-    private fun handleEvent(event: MainViewModel.Event) {
-        when (event) {
-            MainViewModel.Event.CompleteGetAccessToken -> {
-                myPageViewModel.onRetryClick()
-            }
-            is MainViewModel.Event.FailedFetch -> {
-                showErrorToast(event.throwable)
-            }
-        }
     }
 
     override fun onNewIntent(intent: Intent?) {
