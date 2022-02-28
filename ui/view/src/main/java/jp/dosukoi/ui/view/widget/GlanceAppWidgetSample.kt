@@ -25,8 +25,7 @@ import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.Text
 import dagger.hilt.android.AndroidEntryPoint
-import jp.dosukoi.data.usecase.myPage.GetUserStatusUseCase
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 class GlanceAppWidgetSample @Inject constructor() : GlanceAppWidget() {
@@ -68,9 +67,6 @@ class GlanceAppWidgetSampleAction @Inject constructor() : ActionCallback {
 
 @AndroidEntryPoint
 class GlanceAppWidgetProviderSample : GlanceAppWidgetReceiver() {
-
-    @Inject
-    lateinit var getUserStatusUseCase: GetUserStatusUseCase
 
     @Inject
     lateinit var glanceAppWidgetSample: GlanceAppWidgetSample

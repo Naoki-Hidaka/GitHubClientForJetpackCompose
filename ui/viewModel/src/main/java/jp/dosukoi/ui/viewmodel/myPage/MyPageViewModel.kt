@@ -3,16 +3,17 @@ package jp.dosukoi.ui.viewmodel.myPage
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.dosukoi.data.entity.common.UnAuthorizeException
-import jp.dosukoi.data.entity.myPage.UserStatus
-import jp.dosukoi.data.usecase.auth.GetAccessTokenUseCase
-import jp.dosukoi.data.usecase.myPage.GetRepositoriesUseCase
-import jp.dosukoi.data.usecase.myPage.GetUserStatusUseCase
+import jp.dosukoi.githubclient.domain.entity.auth.UnAuthorizeException
+import jp.dosukoi.githubclient.domain.entity.myPage.UserStatus
+import jp.dosukoi.githubclient.domain.usecase.auth.GetAccessTokenUseCase
+import jp.dosukoi.githubclient.domain.usecase.myPage.GetRepositoriesUseCase
+import jp.dosukoi.githubclient.domain.usecase.myPage.GetUserStatusUseCase
 import jp.dosukoi.ui.viewmodel.common.LoadState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,6 +43,7 @@ class MyPageViewModel @Inject constructor(
                     it.copy(screenState = LoadState.Loaded(screenState), isRefreshing = false)
                 }
             }.onFailure {
+                Timber.w(it)
                 when (it) {
                     is UnAuthorizeException -> {
                         _myPageState.update {

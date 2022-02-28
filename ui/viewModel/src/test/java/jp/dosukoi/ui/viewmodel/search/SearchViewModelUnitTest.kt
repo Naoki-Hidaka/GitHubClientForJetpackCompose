@@ -6,8 +6,8 @@ import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockk
-import jp.dosukoi.data.entity.search.Search
-import jp.dosukoi.data.usecase.search.GetSearchDataUseCase
+import jp.dosukoi.githubclient.domain.entity.search.Search
+import jp.dosukoi.githubclient.domain.usecase.search.GetSearchDataUseCase
 import jp.dosukoi.testing.common.testRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn

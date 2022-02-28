@@ -59,15 +59,18 @@ dependencies {
     implementation(project(":ui:view"))
     implementation(project(":ui:viewModel"))
     implementation(project(":data:api"))
-    implementation(project(":data:entity"))
     implementation(project(":data:repository"))
-    implementation(project(":data:usecase"))
+    implementation(project(":domain:usecase"))
+    implementation(project(":domain:entity"))
+    implementation(project(":domain:repository"))
+
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
 
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     // Compose
     val composeVersion = "1.1.1"
     implementation("androidx.compose.ui:ui:$composeVersion")

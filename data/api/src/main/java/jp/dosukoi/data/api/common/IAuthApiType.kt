@@ -1,6 +1,6 @@
 package jp.dosukoi.data.api.common
 
-import jp.dosukoi.data.entity.auth.Auth
+import jp.dosukoi.githubclient.domain.entity.auth.Auth
 import retrofit2.Response
 import retrofit2.http.POST
 import retrofit2.http.Query

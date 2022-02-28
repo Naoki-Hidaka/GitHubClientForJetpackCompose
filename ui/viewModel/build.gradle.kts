@@ -16,8 +16,8 @@ android {
 
 dependencies {
 
-    implementation(project(":data:entity"))
-    implementation(project(":data:usecase"))
+    implementation(project(":domain:entity"))
+    implementation(project(":domain:usecase"))
     testImplementation(project(":testing"))
 
     // Hilt

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import jp.dosukoi.data.entity.myPage.UserStatus
+import jp.dosukoi.githubclient.domain.entity.myPage.UserStatus
 import jp.dosukoi.ui.view.common.LoadingAndErrorScreen
 import jp.dosukoi.ui.view.common.showErrorToast
 import jp.dosukoi.ui.viewmodel.myPage.MyPageViewModel

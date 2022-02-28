@@ -1,8 +1,8 @@
 package jp.dosukoi.data.api.common
 
-import jp.dosukoi.data.entity.myPage.Repository
-import jp.dosukoi.data.entity.myPage.User
-import jp.dosukoi.data.entity.search.Search
+import jp.dosukoi.githubclient.domain.entity.myPage.Repository
+import jp.dosukoi.githubclient.domain.entity.myPage.User
+import jp.dosukoi.githubclient.domain.entity.search.Search
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

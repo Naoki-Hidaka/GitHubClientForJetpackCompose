@@ -6,10 +6,10 @@ import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockk
-import jp.dosukoi.data.entity.myPage.UserStatus
-import jp.dosukoi.data.usecase.auth.GetAccessTokenUseCase
-import jp.dosukoi.data.usecase.myPage.GetRepositoriesUseCase
-import jp.dosukoi.data.usecase.myPage.GetUserStatusUseCase
+import jp.dosukoi.githubclient.domain.entity.myPage.UserStatus
+import jp.dosukoi.githubclient.domain.usecase.auth.GetAccessTokenUseCase
+import jp.dosukoi.githubclient.domain.usecase.myPage.GetRepositoriesUseCase
+import jp.dosukoi.githubclient.domain.usecase.myPage.GetUserStatusUseCase
 import jp.dosukoi.testing.common.assertType
 import jp.dosukoi.testing.common.testRule
 import jp.dosukoi.ui.viewmodel.common.LoadState

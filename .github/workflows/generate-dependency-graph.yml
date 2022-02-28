@@ -1,0 +1,24 @@
+name: generate dependency graph
+
+on:
+  pull_request
+
+jobs:
+  generate-dependency-graph:
+    name: Generate Dependency Graph
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Graphviz
+        uses: ts-graphviz/setup-graphviz@v1
+
+      - name: Generate Dependency Graph
+        run: ./gradlew projectDependencyGraph
+
+      - name: Commmit
+        run: |
+          git config --local user.email 'dosukoroid@github.com'
+          git config --local user.name 'Naoki-Hidaka'
+          git diff --quiet && git diff --staged --quiet || git commit -am 'Update dependency graph'

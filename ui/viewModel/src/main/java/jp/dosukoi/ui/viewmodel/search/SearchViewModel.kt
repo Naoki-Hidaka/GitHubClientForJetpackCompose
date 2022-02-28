@@ -4,8 +4,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.dosukoi.data.entity.search.Search
-import jp.dosukoi.data.usecase.search.GetSearchDataUseCase
+import jp.dosukoi.githubclient.domain.entity.search.Search
+import jp.dosukoi.githubclient.domain.usecase.search.GetSearchDataUseCase
 import jp.dosukoi.ui.viewmodel.common.LoadState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
