@@ -1,0 +1,45 @@
+digraph {
+  graph [label="GitHubClientForJetpackCompose\n ",labelloc=t,fontsize=30,ranksep=1.4];
+  node [style=filled, fillcolor="#bbbbbb"];
+  rankdir=TB;
+
+  # Projects
+
+  ":app" [shape=box, fillcolor="#baffc9"];
+  ":data:api" [fillcolor="#baffc9"];
+  ":data:repository" [fillcolor="#baffc9"];
+  ":domain:entity" [fillcolor="#baffc9"];
+  ":domain:repository" [fillcolor="#baffc9"];
+  ":domain:usecase" [fillcolor="#baffc9"];
+  ":testing" [fillcolor="#baffc9"];
+  ":ui:view" [fillcolor="#baffc9"];
+  ":ui:viewModel" [fillcolor="#baffc9"];
+
+  {rank = same; ":app";}
+
+  {rank = same;}
+
+  {rank = same;}
+
+  {rank = same; ":data:repository"; ":domain:repository";}
+
+  # Dependencies
+
+  ":app" -> ":ui:view" [style=dotted]
+  ":app" -> ":ui:viewModel" [style=dotted]
+  ":app" -> ":data:api" [style=dotted]
+  ":app" -> ":data:repository" [style=dotted]
+  ":app" -> ":domain:usecase" [style=dotted]
+  ":app" -> ":domain:entity" [style=dotted]
+  ":app" -> ":domain:repository" [style=dotted]
+  ":data:api" -> ":domain:entity" [style=dotted]
+  ":data:repository" -> ":data:api" [style=dotted]
+  ":data:repository" -> ":domain:repository" [style=dotted]
+  ":domain:repository" -> ":domain:entity"
+  ":domain:usecase" -> ":domain:repository" [style=dotted]
+  ":ui:view" -> ":ui:viewModel" [style=dotted]
+  ":ui:view" -> ":domain:entity" [style=dotted]
+  ":ui:viewModel" -> ":domain:entity" [style=dotted]
+  ":ui:viewModel" -> ":domain:usecase" [style=dotted]
+  ":ui:viewModel" -> ":testing" [style=dotted]
+}

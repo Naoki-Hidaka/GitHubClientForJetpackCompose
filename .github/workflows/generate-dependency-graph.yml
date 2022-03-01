@@ -19,6 +19,7 @@ jobs:
 
       - name: Commmit
         run: |
-          git config --local user.email 'dosukoroid@github.com'
-          git config --local user.name 'Naoki-Hidaka'
-          git diff --quiet && git diff --staged --quiet || git commit -am 'Update dependency graph'
+          git config --local user.email "dosukoroid@gmail.com"
+          git config --local user.name "Naoki-Hidaka"
+          git commit -am "Update dependency graph" && git push origin HEAD
+          exit 0
