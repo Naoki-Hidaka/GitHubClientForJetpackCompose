@@ -75,4 +75,12 @@ allprojects {
     }
 }
 
-apply(from = file("gradle/projectDependencyGraph.gradle"))
+val projectDependencyGraph by tasks.registering(ProjectDependencyGraphTask::class) {
+    doLast {
+        copy {
+            from(rootProject.buildDir.resolve("reports/dependency-graph/project.dot.png"))
+            into(rootProject.projectDir)
+        }
+    }
+}
+
