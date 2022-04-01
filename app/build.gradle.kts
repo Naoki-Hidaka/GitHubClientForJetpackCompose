@@ -31,18 +31,6 @@ android {
         }
     }
 
-    productFlavors {
-        register("development") {
-
-        }
-        register("qa") {
-
-        }
-        register("production") {
-            
-        }
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
