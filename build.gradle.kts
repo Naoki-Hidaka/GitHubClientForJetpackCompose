@@ -11,7 +11,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.40.1")
 
-        val navVersion = "2.4.1"
+        val navVersion = "2.4.2"
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion")
 
         classpath(kotlin("gradle-plugin", version = kotlinVersion))
