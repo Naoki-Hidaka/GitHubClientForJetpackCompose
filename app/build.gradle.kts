@@ -150,7 +150,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-    val mockkVersion = "1.12.3"
+    val mockkVersion = "1.12.5"
     implementation("io.mockk:mockk:$mockkVersion")
     testImplementation("androidx.test.ext:junit-ktx:1.1.3")
 
